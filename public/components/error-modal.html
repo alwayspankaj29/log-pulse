@@ -1,0 +1,90 @@
+<!-- Error Modal Reference Template -->
+<!-- This shows the structure of the modal that displays in modal dialog -->
+
+<dialog class="error-modal" id="error-modal">
+  <div class="modal-header">
+    <h2 id="modal-title">Error Title</h2>
+    <button class="modal-close" id="modal-close">&times;</button>
+  </div>
+
+  <div class="modal-content">
+    <!-- Error Information Section -->
+    <div class="modal-section">
+      <div class="section-title">Error Information</div>
+      <div class="error-info">
+        <div class="info-row">
+          <span class="label">Category:</span>
+          <span id="modal-category">Database</span>
+        </div>
+        <div class="info-row">
+          <span class="label">Severity:</span>
+          <span id="modal-severity">Critical</span>
+        </div>
+        <div class="info-row">
+          <span class="label">Timestamp:</span>
+          <span id="modal-timestamp">2024-10-31 14:23:45</span>
+        </div>
+        <div class="info-row">
+          <span class="label">Error Code:</span>
+          <span id="modal-error-code" class="code">DB_TIMEOUT_001</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Stack Trace Section -->
+    <div class="modal-section">
+      <div class="section-title">Stack Trace</div>
+      <pre class="stack-trace" id="modal-stack-trace">
+at Database.connect (/app/db/connection.js:45:12)
+at Pool.query (/app/db/pool.js:23:8)
+at getUserData (/app/services/user.js:12:4)</pre
+      >
+    </div>
+
+    <!-- AI Solution Section -->
+    <div class="modal-section">
+      <div class="section-title">AI-Generated Solution</div>
+      <p id="modal-solution">
+        The database connection timeout indicates that your connection pool is
+        exhausted or the database server is unresponsive. This typically occurs
+        when there are too many concurrent connections or network latency
+        issues...
+      </p>
+    </div>
+
+    <!-- Fix Steps Section -->
+    <div class="modal-section">
+      <div class="section-title">Step-by-Step Fix</div>
+      <ol class="fix-steps" id="modal-fix-steps">
+        <li>
+          Increase connection pool size from 10 to 20 in your database config
+        </li>
+        <li>Check database server health and CPU usage</li>
+        <li>Implement connection pooling with a shorter timeout</li>
+        <li>Add retry logic with exponential backoff</li>
+      </ol>
+    </div>
+
+    <!-- Slack Integration Section -->
+    <div class="modal-section slack-section">
+      <div class="section-title">Slack Integration</div>
+      <div class="slack-info">
+        <p id="modal-slack-info">
+          Slack Thread: https://app.slack.com/archives/C12345/p1234567890
+        </p>
+        <div class="slack-actions">
+          <button class="btn btn-secondary" id="copy-slack-btn">
+            Copy Slack Thread Link
+          </button>
+          <button class="btn btn-primary" id="notify-slack-btn">
+            Send to Slack
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal-footer">
+    <button class="btn btn-secondary" id="modal-cancel">Close</button>
+  </div>
+</dialog>

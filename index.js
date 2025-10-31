@@ -15,6 +15,11 @@ app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
 
+// Serve dashboard at /dashboard
+app.get('/dashboard', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'pages', 'dashboard', 'index.html'));
+});
+
 // GET all errors
 app.get('/api/errors', (req, res) => {
   const data = getAllErrors();
