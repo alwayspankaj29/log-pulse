@@ -4,6 +4,8 @@
   "description": "Smart Log Analyser BrowserStack Hackathon 2025",
   "main": "index.js",
   "scripts": {
+    "start": "node index.js",
+    "dev": "NODE_ENV=development node index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
