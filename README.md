@@ -24,7 +24,7 @@ This guide will help you set up and run a LogPulse Node.js application with Expr
 ### 1. Clone or Download the Repository
 
 ```sh
-git clone https://github.com/alwayspankaj29/log-pulse.git
+git clone git@github.com:alwayspankaj29/log-pulse.git
 cd log-pulse
 ```
 
