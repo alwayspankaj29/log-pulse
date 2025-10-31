@@ -1,0 +1,12 @@
+{
+  "name": "log-pulse",
+  "version": "1.0.0",
+  "description": "Smart Log Analyser BrowserStack Hackathon 2025",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}
