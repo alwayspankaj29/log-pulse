@@ -8,66 +8,295 @@ const GEMINI_API_URL =
   "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent";
 
 // Predefined error categories
-const ERROR_CATEGORIES = [
-  "Database",
-  "Network",
-  "Authentication",
-  "Authorization",
-  "Configuration",
-  "Memory",
-  "Disk",
-  "API",
-  "Timeout",
-  "Connection",
-  "Thread",
-  "Concurrency",
-  "Performance",
-  "Deployment",
-  "Security",
-  "Validation",
-  "Syntax",
-  "Runtime",
-  "Initialization",
-  "Resource Exhaustion",
-  "Other",
-];
+// const ERROR_CATEGORIES = [
+//   "Database",
+//   "Network",
+//   "Authentication",
+//   "Authorization",
+//   "Configuration",
+//   "Memory",
+//   "Disk",
+//   "API",
+//   "Timeout",
+//   "Connection",
+//   "Thread",
+//   "Concurrency",
+//   "Performance",
+//   "Deployment",
+//   "Security",
+//   "Validation",
+//   "Syntax",
+//   "Runtime",
+//   "Initialization",
+//   "Resource Exhaustion",
+//   "Other",
+// ];
 
 // Predefined severity levels
 const SEVERITY_LEVELS = ['CRITICAL', 'HIGH', 'MEDIUM'];
 
-// Predefined suggested actions
-const SUGGESTED_ACTIONS = [
-  "Restart service immediately",
-  "Check database connection",
-  "Review network configuration",
-  "Verify authentication credentials",
-  "Update security permissions",
-  "Monitor memory usage",
-  "Free up disk space",
-  "Review API endpoints",
-  "Increase timeout limits",
-  "Check connection pools",
-  "Optimize thread usage",
-  "Review concurrent processes",
-  "Optimize performance bottlenecks",
-  "Verify deployment configuration",
-  "Review security settings",
-  "Validate input parameters",
-  "Fix syntax errors",
-  "Debug runtime issues",
-  "Check initialization scripts",
-  "Scale resources",
-  "Contact system administrator",
-  "Review logs for patterns",
-  "Update configuration files",
-  "Restart dependent services",
-  "Clear cache",
-  "Update system dependencies",
-  "Monitor system health",
-  "Schedule maintenance window",
-  "Review error handling",
-  "Manual investigation required",
+// // Predefined suggested actions
+// const SUGGESTED_ACTIONS = [
+//   "Restart service immediately",
+//   "Check database connection",
+//   "Review network configuration",
+//   "Verify authentication credentials",
+//   "Update security permissions",
+//   "Monitor memory usage",
+//   "Free up disk space",
+//   "Review API endpoints",
+//   "Increase timeout limits",
+//   "Check connection pools",
+//   "Optimize thread usage",
+//   "Review concurrent processes",
+//   "Optimize performance bottlenecks",
+//   "Verify deployment configuration",
+//   "Review security settings",
+//   "Validate input parameters",
+//   "Fix syntax errors",
+//   "Debug runtime issues",
+//   "Check initialization scripts",
+//   "Scale resources",
+//   "Contact system administrator",
+//   "Review logs for patterns",
+//   "Update configuration files",
+//   "Restart dependent services",
+//   "Clear cache",
+//   "Update system dependencies",
+//   "Monitor system health",
+//   "Schedule maintenance window",
+//   "Review error handling",
+//   "Manual investigation required",
+// ];
+
+const ERROR_CATEGORIES = [
+  {
+    category: "Application Logic",
+    subcategories: [
+      {
+        subcategory: "Nil Reference Error",
+        suggestion: "Add nil checks or guard clauses to prevent accessing undefined objects",
+        relevant_urls: [
+          "https://browserstack.slack.com/archives/C01016S56ER/p1723106921992339",
+          "https://browserstack.slack.com/archives/C02D3CWKF6Y/p1753363255985479?thread_ts=1753338568.815129&cid=C02D3CWKF6Y"
+        ]
+      },
+      {
+        subcategory: "Wrong Number of Arguments",
+        suggestion: "Verify method signatures and update method calls accordingly",
+        relevant_urls: [
+          "https://browserstack.slack.com/archives/C01016S56ER/p1723106921992339",
+          "https://browserstack.slack.com/archives/C02D3CWKF6Y/p1753363255985479?thread_ts=1753338568.815129&cid=C02D3CWKF6Y"
+        ]
+      },
+      {
+        subcategory: "Undefined Method",
+        suggestion: "Ensure the method exists for the object’s class or module",
+        relevant_urls: [
+          "https://browserstack.slack.com/archives/C01016S56ER/p1723106921992339",
+          "https://browserstack.slack.com/archives/C02D3CWKF6Y/p1753363255985479?thread_ts=1753338568.815129&cid=C02D3CWKF6Y"
+        ]
+      },
+      {
+        subcategory: "Unexpected Data Type",
+        suggestion: "Validate and sanitize inputs before method invocation",
+        relevant_urls: [
+          "https://browserstack.slack.com/archives/C01016S56ER/p1723106921992339",
+          "https://browserstack.slack.com/archives/C02D3CWKF6Y/p1753363255985479?thread_ts=1753338568.815129&cid=C02D3CWKF6Y"
+        ]
+      }
+    ]
+  },
+  {
+    category: "View Rendering",
+    subcategories: [
+      {
+        subcategory: "Template Rendering Error",
+        suggestion: "Check partial and layout templates for missing variables or incorrect locals",
+        relevant_urls: [
+          "https://browserstack.slack.com/archives/C01016S56ER/p1723106921992339",
+          "https://browserstack.slack.com/archives/C02D3CWKF6Y/p1753363255985479?thread_ts=1753338568.815129&cid=C02D3CWKF6Y"
+        ]
+      },
+      {
+        subcategory: "Missing Partial",
+        suggestion: "Ensure the referenced partials exist and paths are correct",
+        relevant_urls: [
+          "https://browserstack.slack.com/archives/C01016S56ER/p1723106921992339",
+          "https://browserstack.slack.com/archives/C02D3CWKF6Y/p1753363255985479?thread_ts=1753338568.815129&cid=C02D3CWKF6Y"
+        ]
+      },
+      {
+        subcategory: "Helper Method Error",
+        suggestion: "Fix logic in Rails helpers or ensure helpers are properly included in the view context",
+        relevant_urls: [
+          "https://browserstack.slack.com/archives/C01016S56ER/p1723106921992339",
+          "https://browserstack.slack.com/archives/C02D3CWKF6Y/p1753363255985479?thread_ts=1753338568.815129&cid=C02D3CWKF6Y"
+        ]
+      }
+    ]
+  },
+  {
+    category: "Controller & Routing",
+    subcategories: [
+      {
+        subcategory: "Action Dispatch Error",
+        suggestion: "Verify controller actions exist and match routes",
+        relevant_urls: [
+          "https://browserstack.slack.com/archives/C01016S56ER/p1723106921992339",
+          "https://browserstack.slack.com/archives/C02D3CWKF6Y/p1753363255985479?thread_ts=1753338568.815129&cid=C02D3CWKF6Y"
+        ]
+      },
+      {
+        subcategory: "Invalid Parameters",
+        suggestion: "Validate params and ensure required keys exist",
+        relevant_urls: [
+          "https://browserstack.slack.com/archives/C01016S56ER/p1723106921992339",
+          "https://browserstack.slack.com/archives/C02D3CWKF6Y/p1753363255985479?thread_ts=1753338568.815129&cid=C02D3CWKF6Y"
+        ]
+      },
+      {
+        subcategory: "Routing Error",
+        suggestion: "Check routes.rb and ensure proper HTTP verb and path configuration",
+        relevant_urls: [
+          "https://browserstack.slack.com/archives/C01016S56ER/p1723106921992339",
+          "https://browserstack.slack.com/archives/C02D3CWKF6Y/p1753363255985479?thread_ts=1753338568.815129&cid=C02D3CWKF6Y"
+        ]
+      }
+    ]
+  },
+  {
+    category: "Database",
+    subcategories: [
+      {
+        subcategory: "ActiveRecord Query Error",
+        suggestion: "Inspect model queries for syntax or relation issues",
+        relevant_urls: [
+          "https://browserstack.slack.com/archives/C01016S56ER/p1723106921992339",
+          "https://browserstack.slack.com/archives/C02D3CWKF6Y/p1753363255985479?thread_ts=1753338568.815129&cid=C02D3CWKF6Y"
+        ]
+      },
+      {
+        subcategory: "Record Not Found",
+        suggestion: "Add existence checks or rescue from ActiveRecord::RecordNotFound",
+        relevant_urls: [
+          "https://browserstack.slack.com/archives/C01016S56ER/p1723106921992339",
+          "https://browserstack.slack.com/archives/C02D3CWKF6Y/p1753363255985479?thread_ts=1753338568.815129&cid=C02D3CWKF6Y"
+        ]
+      },
+      {
+        subcategory: "Transaction Failure",
+        suggestion: "Investigate rollback causes or DB constraints",
+        relevant_urls: [
+          "https://browserstack.slack.com/archives/C01016S56ER/p1723106921992339",
+          "https://browserstack.slack.com/archives/C02D3CWKF6Y/p1753363255985479?thread_ts=1753338568.815129&cid=C02D3CWKF6Y"
+        ]
+      }
+    ]
+  },
+  {
+    category: "Middleware",
+    subcategories: [
+      {
+        subcategory: "Request Handling Error",
+        suggestion: "Check custom middleware logic for null references or incorrect assumptions",
+        relevant_urls: [
+          "https://browserstack.slack.com/archives/C01016S56ER/p1723106921992339",
+          "https://browserstack.slack.com/archives/C02D3CWKF6Y/p1753363255985479?thread_ts=1753338568.815129&cid=C02D3CWKF6Y"
+        ]
+      },
+      {
+        subcategory: "Throttling Issue",
+        suggestion: "Adjust rate limits or monitor excessive requests",
+        relevant_urls: [
+          "https://browserstack.slack.com/archives/C01016S56ER/p1723106921992339",
+          "https://browserstack.slack.com/archives/C02D3CWKF6Y/p1753363255985479?thread_ts=1753338568.815129&cid=C02D3CWKF6Y"
+        ]
+      },
+      {
+        subcategory: "JSON Parsing Error",
+        suggestion: "Ensure valid JSON bodies and proper encoding",
+        relevant_urls: [
+          "https://browserstack.slack.com/archives/C01016S56ER/p1723106921992339",
+          "https://browserstack.slack.com/archives/C02D3CWKF6Y/p1753363255985479?thread_ts=1753338568.815129&cid=C02D3CWKF6Y"
+        ]
+      }
+    ]
+  },
+  {
+    category: "Performance",
+    subcategories: [
+      {
+        subcategory: "High Memory Usage",
+        suggestion: "Profile memory allocation and optimize large objects or caches",
+        relevant_urls: [
+          "https://browserstack.slack.com/archives/C01016S56ER/p1723106921992339",
+          "https://browserstack.slack.com/archives/C02D3CWKF6Y/p1753363255985479?thread_ts=1753338568.815129&cid=C02D3CWKF6Y"
+        ]
+      },
+      {
+        subcategory: "Long Query Duration",
+        suggestion: "Use indexes and optimize DB queries",
+        relevant_urls: [
+          "https://browserstack.slack.com/archives/C01016S56ER/p1723106921992339",
+          "https://browserstack.slack.com/archives/C02D3CWKF6Y/p1753363255985479?thread_ts=1753338568.815129&cid=C02D3CWKF6Y"
+        ]
+      },
+      {
+        subcategory: "Slow View Rendering",
+        suggestion: "Cache partials or reduce template complexity",
+        relevant_urls: [
+          "https://browserstack.slack.com/archives/C01016S56ER/p1723106921992339",
+          "https://browserstack.slack.com/archives/C02D3CWKF6Y/p1753363255985479?thread_ts=1753338568.815129&cid=C02D3CWKF6Y"
+        ]
+      }
+    ]
+  },
+  {
+    category: "Configuration",
+    subcategories: [
+      {
+        subcategory: "Missing Environment Variable",
+        suggestion: "Define required env vars in the deployment configuration",
+        relevant_urls: [
+          "https://browserstack.slack.com/archives/C01016S56ER/p1723106921992339",
+          "https://browserstack.slack.com/archives/C02D3CWKF6Y/p1753363255985479?thread_ts=1753338568.815129&cid=C02D3CWKF6Y"
+        ]
+      },
+      {
+        subcategory: "Improper Deployment Config",
+        suggestion: "Verify config files for environment-specific values",
+        relevant_urls: [
+          "https://browserstack.slack.com/archives/C01016S56ER/p1723106921992339",
+          "https://browserstack.slack.com/archives/C02D3CWKF6Y/p1753363255985479?thread_ts=1753338568.815129&cid=C02D3CWKF6Y"
+        ]
+      },
+      {
+        subcategory: "Dependency Mismatch",
+        suggestion: "Check Gemfile.lock or package versions for compatibility",
+        relevant_urls: [
+          "https://browserstack.slack.com/archives/C01016S56ER/p1723106921992339",
+          "https://browserstack.slack.com/archives/C02D3CWKF6Y/p1753363255985479?thread_ts=1753338568.815129&cid=C02D3CWKF6Y"
+        ]
+      }
+    ]
+  },
+  {
+    category: "Other",
+    subcategories: [
+      {
+        subcategory: "Unknown Error",
+        suggestion: "Manual investigation required",
+        relevant_urls: [
+          "https://browserstack.slack.com/archives/C01016S56ER/p1723106921992339",
+          "https://browserstack.slack.com/archives/C02D3CWKF6Y/p1753363255985479?thread_ts=1753338568.815129&cid=C02D3CWKF6Y"
+        ]
+      }
+    ]
+  }
 ];
+
+
 
 // Error patterns using regex
 const ERROR_PATTERNS = [
@@ -143,10 +372,11 @@ async function analyzeError(error) {
 
 Analyze this log error and provide:
 1. Severity rating - MUST be one of: ${SEVERITY_LEVELS.join(", ")}
-2. Error category - MUST be one of: ${ERROR_CATEGORIES.join(", ")}
-3. Brief description of the issue
-4. Potential impact
-5. Suggested action - MUST be one of: ${SUGGESTED_ACTIONS.join(", ")}
+2. Category - one of: ${Object.keys(ERROR_CATEGORIES).join(", ")}
+3. Subcategory - must match one of the subcategories under the chosen category
+4. Brief description of the issue
+5. Potential impact
+6. Suggested action - must exactly match the suggestedAction for the chosen subcategory
 
 Log entry:
 ${error.content}
@@ -212,17 +442,17 @@ IMPORTANT: Use ONLY the predefined categories, severity levels, and suggested ac
     }
 
     // Validate and normalize suggested action
-    let suggestedAction =
-      analysis.suggestedAction || "Manual investigation required";
-    if (!SUGGESTED_ACTIONS.includes(suggestedAction)) {
-      // Try to find closest match
-      const match = SUGGESTED_ACTIONS.find(
-        (action) =>
-          action.toLowerCase().includes(suggestedAction.toLowerCase()) ||
-          suggestedAction.toLowerCase().includes(action.toLowerCase())
-      );
-      suggestedAction = match || "Manual investigation required";
-    }
+    // let suggestedAction =
+    //   analysis.suggestedAction || "Manual investigation required";
+    // if (!SUGGESTED_ACTIONS.includes(suggestedAction)) {
+    //   // Try to find closest match
+    //   const match = SUGGESTED_ACTIONS.find(
+    //     (action) =>
+    //       action.toLowerCase().includes(suggestedAction.toLowerCase()) ||
+    //       suggestedAction.toLowerCase().includes(action.toLowerCase())
+    //   );
+    //   suggestedAction = match || "Manual investigation required";
+    // }
 
     return {
       ...error,
@@ -387,9 +617,9 @@ async function main() {
   console.log(`\n📋 Using Predefined Categories:`);
   console.log(`   ${ERROR_CATEGORIES.join(", ")}`);
   console.log(`\n🔥 Severity Levels: ${SEVERITY_LEVELS.join(", ")}`);
-  console.log(
-    `\n💡 Available Actions: ${SUGGESTED_ACTIONS.length} predefined actions\n`
-  );
+  // console.log(
+  //   `\n💡 Available Actions: ${SUGGESTED_ACTIONS.length} predefined actions\n`
+  // );
 
   try {
     // Step 1: Parse log file and extract errors using regex
