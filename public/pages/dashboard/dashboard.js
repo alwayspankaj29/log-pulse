@@ -17,7 +17,15 @@ let expandedRowId = null; // currently expanded error id
 async function fetchErrors() {
   setStatus("Loading errors...");
   try {
-    const res = await fetch(API_URL, {
+    // Get current environment selection
+    const envSelector = document.getElementById("env-selector");
+    const selectedEnv = envSelector ? envSelector.value : "devos2";
+    
+    // Build URL with env_name query parameter
+    const url = new URL(API_URL, window.location.origin);
+    url.searchParams.append("env_name", selectedEnv);
+    
+    const res = await fetch(url.toString(), {
       headers: { Accept: "application/json" },
     });
     if (!res.ok) throw new Error("Failed to load errors");
@@ -372,7 +380,7 @@ function setupEnvironmentSelector() {
       setStatus("Run AI Analysis to load errors for the selected environment.");
     }
 
-    alert(`Environment switched to: ${selectedEnv.toUpperCase()}`);
+    // alert(`Environment switched to: ${selectedEnv.toUpperCase()}`);
   });
 }
 

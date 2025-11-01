@@ -25,8 +25,8 @@
         <div class="control-group">
           <label for="env-selector">Select Environment:</label>
           <select id="env-selector" class="env-select">
-            <option value="production">devos</option>
-            <option value="staging" selected>devos2</option>
+            <option value="devos">devos</option>
+            <option value="devos2" selected>devos2</option>
           </select>
         </div>
         <button class="btn btn-primary" id="run-analysis-btn">
@@ -53,11 +53,15 @@
         <div class="filter-wrapper">
           <label for="category-filter">Filters:</label>
           <select id="category-filter" class="category-select">
-            <option value="all">All Categories</option>
-            <option value="Runtime">Runtime</option>
+            <option value="all">All</option>
+            <option value="Syntax">Syntax</option>
+            <option value="Templating">Templating</option>
+            <option value="Routing">Routing</option>
             <option value="Migration">Migration</option>
+            <option value="Compilation">Compilation</option>
+            <option value="Performance">Performance</option>
             <option value="Configuration">Configuration</option>
-            <option value="Other">Other</option>
+            <option value="Unknown">Unknown</option>
           </select>
         </div>
       </section>
@@ -65,7 +69,7 @@
       <!-- Errors Table Section -->
       <section class="logs-section">
         <div class="logs-header">
-          <h2>Error Logs</h2>
+          <h2>AI Log Analytics</h2>
           <span class="error-count" id="error-count">0 errors</span>
         </div>
         <div id="error-table-container">
@@ -74,9 +78,9 @@
               <tr>
                 <th scope="col" class="col-index">#</th>
                 <th scope="col" class="col-severity">Severity</th>
-                <th scope="col" class="col-category">Category</th>
-                <th scope="col" class="col-slack">Slack Thread</th>
-                <th scope="col" class="col-description">Description</th>
+                <th scope="col" class="col-category">Error Type</th>
+                <th scope="col" class="col-slack">Slack Suggestion</th>
+                <th scope="col" class="col-description">Error Details</th>
               </tr>
             </thead>
             <tbody id="error-table-body">

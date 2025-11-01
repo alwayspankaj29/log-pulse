@@ -71,7 +71,7 @@ const SEVERITY_LEVELS = ['CRITICAL', 'HIGH', 'MEDIUM'];
 
 const ERROR_CATEGORIES = [
   {
-    category: "Syntax Errors",
+    category: "Syntax",
     subcategories: [
       {
         subcategory: "Nil Reference Error",
