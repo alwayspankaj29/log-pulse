@@ -36,6 +36,19 @@
         </button>
       </section>
 
+  <!-- Summary Section (hidden until analysis runs) -->
+      <section class="summary-section hidden" id="summary-section" aria-labelledby="summary-heading">
+        <div class="summary-header">
+          <h2 id="summary-heading">Summary</h2>
+          <span class="summary-total" id="summary-total">Total Errors: 0</span>
+        </div>
+        <div class="summary-content">
+          <div class="summary-metrics" id="summary-metrics">
+            <!-- Populated by JS -->
+          </div>
+        </div>
+      </section>
+
       <!-- Filter Section -->
       <section class="filter-section">
         <div class="filter-wrapper">
@@ -51,91 +64,31 @@
         </div>
       </section>
 
-      <!-- Logs List Section -->
+      <!-- Errors Table Section -->
       <section class="logs-section">
         <div class="logs-header">
           <h2>Error Logs</h2>
-          <span class="error-count" id="error-count">Loading...</span>
+          <span class="error-count" id="error-count">0 errors</span>
         </div>
-        <div class="logs-list" id="logs-list">
-          <!-- Error cards will be rendered here by JavaScript in Phase 2 -->
+        <div id="error-table-container">
+          <table class="error-table" id="error-table" aria-describedby="summary-heading">
+            <thead>
+              <tr>
+                <th scope="col" class="col-index">#</th>
+                <th scope="col" class="col-severity">Severity</th>
+                <th scope="col" class="col-category">Category</th>
+                <th scope="col" class="col-slack">Slack Thread</th>
+                <th scope="col" class="col-description">Description</th>
+              </tr>
+            </thead>
+            <tbody id="error-table-body">
+              <tr class="placeholder-row"><td colspan="5">No analysis run yet. Click <strong>Run AI Analysis</strong> to generate insights.</td></tr>
+            </tbody>
+          </table>
         </div>
+        <div class="table-hint" id="table-hint">Click a row to expand for details</div>
       </section>
     </main>
-
-    <!-- Error Modal -->
-    <div class="modal-backdrop" id="modal-backdrop"></div>
-    <dialog class="error-modal" id="error-modal">
-      <div class="modal-header">
-        <h2 id="modal-title">Error Details</h2>
-        <button class="modal-close" id="modal-close">&times;</button>
-      </div>
-
-      <div class="modal-content">
-        <!-- Error Info -->
-        <div class="modal-section">
-          <div class="section-title">Error Information</div>
-          <div class="error-info">
-            <div class="info-row">
-              <span class="label">Category:</span>
-              <span id="modal-category" class="category-badge">-</span>
-            </div>
-            <div class="info-row">
-              <span class="label">Severity:</span>
-              <span id="modal-severity" class="severity-badge">-</span>
-            </div>
-            <div class="info-row">
-              <span class="label">Timestamp:</span>
-              <span id="modal-timestamp">-</span>
-            </div>
-            <div class="info-row">
-              <span class="label">Error Code:</span>
-              <span id="modal-error-code" class="code">-</span>
-            </div>
-          </div>
-        </div>
-
-        <!-- Stack Trace -->
-        <div class="modal-section">
-          <div class="section-title">Stack Trace</div>
-          <pre class="stack-trace" id="modal-stack-trace">-</pre>
-        </div>
-
-        <!-- AI Solution -->
-        <div class="modal-section">
-          <div class="section-title">AI-Generated Solution</div>
-          <p id="modal-solution">-</p>
-        </div>
-
-        <!-- Fix Steps -->
-        <div class="modal-section">
-          <div class="section-title">Step-by-Step Fix</div>
-          <ol class="fix-steps" id="modal-fix-steps">
-            <li>-</li>
-          </ol>
-        </div>
-
-        <!-- Slack Integration -->
-        <div class="modal-section slack-section">
-          <div class="section-title">Slack Integration</div>
-          <div class="slack-info">
-            <p id="modal-slack-info">-</p>
-            <div class="slack-actions">
-              <button class="btn btn-secondary" id="copy-slack-btn">
-                Copy Slack Thread Link
-              </button>
-              <button class="btn btn-primary" id="notify-slack-btn">
-                Send to Slack
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="modal-footer">
-        <button class="btn btn-secondary" id="modal-cancel">Close</button>
-      </div>
-    </dialog>
 
     <script src="/pages/dashboard/dashboard.js"></script>
   </body>
