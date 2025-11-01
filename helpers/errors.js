@@ -4,6 +4,12 @@
 const fs = require("fs");
 const path = require("path");
 const { spawn } = require("child_process");
+const {
+  parseLogFile,
+  analyzeErrors,
+  generateReport,
+  saveReport,
+} = require("../backend/index");
 
 // Transform error_report.json data to API format
 function transformErrorReportData(errorReportData) {
@@ -52,70 +58,61 @@ function transformErrorReportData(errorReportData) {
       timestamp: error.timestamp || new Date().toISOString(),
       lineNumber: error.lineNumber,
       content: error.content,
-      slackThreadSuggestion: analysis.slackthread || "https://browserstack.slack.com/archives/C02D3CWKF6Y/p1741085627615559?thread_ts=1741065769.408149&cid=C02D3CWKF6Y",
+      slackThreadSuggestion: analysis.slackthread  || "https://browserstack.slack.com/archives/C02D3CWKF6Y/p1741085627615559?thread_ts=1741065769.408149&cid=C02D3CWKF6Y",
     };
   });
 }
 
-// Generate fresh error analysis by running the backend analysis script
-async function generateErrorAnalysis() {
-  return new Promise((resolve, reject) => {
+// Generate fresh error analysis by running the backend analysis directly
+async function generateErrorAnalysis(logFileName = "devos2.log") {
+  try {
     const backendPath = path.join(__dirname, "..", "backend");
-    const logFilePath = path.join(backendPath, "production.log");
-    const analysisScript = path.join(backendPath, "index.js");
+    const logFilePath = path.join(backendPath, logFileName);
 
-    console.log("🔄 Generating fresh error analysis...");
+    console.log(`🔄 Generating fresh error analysis for: ${logFileName}`);
 
     // Check if log file exists
     if (!fs.existsSync(logFilePath)) {
-      console.log(
-        "⚠️ No production.log found, using existing error_report.json if available"
-      );
-      resolve(true);
-      return;
+      throw new Error(`Log file not found: ${logFilePath}`);
     }
 
-    // Run the backend analysis script
-    const analysisProcess = spawn("node", [analysisScript, logFilePath], {
-      cwd: backendPath,
-      stdio: ["pipe", "pipe", "pipe"],
-    });
+    // Step 1: Parse log file and extract errors
+    console.log("📋 Parsing log file...");
+    const errors = await parseLogFile(logFilePath);
 
-    let stdout = "";
-    let stderr = "";
+    if (errors.length === 0) {
+      console.log("✅ No errors found in the log file.");
+      return { success: true, errorCount: 0 };
+    }
 
-    analysisProcess.stdout.on("data", (data) => {
-      stdout += data.toString();
-    });
+    // Step 2: Analyze errors with AI
+    console.log(`🤖 Analyzing ${errors.length} errors...`);
+    const analyzedErrors = await analyzeErrors(errors);
 
-    analysisProcess.stderr.on("data", (data) => {
-      stderr += data.toString();
-    });
+    // Step 3: Generate report
+    const report = generateReport(analyzedErrors);
 
-    analysisProcess.on("close", (code) => {
-      if (code === 0) {
-        console.log("✅ Error analysis completed successfully");
-        resolve(true);
-      } else {
-        console.error("❌ Error analysis failed:", stderr);
-        // Don't reject, just log and continue with existing data
-        resolve(false);
-      }
-    });
+    //
+    console.log.apply(`✅ Generated report with ${report.errors.length} analyzed errors.`);
+    // Step 4: Save report to file
+    const reportPath = path.join(backendPath, "error_report.json");
+    saveReport(report, reportPath);
 
-    analysisProcess.on("error", (error) => {
-      console.error("❌ Failed to start analysis process:", error.message);
-      // Don't reject, just log and continue with existing data
-      resolve(false);
-    });
-  });
+    console.log("✅ Error analysis completed successfully");
+    return { success: true, errorCount: errors.length, report };
+  } catch (error) {
+    console.error("❌ Error during analysis:", error.message);
+    throw error;
+  }
 }
 
 // Load error report data with fresh analysis generation
-async function loadErrorReportData() {
+async function loadErrorReportData(logFileName) {
   try {
-    // First, generate fresh analysis
-    await generateErrorAnalysis();
+    // First, generate fresh analysis if logFileName is provided
+    if (logFileName) {
+      await generateErrorAnalysis(logFileName);
+    }
 
     // Then load the generated data
     const errorReportPath = path.join(
@@ -124,34 +121,24 @@ async function loadErrorReportData() {
       "backend",
       "error_report.json"
     );
+    
+    // Check if error_report.json exists
+    if (!fs.existsSync(errorReportPath)) {
+      console.log("⚠️ No error_report.json found. Run analysis first.");
+      return [];
+    }
+    
     const rawData = fs.readFileSync(errorReportPath, "utf8");
     const errorReportData = JSON.parse(rawData);
     return transformErrorReportData(errorReportData);
   } catch (error) {
     console.error("Error loading error_report.json:", error.message);
-    // Return fallback data if file cannot be loaded
-    return [
-      {
-        id: "fallback_error",
-        title: "Error Loading Log Analysis",
-        description:
-          "Unable to load error analysis data from error_report.json",
-        recommendation:
-          "Check if error_report.json file exists and is valid JSON",
-        severity: "HIGH",
-        category: "System",
-        impact: "Dashboard functionality impaired",
-        timestamp: new Date().toISOString(),
-        lineNumber: 0,
-        content: "Fallback error entry",
-        slackThreadSuggestion: null,
-      },
-    ];
+    throw error;
   }
 }
 
-async function getAllErrors() {
-  return await loadErrorReportData();
+async function getAllErrors(logFileName) {
+  return await loadErrorReportData(logFileName);
 }
 
 async function getErrorById(id) {

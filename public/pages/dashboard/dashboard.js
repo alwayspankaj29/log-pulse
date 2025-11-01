@@ -52,7 +52,7 @@ function transformErrorData(apiErrors) {
       stackTrace: formatStackTrace(apiError.content, apiError.description),
       solution: apiError.recommendation || "No solution available",
       fixSteps: generateFixSteps(apiError.recommendation),
-      slackThread: apiError.slackThreadSuggestion?.url || null,
+      slackThread: apiError.slackThreadSuggestion || null,
       impact: apiError.impact || "Unknown impact",
       lineNumber: apiError.lineNumber || 0,
     };

@@ -24,14 +24,31 @@ app.get("/", (req, res) => {
   res.status(404).json({ message: "Root path removed. Use /dashboard" });
 });
 
-// GET all errors
+// GET all errors - accepts optional logFile query parameter
+// Example: /api/errors?logFile=devos.log
 app.get("/api/errors", async (req, res) => {
   try {
-    const data = await getAllErrors();
-    res.json({ count: data.length, errors: data });
+    const logFileName = req.query.logFile; // Optional parameter
+    
+    if (logFileName) {
+      console.log(`📁 Analyzing log file: ${logFileName}`);
+    } else {
+      console.log("📁 Loading existing error report");
+    }
+    
+    const data = await getAllErrors(logFileName);
+    res.json({ 
+      count: data.length, 
+      errors: data,
+      logFile: logFileName || "existing report"
+    });
   } catch (error) {
     console.error("Error fetching errors:", error);
-    res.status(500).json({ message: "Internal server error", errors: [] });
+    res.status(500).json({ 
+      message: "Internal server error", 
+      error: error.message,
+      errors: [] 
+    });
   }
 });
 

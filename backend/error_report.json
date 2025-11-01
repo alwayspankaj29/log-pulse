@@ -1,15 +1,16 @@
 {
   "summary": {
-    "totalErrors": 16,
+    "totalErrors": 80,
     "severityCounts": {
-      "HIGH": 5,
-      "MEDIUM": 8,
-      "UNKNOWN": 66,
-      "CRITICAL": 1
+      "MEDIUM": 6,
+      "HIGH": 6,
+      "CRITICAL": 3,
+      "UNKNOWN": 65
     },
     "categoryCounts": {
-      "Runtime": 14,
-      "Other": 66
+      "View Rendering": 11,
+      "Application Logic": 4,
+      "Other": 65
     }
   },
   "errors": [
@@ -19,10 +20,133 @@
       "timestamp": "2025-04-04T10:31:33.566+00:00",
       "analysis": {
         "severity": "CRITICAL",
-        "category": "Runtime",
-        "description": "A `NoMethodError` exception occurred. The `_line_item` method is being called on an `Order` object, but that method is undefined. The stack trace indicates the error originates within the `AccountsController` when fetching subscription details, likely related to displaying combined plans. The system suggests `line_items`.",
-        "impact": "The application is encountering a fatal error when trying to display subscription information, leading to a broken or incomplete user experience. Users will not be able to properly view subscription details. This could lead to subscription cancellations or dissatisfaction.",
-        "suggestedAction": "Examine the `Order` model and the application code (specifically the `get_count_to_query_v4`, `get_count_to_query`, and `get_combined_plans_to_show` methods within `application_controller.rb` and the `subscription_details_v2` and `subscriptions` actions in `accounts_controller.rb`) to determine why `_line_item` is being called. It is likely a typo and should be corrected to `line_items`. Deploy the corrected code."
+        "category": "Application Logic",
+        "subcategory": "Nil Reference Error",
+        "description": "The application is attempting to call a method `_line_item` on an `Order` object, but this method does not exist. The error occurs within the `get_count_to_query_v4` method of the `application_controller.rb` file and is ultimately triggered from the `subscriptions` action in the `accounts_controller.rb` file.",
+        "impact": "The application is throwing a `NoMethodError`, preventing users from accessing the `/accounts/subscriptions` endpoint, likely impacting the ability to view or manage their subscriptions. This is a critical failure.",
+        "suggestedAction": "Add nil checks or guard clauses to prevent accessing undefined objects",
+        "slackThread": "https://browserstack.slack.com/archives/C01016S56ER/p1723106921992339",
+        "relevantUrls": "https://browserstack.slack.com/archives/C01016S56ER/p1723106921992339"
+      }
+    },
+    {
+      "lineNumber": 16,
+      "content": "{\"data\":{\"request\":{\"method\":\"GET\",\"endpoint\":\"/accounts/subscriptions\",\"ip\":\"34.233.8.51\",\"id\":\"f9986a47857f45d30ee2bd2f91e4f874\",\"user_id\":104,\"params\":\"\\\"{\\\\\\\"product\\\\\\\":\\\\\\\"app-live\\\\\\\",\\\\\\\"controller\\\\\\\":\\\\\\\"accounts\\\\\\\",\\\\\\\"action\\\\\\\":\\\\\\\"subscriptions\\\\\\\"}\\\"\",\"controller\":\"AccountsController\",\"action\":\"subscriptions\"},\"response\":{\"status\":null,\"duration\":null,\"view_rendering_duration\":null,\"db_query_duration\":null}},\"log\":{\"dynamic_data\":\"  \\nActionView::Template::Error (wrong number of arguments (given 1, expected 0)):\\n    93:   \\u003c% if render_dropdown %\\u003e\\n    94:     \\u003cdiv class=\\\"plan-dropdown-section\\\"\\u003e\\n    95:       \\u003cdiv class=\\\"plan-dropdown\\\"\\u003e\\n    96:         \\u003c%= select_tag \\\"\\\", options_for_select(get_dropdown_options(select_tag_options_array, plan_name, dropdown_text_version, @cart, @combined_pricing_version), plan_to_highlight_id), common_select_params %\\u003e\\n    97:       \\u003c/div\\u003e\\n    98:       \\u003c%= render :partial =\\u003e 'shared/combined_parallel_test_tool_tip', :locals =\\u003e { :monthly_plan =\\u003e monthly_plan , :only_icon =\\u003e parallel_tooltip_only_icon} if !hide_parallels_tooltip %\\u003e\\n    99:     \\u003c/div\\u003e\\n  \\napp/models/concerns/plan_helper.rb:1829:in `to_s'\\napp/models/concerns/plan_helper.rb:1829:in `get_formatted_user_count_test_observability'\\napp/models/concerns/plan_helper.rb:1733:in `formatted_user_count'\\napp/helpers/account_helper.rb:657:in `block in get_dropdown_options'\\napp/helpers/account_helper.rb:657:in `map'\\napp/helpers/account_helper.rb:657:in `get_dropdown_options'\\napp/views/shared/_combined_pricing_plan_details.html.erb:96\\napp/views/static/molecules/accounts/_pricing_plan_block.html.erb:404\\napp/views/static/molecules/accounts/_pricing_plan.html.erb:109\\napp/views/static/habitats/accounts/_plans_blocks_with_sidenav.html.erb:1942\\napp/views/static/molecules/_pricing_container.html.erb:27\\napp/views/static/habitats/accounts/_pricing_plan_tables.html.erb:57\\napp/helpers/application_helper.rb:2744:in `cache_if'\\napp/views/static/habitats/accounts/_pricing_plan_tables.html.erb:50\\napp/views/shared/_combined_pricing.html.erb:50\\napp/views/shared/_all_pricing.html.erb:5\\napp/views/accounts/subscriptions.html.erb:12\\napp/controllers/accounts_controller.rb:334:in `subscriptions'\\nlib/minute_based_throttle.rb:157:in `call'\\nlib/minute_based_throttle.rb:157:in `call'\\nconfig/initializers/oink_override.rb:9:in `call'\\nlib/json_parse_errors.rb:10:in `call'\\nlib/bad_multipart_form_data_handler.rb:21:in `call'\\nlib/request_timestamp.rb:14:in `_call'\\nlib/request_timestamp.rb:9:in `call'\\nlib/extract_ip_middleware.rb:31:in `call'\",\"id\":\"336-6066-4-1716539057.141-k8s-devmobile.bsstag.com\",\"level\":\"FATAL\"},\"meta\":{\"format\":{\"category\":\"server\",\"version\":5},\"host\":\"rails-live-96cfb45f-bqdsb\",\"timestamp\":\"2024-05-24T08:24:20.631+00:00\"}}",
+      "timestamp": "2024-05-24T08:24:20.631+00:00",
+      "analysis": {
+        "severity": "CRITICAL",
+        "category": "View Rendering",
+        "subcategory": "Template Rendering Error",
+        "description": "ActionView::Template::Error: wrong number of arguments (given 1, expected 0) in `get_formatted_user_count_test_observability` method. This indicates an issue with the view template code, specifically related to how arguments are passed to or expected by the `get_formatted_user_count_test_observability` method in `plan_helper.rb`.",
+        "impact": "The application is failing to render the subscriptions page, potentially blocking users from accessing or managing their subscriptions. This will cause a poor user experience and potential revenue loss if users cannot upgrade/downgrade their plans.",
+        "suggestedAction": "Check partial and layout templates for missing variables or incorrect locals",
+        "slackThread": "https://browserstack.slack.com/archives/C01016S56ER/p1723106921992339",
+        "relevantUrls": "https://browserstack.slack.com/archives/C01016S56ER/p1723106921992339"
+      }
+    },
+    {
+      "lineNumber": 39,
+      "content": "{\"data\":{\"request\":{\"method\":\"GET\",\"endpoint\":\"/accounts/subscriptions\",\"ip\":\"203.194.98.122\",\"id\":\"9421c9ed8c9bbe26bf1955a182767b47\",\"user_id\":22548,\"params\":\"{\\\"product\\\":\\\"live\\\",\\\"controller\\\":\\\"accounts\\\",\\\"action\\\":\\\"subscriptions\\\"}\",\"controller\":\"AccountsController\",\"action\":\"subscriptions\"},\"response\":{\"status\":null,\"duration\":null,\"view_rendering_duration\":null,\"db_query_duration\":null}},\"log\":{\"dynamic_data\":\"  \\nActionView::Template::Error (undefined method `live_testing_minutes_per_user_per_month' for nil:NilClass):\\n    1: \\u003c% plan = @plans[plans_shown_by_default][plan_name] %\\u003e\\n    2: \\u003c% monthly_plan = @plans['monthly'][plan_name] %\\u003e\\n    3: \\u003c%\\n    4:   minutes_of_live = plan.live_testing_minutes_per_user_per_month\\n    5:   annual_amt = formatted_price_based_on_discount(@plans['annual'][plan_name].monthly_price)\\n    6:   monthly_amt = formatted_price_based_on_discount(monthly_plan.monthly_price)\\n    7:   \\n  \\napp/views/static/habitats/accounts/_freelancer_plans.html.erb:4\\napp/views/static/habitats/accounts/_plans_blocks_with_sidenav.html.erb:388\\napp/views/static/habitats/accounts/_pricing_plan_tables.html.erb:181\\napp/helpers/application_helper.rb:2087:in `cache_if'\\napp/views/static/habitats/accounts/_pricing_plan_tables.html.erb:50\\napp/views/shared/_combined_pricing.html.erb:52\\napp/views/shared/_all_pricing.html.erb:5\\napp/views/accounts/subscriptions.html.erb:11\\napp/controllers/accounts_controller.rb:265:in `subscriptions'\\nlib/minute_based_throttle.rb:129:in `call'\\nlib/minute_based_throttle.rb:129:in `call'\\nconfig/initializers/oink_override.rb:9:in `call'\\nlib/json_parse_errors.rb:10:in `call'\\nlib/bad_multipart_form_data_handler.rb:21:in `call'\\nlib/request_timestamp.rb:14:in `_call'\\nlib/request_timestamp.rb:9:in `call'\\nlib/extract_ip_middleware.rb:31:in `call'\",\"id\":\"210-11062-12-1681898587.982-k8s-os2.bsstag.com\",\"level\":\"FATAL\"},\"meta\":{\"format\":{\"category\":\"server\",\"version\":5},\"host\":\"rails-live-657dc7ff48-plzqm\",\"timestamp\":\"2023-04-19T10:03:11.893+00:00\"}}",
+      "timestamp": "2023-04-19T10:03:11.893+00:00",
+      "analysis": {
+        "severity": "CRITICAL",
+        "category": "View Rendering",
+        "subcategory": "Template Rendering Error",
+        "description": "A `NilClass` error occurred while rendering the `accounts/subscriptions` view, specifically when trying to call the method `live_testing_minutes_per_user_per_month` on a `nil` object related to a plan. This indicates that the `@plans` hash might be missing a required plan configuration.",
+        "impact": "The `accounts/subscriptions` page will fail to render, preventing users from viewing or managing their subscriptions.",
+        "suggestedAction": "Check partial and layout templates for missing variables or incorrect locals",
+        "slackThread": "https://browserstack.slack.com/archives/C01016S56ER/p1723106921992339",
+        "relevantUrls": "https://browserstack.slack.com/archives/C01016S56ER/p1723106921992339"
+      }
+    },
+    {
+      "lineNumber": 2,
+      "content": "{\"data\":{\"request\":{\"method\":\"GET\",\"endpoint\":\"/accounts/subscriptions\",\"ip\":\"34.233.8.51\",\"id\":\"9c3d291dbab6f9b3689532463d2c085d\",\"user_id\":73,\"params\":\"\\\"{\\\\\\\"controller\\\\\\\":\\\\\\\"accounts\\\\\\\",\\\\\\\"action\\\\\\\":\\\\\\\"subscriptions\\\\\\\"}\\\"\",\"controller\":\"AccountsController\",\"action\":\"subscriptions\"},\"response\":{\"status\":null,\"duration\":null,\"view_rendering_duration\":null,\"db_query_duration\":null}},\"log\":{\"dynamic_data\":\" \\nActionView::Template::Error (wrong number of arguments (given 1, expected 0)):\\n  93:  \\u003c% if render_dropdown %\\u003e\\n  94:   \\u003cdiv class=\\\"plan-dropdown-section\\\"\\u003e\\n  95:    \\u003cdiv class=\\\"plan-dropdown\\\"\\u003e\\n  96:     \\u003c%= select_tag \\\"\\\", options_for_select(get_dropdown_options(select_tag_options_array, plan_name, dropdown_text_version, @cart, @combined_pricing_version), plan_to_highlight_id), common_select_params %\\u003e\\n  97:    \\u003c/div\\u003e\\n  98:    \\u003c%= render :partial =\\u003e 'shared/combined_parallel_test_tool_tip', :locals =\\u003e { :monthly_plan =\\u003e monthly_plan , :only_icon =\\u003e parallel_tooltip_only_icon} if !hide_parallels_tooltip %\\u003e\\n  99:   \\u003c/div\\u003e\\n \\napp/models/concerns/plan_helper.rb:1820:in `to_s'\\napp/models/concerns/plan_helper.rb:1820:in `get_formatted_user_count_test_observability'\\napp/models/concerns/plan_helper.rb:1724:in `formatted_user_count'\\napp/helpers/account_helper.rb:657:in `block in get_dropdown_options'\\napp/helpers/account_helper.rb:657:in `map'\\napp/helpers/account_helper.rb:657:in `get_dropdown_options'\\napp/views/shared/_combined_pricing_plan_details.html.erb:96\\napp/views/static/molecules/accounts/_pricing_plan_block.html.erb:404\\napp/views/static/molecules/accounts/_pricing_plan.html.erb:109\\napp/views/static/habitats/accounts/_plans_blocks_with_sidenav.html.erb:1945\\napp/views/static/molecules/_pricing_container.html.erb:27\\napp/views/static/habitats/accounts/_pricing_plan_tables.html.erb:58\\napp/helpers/application_helper.rb:2655:in `cache_if'\\napp/views/static/habitats/accounts/_pricing_plan_tables.html.erb:51\\napp/views/shared/_combined_pricing.html.erb:50\\napp/views/shared/_all_pricing.html.erb:5\\napp/views/accounts/subscriptions.html.erb:12\\napp/controllers/accounts_controller.rb:330:in `subscriptions'\\nlib/minute_based_throttle.rb:157:in `call'\\nlib/minute_based_throttle.rb:157:in `call'\\nconfig/initializers/oink_override.rb:9:in `call'\\nlib/json_parse_errors.rb:10:in `call'\\nlib/bad_multipart_form_data_handler.rb:21:in `call'\\nlib/request_timestamp.rb:14:in `_call'\\nlib/request_timestamp.rb:9:in `call'\\nlib/extract_ip_middleware.rb:31:in `call'\",\"id\":\"233-947-3-1714638124.630-devhst.bsstag.com\",\"level\":\"FATAL\"},\"meta\":{\"format\":{\"category\":\"server\",\"version\":5},\"host\":\"rails-live-864d95cd6-vv7dd\",\"timestamp\":\"2024-05-02T08:22:11.886+00:00\"}}",
+      "timestamp": "2024-05-02T08:22:11.886+00:00",
+      "analysis": {
+        "severity": "HIGH",
+        "category": "View Rendering",
+        "subcategory": "Template Rendering Error",
+        "description": "A `ActionView::Template::Error` occurred while rendering the `accounts/subscriptions` view. The error indicates a wrong number of arguments was passed to the `to_s` method in `plan_helper.rb`, specifically within the `get_formatted_user_count_test_observability` method. This likely stems from an incorrect method signature or argument passing within the view or helper.",
+        "impact": "The `accounts/subscriptions` page will fail to render, preventing users from accessing subscription information and potentially impacting subscription management.",
+        "suggestedAction": "Check partial and layout templates for missing variables or incorrect locals",
+        "slackThread": "https://browserstack.slack.com/archives/C01016S56ER/p1723106921992339",
+        "relevantUrls": "https://browserstack.slack.com/archives/C01016S56ER/p1723106921992339"
+      }
+    },
+    {
+      "lineNumber": 4,
+      "content": "{\"data\":{\"request\":{\"method\":\"GET\",\"endpoint\":\"/accounts/subscriptions\",\"ip\":\"34.233.8.51\",\"id\":\"9c3d291dbab6f9b3689532463d2c085d\",\"user_id\":73,\"params\":\"\\\"{\\\\\\\"controller\\\\\\\":\\\\\\\"accounts\\\\\\\",\\\\\\\"action\\\\\\\":\\\\\\\"subscriptions\\\\\\\"}\\\"\",\"controller\":\"AccountsController\",\"action\":\"subscriptions\"},\"response\":{\"status\":null,\"duration\":null,\"view_rendering_duration\":null,\"db_query_duration\":null}},\"log\":{\"dynamic_data\":\" \\nActionView::Template::Error (wrong number of arguments (given 1, expected 0)):\\n  93:  \\u003c% if render_dropdown %\\u003e\\n  94:   \\u003cdiv class=\\\"plan-dropdown-section\\\"\\u003e\\n  95:    \\u003cdiv class=\\\"plan-dropdown\\\"\\u003e\\n  96:     \\u003c%= select_tag \\\"\\\", options_for_select(get_dropdown_options(select_tag_options_array, plan_name, dropdown_text_version, @cart, @combined_pricing_version), plan_to_highlight_id), common_select_params %\\u003e\\n  97:    \\u003c/div\\u003e\\n  98:    \\u003c%= render :partial =\\u003e 'shared/combined_parallel_test_tool_tip', :locals =\\u003e { :monthly_plan =\\u003e monthly_plan , :only_icon =\\u003e parallel_tooltip_only_icon} if !hide_parallels_tooltip %\\u003e\\n  99:   \\u003c/div\\u003e\\n \\napp/models/concerns/plan_helper.rb:1820:in `to_s'\\napp/models/concerns/plan_helper.rb:1820:in `get_formatted_user_count_test_observability'\\napp/models/concerns/plan_helper.rb:1724:in `formatted_user_count'\\napp/helpers/account_helper.rb:657:in `block in get_dropdown_options'\\napp/helpers/account_helper.rb:657:in `map'\\napp/helpers/account_helper.rb:657:in `get_dropdown_options'\\napp/views/shared/_combined_pricing_plan_details.html.erb:96\\napp/views/static/molecules/accounts/_pricing_plan_block.html.erb:404\\napp/views/static/molecules/accounts/_pricing_plan.html.erb:109\\napp/views/static/habitats/accounts/_plans_blocks_with_sidenav.html.erb:1945\\napp/views/static/molecules/_pricing_container.html.erb:27\\napp/views/static/habitats/accounts/_pricing_plan_tables.html.erb:58\\napp/helpers/application_helper.rb:2655:in `cache_if'\\napp/views/static/habitats/accounts/_pricing_plan_tables.html.erb:51\\napp/views/shared/_combined_pricing.html.erb:50\\napp/views/shared/_all_pricing.html.erb:5\\napp/views/accounts/subscriptions.html.erb:12\\napp/controllers/accounts_controller.rb:330:in `subscriptions'\\nlib/minute_based_throttle.rb:157:in `call'\\nlib/minute_based_throttle.rb:157:in `call'\\nconfig/initializers/oink_override.rb:9:in `call'\\nlib/json_parse_errors.rb:10:in `call'\\nlib/bad_multipart_form_data_handler.rb:21:in `call'\\nlib/request_timestamp.rb:14:in `_call'\\nlib/request_timestamp.rb:9:in `call'\\nlib/extract_ip_middleware.rb:31:in `call'\",\"id\":\"233-947-3-1714638124.630-devhst.bsstag.com\",\"level\":\"FATAL\"},\"meta\":{\"format\":{\"category\":\"server\",\"version\":5},\"host\":\"rails-live-864d95cd6-vv7dd\",\"timestamp\":\"2024-05-02T08:22:11.886+00:00\"}}",
+      "timestamp": "2024-05-02T08:22:11.886+00:00",
+      "analysis": {
+        "severity": "HIGH",
+        "category": "View Rendering",
+        "subcategory": "Template Rendering Error",
+        "description": "ActionView::Template::Error: wrong number of arguments (given 1, expected 0) in `plan_helper.rb:1820` while rendering the subscriptions page. This suggests a method is being called with the wrong number of arguments within the view template.",
+        "impact": "The subscriptions page fails to render, preventing users from viewing or managing their subscriptions.",
+        "suggestedAction": "Check partial and layout templates for missing variables or incorrect locals",
+        "slackThread": "https://browserstack.slack.com/archives/C01016S56ER/p1723106921992339",
+        "relevantUrls": "https://browserstack.slack.com/archives/C01016S56ER/p1723106921992339"
+      }
+    },
+    {
+      "lineNumber": 9,
+      "content": "{\"data\":{\"request\":{\"method\":\"GET\",\"endpoint\":\"/pricing\",\"ip\":\"34.233.8.51\",\"id\":\"8fb9c0245eebd039b39ea9d9e7b3d087\",\"user_id\":null,\"params\":\"\\\"{\\\\\\\"controller\\\\\\\":\\\\\\\"accounts\\\\\\\",\\\\\\\"action\\\\\\\":\\\\\\\"pricing\\\\\\\"}\\\"\",\"controller\":\"AccountsController\",\"action\":\"pricing\"},\"response\":{\"status\":null,\"duration\":null,\"view_rendering_duration\":null,\"db_query_duration\":null}},\"log\":{\"dynamic_data\":\"  \\nNoMethodError (undefined method `id' for nil:NilClass):\\n  \\napp/helpers/pricing_helper.rb:865:in `get_plan_cta'\\napp/helpers/pricing_helper.rb:476:in `get_plan_hash'\\napp/helpers/pricing_helper.rb:309:in `block in get_plans_details'\\napp/helpers/pricing_helper.rb:303:in `each'\\napp/helpers/pricing_helper.rb:303:in `get_plans_details'\\napp/helpers/pricing_helper.rb:97:in `block in get_product_plans'\\napp/helpers/pricing_helper.rb:93:in `each'\\napp/helpers/pricing_helper.rb:93:in `get_product_plans'\\napp/helpers/pricing_helper.rb:10:in `get_product_pricing_details'\\napp/controllers/accounts_controller.rb:5267:in `block in pricing'\\napp/controllers/accounts_controller.rb:5266:in `pricing'\\nlib/minute_based_throttle.rb:162:in `call'\\nlib/minute_based_throttle.rb:162:in `call'\\nconfig/initializers/oink_override.rb:9:in `call'\\nlib/too_many_redirects_middleware.rb:11:in `call'\\nlib/json_parse_errors.rb:10:in `call'\\nlib/bad_multipart_form_data_handler.rb:21:in `call'\\nlib/request_timestamp.rb:14:in `_call'\\nlib/request_timestamp.rb:9:in `call'\\nlib/extract_ip_middleware.rb:31:in `call'\",\"id\":\"112-3657-2-1741085503.839-devos2.bsstag.com\",\"level\":\"FATAL\"},\"meta\":{\"format\":{\"category\":\"server\",\"version\":5},\"host\":\"rails-live-56c697fb46-27q9j\",\"timestamp\":\"2025-03-04T10:51:44.553+00:00\"}}",
+      "timestamp": "2025-03-04T10:51:44.553+00:00",
+      "analysis": {
+        "severity": "HIGH",
+        "category": "Application Logic",
+        "subcategory": "Nil Reference Error",
+        "description": "A NoMethodError occurred while rendering the pricing page, specifically when calling the `id` method on a nil object. This likely means a required user or account object is missing when generating the plan call to action.",
+        "impact": "Users attempting to access the pricing page will encounter an error, preventing them from viewing or selecting plans. This will cause user friction and potentially impact sales conversions.",
+        "suggestedAction": "Add nil checks or guard clauses to prevent accessing undefined objects",
+        "slackThread": "https://browserstack.slack.com/archives/C01016S56ER/p1723106921992339",
+        "relevantUrls": "https://browserstack.slack.com/archives/C01016S56ER/p1723106921992339"
+      }
+    },
+    {
+      "lineNumber": 10,
+      "content": "{\"data\":{\"request\":{\"method\":\"GET\",\"endpoint\":\"/accounts/subscriptions\",\"ip\":\"34.233.8.51\",\"id\":\"9c3d291dbab6f9b3689532463d2c085d\",\"user_id\":73,\"params\":\"\\\"{\\\\\\\"controller\\\\\\\":\\\\\\\"accounts\\\\\\\",\\\\\\\"action\\\\\\\":\\\\\\\"subscriptions\\\\\\\"}\\\"\",\"controller\":\"AccountsController\",\"action\":\"subscriptions\"},\"response\":{\"status\":null,\"duration\":null,\"view_rendering_duration\":null,\"db_query_duration\":null}},\"log\":{\"dynamic_data\":\"  \\nActionView::Template::Error (undefined method `price' for nil:NilClass):\\n    56: \\n    57: \\u003cscript\\u003e\\n    58:   var accessibilityTestMonitorPlans = {\\n    59:     plans: \\u003c%= get_dropdown_options_for_a11y_test_and_monoitor.to_json.html_safe %\\u003e,\\n    60:     currentPlan: \\u003c%= get_current_active_plan_by_plan_name(ACCESSIBILITY_TESTING_TEST_AND_MONITOR, @combined_pricing_version).to_json.html_safe %\\u003e\\n    61:   }\\n    62: \\u003c/script\\u003e\\n  \\napp/helpers/account_helper.rb:768:in `block in get_dropdown_options_for_a11y_test_and_monoitor'\\napp/helpers/account_helper.rb:765:in `each'\\napp/helpers/account_helper.rb:765:in `get_dropdown_options_for_a11y_test_and_monoitor'\\napp/views/pricing/_all_pricing.html.erb:59\\napp/views/accounts/subscriptions.html.erb:13\\napp/controllers/accounts_controller.rb:513:in `subscriptions'\\nlib/request_proxy_middleware.rb:191:in `call'\\nlib/minute_based_throttle.rb:162:in `call'\\nlib/minute_based_throttle.rb:162:in `call'\\nconfig/initializers/oink_override.rb:9:in `call'\\nlib/too_many_redirects_middleware.rb:18:in `call'\\nlib/json_parse_errors.rb:10:in `call'\\nlib/bad_multipart_form_data_handler.rb:21:in `call'\\nlib/request_timestamp.rb:14:in `_call'\\nlib/request_timestamp.rb:9:in `call'\\nlib/extract_ip_middleware.rb:31:in `call'\",\"id\":\"451-6429-1-1753362177.149-k8s-mobile.bsstag.com\",\"level\":\"FATAL\"},\"meta\":{\"format\":{\"category\":\"server\",\"version\":5},\"host\":\"rails-live-57f4bffc85-qdb2k\",\"timestamp\":\"2025-07-24T13:02:59.350+00:00\"}}",
+      "timestamp": "2025-07-24T13:02:59.350+00:00",
+      "analysis": {
+        "severity": "HIGH",
+        "category": "View Rendering",
+        "subcategory": "Template Rendering Error",
+        "description": "A `NoMethodError` occurred while rendering the `subscriptions` view. Specifically, the `price` method was called on a nil object, likely within the `get_dropdown_options_for_a11y_test_and_monoitor` helper.",
+        "impact": "The subscriptions page fails to render, preventing users from managing their subscriptions and potentially impacting revenue.",
+        "suggestedAction": "Check partial and layout templates for missing variables or incorrect locals",
+        "slackThread": "https://browserstack.slack.com/archives/C01016S56ER/p1723106921992339",
+        "relevantUrls": "https://browserstack.slack.com/archives/C01016S56ER/p1723106921992339"
+      }
+    },
+    {
+      "lineNumber": 18,
+      "content": "{\"data\":{\"request\":{\"method\":\"GET\",\"endpoint\":\"/accounts/subscriptions\",\"ip\":\"34.233.8.51\",\"id\":\"9c3d291dbab6f9b3689532463d2c085d\",\"user_id\":73,\"params\":\"\\\"{\\\\\\\"controller\\\\\\\":\\\\\\\"accounts\\\\\\\",\\\\\\\"action\\\\\\\":\\\\\\\"subscriptions\\\\\\\"}\\\"\",\"controller\":\"AccountsController\",\"action\":\"subscriptions\"},\"response\":{\"status\":null,\"duration\":null,\"view_rendering_duration\":null,\"db_query_duration\":null}},\"log\":{\"dynamic_data\":\" \\nActionView::Template::Error (wrong number of arguments (given 1, expected 0)):\\n  93:  \\u003c% if render_dropdown %\\u003e\\n  94:   \\u003cdiv class=\\\"plan-dropdown-section\\\"\\u003e\\n  95:    \\u003cdiv class=\\\"plan-dropdown\\\"\\u003e\\n  96:     \\u003c%= select_tag \\\"\\\", options_for_select(get_dropdown_options(select_tag_options_array, plan_name, dropdown_text_version, @cart, @combined_pricing_version), plan_to_highlight_id), common_select_params %\\u003e\\n  97:    \\u003c/div\\u003e\\n  98:    \\u003c%= render :partial =\\u003e 'shared/combined_parallel_test_tool_tip', :locals =\\u003e { :monthly_plan =\\u003e monthly_plan , :only_icon =\\u003e parallel_tooltip_only_icon} if !hide_parallels_tooltip %\\u003e\\n  99:   \\u003c/div\\u003e\\n \\napp/models/concerns/plan_helper.rb:1820:in `to_s'\\napp/models/concerns/plan_helper.rb:1820:in `get_formatted_user_count_test_observability'\\napp/models/concerns/plan_helper.rb:1724:in `formatted_user_count'\\napp/helpers/account_helper.rb:657:in `block in get_dropdown_options'\\napp/helpers/account_helper.rb:657:in `map'\\napp/helpers/account_helper.rb:657:in `get_dropdown_options'\\napp/views/shared/_combined_pricing_plan_details.html.erb:96\\napp/views/static/molecules/accounts/_pricing_plan_block.html.erb:404\\napp/views/static/molecules/accounts/_pricing_plan.html.erb:109\\napp/views/static/habitats/accounts/_plans_blocks_with_sidenav.html.erb:1945\\napp/views/static/molecules/_pricing_container.html.erb:27\\napp/views/static/habitats/accounts/_pricing_plan_tables.html.erb:58\\napp/helpers/application_helper.rb:2655:in `cache_if'\\napp/views/static/habitats/accounts/_pricing_plan_tables.html.erb:51\\napp/views/shared/_combined_pricing.html.erb:50\\napp/views/shared/_all_pricing.html.erb:5\\napp/views/accounts/subscriptions.html.erb:12\\napp/controllers/accounts_controller.rb:330:in `subscriptions'\\nlib/minute_based_throttle.rb:157:in `call'\\nlib/minute_based_throttle.rb:157:in `call'\\nconfig/initializers/oink_override.rb:9:in `call'\\nlib/json_parse_errors.rb:10:in `call'\\nlib/bad_multipart_form_data_handler.rb:21:in `call'\\nlib/request_timestamp.rb:14:in `_call'\\nlib/request_timestamp.rb:9:in `call'\\nlib/extract_ip_middleware.rb:31:in `call'\",\"id\":\"233-947-3-1714638124.630-devhst.bsstag.com\",\"level\":\"FATAL\"},\"meta\":{\"format\":{\"category\":\"server\",\"version\":5},\"host\":\"rails-live-864d95cd6-vv7dd\",\"timestamp\":\"2024-05-02T08:22:11.886+00:00\"}}",
+      "timestamp": "2024-05-02T08:22:11.886+00:00",
+      "analysis": {
+        "severity": "HIGH",
+        "category": "View Rendering",
+        "subcategory": "Template Rendering Error",
+        "description": "A `ActionView::Template::Error` occurred while rendering the `subscriptions` action in the `AccountsController`. The error indicates an incorrect number of arguments passed to a method within the `plan_helper.rb` file, specifically the `to_s` method which is called by `get_formatted_user_count_test_observability`.",
+        "impact": "The subscriptions page is failing to render, preventing users from accessing subscription information and potentially disrupting key account management functionality.",
+        "suggestedAction": "Check partial and layout templates for missing variables or incorrect locals",
+        "slackThread": "https://browserstack.slack.com/archives/C01016S56ER/p1723106921992339",
+        "relevantUrls": "https://browserstack.slack.com/archives/C01016S56ER/p1723106921992339"
+      }
+    },
+    {
+      "lineNumber": 38,
+      "content": "{\"data\":{\"request\":{\"method\":\"GET\",\"endpoint\":\"/accounts/subscriptions\",\"ip\":\"103.169.60.224\",\"id\":\"97b3e6aed7ff93f69a01708db6179551\",\"user_id\":888523,\"params\":\"{\\\"product\\\":\\\"live\\\",\\\"controller\\\":\\\"accounts\\\",\\\"action\\\":\\\"subscriptions\\\"}\",\"controller\":\"AccountsController\",\"action\":\"subscriptions\"},\"response\":{\"status\":null,\"duration\":null,\"view_rendering_duration\":null,\"db_query_duration\":null}},\"log\":{\"dynamic_data\":\"  \\nActionView::Template::Error (undefined method `get_mrr' for nil:NilClass):\\n    76:   \\u003c% if render_dropdown %\\u003e\\n    77:     \\u003cdiv class=\\\"plan-dropdown-section\\\"\\u003e\\n    78:       \\u003cdiv class=\\\"plan-dropdown\\\"\\u003e\\n    79:         \\u003c%= select_tag \\\"\\\", options_for_select(get_dropdown_options(select_tag_options_array, plan_name, dropdown_text_version, @cart, @combined_pricing_version), plan_to_highlight_id), common_select_params %\\u003e\\n    80:       \\u003c/div\\u003e\\n    81:       \\u003c%= render :partial =\\u003e 'shared/combined_parallel_test_tool_tip', :locals =\\u003e { :monthly_plan =\\u003e monthly_plan , :only_icon =\\u003e parallel_tooltip_only_icon} if !hide_parallels_tooltip %\\u003e\\n    82:     \\u003c/div\\u003e\\n  \\napp/helpers/account_helper.rb:565:in `user_count_dropdown_html_options'\\napp/helpers/account_helper.rb:634:in `block in get_dropdown_options'\\napp/helpers/account_helper.rb:634:in `map'\\napp/helpers/account_helper.rb:634:in `get_dropdown_options'\\napp/views/shared/_combined_pricing_plan_details.html.erb:79\\napp/views/static/molecules/accounts/_pricing_plan_block.html.erb:361\\napp/views/static/molecules/accounts/_pricing_plan.html.erb:106\\napp/views/static/habitats/accounts/_plans_blocks_with_sidenav.html.erb:208\\napp/views/static/molecules/_pricing_container.html.erb:24\\napp/views/static/habitats/accounts/_pricing_plan_tables.html.erb:94\\napp/helpers/application_helper.rb:2444:in `cache_if'\\napp/views/static/habitats/accounts/_pricing_plan_tables.html.erb:68\\napp/views/shared/_combined_pricing.html.erb:50\\napp/views/shared/_all_pricing.html.erb:5\\napp/views/accounts/subscriptions.html.erb:12\\napp/controllers/accounts_controller.rb:267:in `subscriptions'\\nlib/minute_based_throttle.rb:157:in `call'\\nlib/minute_based_throttle.rb:157:in `call'\\nconfig/initializers/oink_override.rb:9:in `call'\\nlib/json_parse_errors.rb:10:in `call'\\nlib/bad_multipart_form_data_handler.rb:21:in `call'\\nlib/request_timestamp.rb:14:in `_call'\\nlib/request_timestamp.rb:9:in `call'\\nlib/extract_ip_middleware.rb:31:in `call'\",\"id\":\"106-428-7-1700147253.854-live-systems.bsstag.com\",\"level\":\"FATAL\"},\"meta\":{\"format\":{\"category\":\"server\",\"version\":5},\"host\":\"rails-live-6dcf8dd767-5mgwc\",\"timestamp\":\"2023-11-16T15:07:35.501+00:00\"}}",
+      "timestamp": "2023-11-16T15:07:35.501+00:00",
+      "analysis": {
+        "severity": "HIGH",
+        "category": "View Rendering",
+        "subcategory": "Template Rendering Error",
+        "description": "A `NilClass` object is encountered where an object with a `get_mrr` method was expected during view rendering. Specifically, the error occurs in `app/helpers/account_helper.rb`, line 565, during the generation of dropdown options for user counts.",
+        "impact": "The page `/accounts/subscriptions` will fail to render correctly, resulting in a broken user experience. Users will be unable to view or manage their subscriptions.",
+        "suggestedAction": "Check partial and layout templates for missing variables or incorrect locals",
+        "slackThread": "https://browserstack.slack.com/archives/C01016S56ER/p1723106921992339",
+        "relevantUrls": "https://browserstack.slack.com/archives/C01016S56ER/p1723106921992339"
       }
     },
     {
@@ -30,62 +154,14 @@
       "content": "{\"data\":{\"request\":{\"method\":\"GET\",\"endpoint\":\"/accounts/subscriptions\",\"ip\":\"34.233.8.51\",\"id\":\"9c3d291dbab6f9b3689532463d2c085d\",\"user_id\":73,\"params\":\"\\\"{\\\\\\\"controller\\\\\\\":\\\\\\\"accounts\\\\\\\",\\\\\\\"action\\\\\\\":\\\\\\\"subscriptions\\\\\\\"}\\\"\",\"controller\":\"AccountsController\",\"action\":\"subscriptions\"},\"response\":{\"status\":null,\"duration\":null,\"view_rendering_duration\":null,\"db_query_duration\":null}},\"log\":{\"dynamic_data\":\"Error Start Debug [\\\"app/models/concerns/plan_helper.rb:1820:in `to_s'\\\", \\\"app/models/concerns/plan_helper.rb:1820:in `get_formatted_user_count_test_observability'\\\", \\\"app/models/concerns/plan_helper.rb:1724:in `formatted_user_count'\\\", \\\"app/helpers/account_helper.rb:657:in `block in get_dropdown_options'\\\", \\\"app/helpers/account_helper.rb:657:in `map'\\\", \\\"app/helpers/account_helper.rb:657:in `get_dropdown_options'\\\", \\\"app/views/shared/_combined_pricing_plan_details.html.erb:96\\\", \\\"app/views/static/molecules/accounts/_pricing_plan_block.html.erb:404\\\", \\\"app/views/static/molecules/accounts/_pricing_plan.html.erb:109\\\", \\\"app/views/static/habitats/accounts/_plans_blocks_with_sidenav.html.erb:1945\\\", \\\"app/views/static/molecules/_pricing_container.html.erb:27\\\", \\\"app/views/static/habitats/accounts/_pricing_plan_tables.html.erb:58\\\", \\\"app/helpers/application_helper.rb:2655:in `cache_if'\\\", \\\"app/views/static/habitats/accounts/_pricing_plan_tables.html.erb:51\\\", \\\"app/views/shared/_combined_pricing.html.erb:50\\\", \\\"app/views/shared/_all_pricing.html.erb:5\\\", \\\"app/views/accounts/subscriptions.html.erb:12\\\", \\\"app/controllers/accounts_controller.rb:330:in `subscriptions'\\\", \\\"lib/minute_based_throttle.rb:157:in `call'\\\", \\\"lib/minute_based_throttle.rb:157:in `call'\\\", \\\"config/initializers/oink_override.rb:9:in `call'\\\", \\\"lib/json_parse_errors.rb:10:in `call'\\\", \\\"lib/bad_multipart_form_data_handler.rb:21:in `call'\\\", \\\"lib/request_timestamp.rb:14:in `_call'\\\", \\\"lib/request_timestamp.rb:9:in `call'\\\", \\\"lib/extract_ip_middleware.rb:31:in `call'\\\"]\",\"id\":\"233-947-3-1714638124.630-devhst.bsstag.com\",\"level\":\"ERROR\"},\"meta\":{\"format\":{\"category\":\"server\",\"version\":5},\"host\":\"rails-live-864d95cd6-vv7dd\",\"timestamp\":\"2024-05-02T08:22:11.847+00:00\"}}",
       "timestamp": "2024-05-02T08:22:11.847+00:00",
       "analysis": {
-        "severity": "HIGH",
-        "category": "View Rendering",
-        "subcategory": "Template Rendering Error",
-        "description": "A template rendering error occurred in `app/views/shared/_combined_pricing_plan_details.html.erb` on line 96, triggered by `ActionView::Template::Error (wrong number of arguments (given 1, expected 0))` within `plan_helper.rb:1820`. The error stems from an incorrect number of arguments passed to a method (likely `to_s`).",
-        "impact": "The subscriptions page fails to render correctly, preventing users from accessing subscription information and potentially impacting their ability to manage their accounts.",
-        "suggestedAction": "Check partial and layout templates for missing variables or incorrect locals"
-      }
-    },
-    {
-      "lineNumber": 676,
-      "content": "{\"data\":{\"request\":{\"method\":\"GET\",\"endpoint\":\"/accounts/subscriptions\",\"ip\":\"34.233.8.51\",\"id\":\"9c3d291dbab6f9b3689532463d2c085d\",\"user_id\":73,\"params\":\"\\\"{\\\\\\\"controller\\\\\\\":\\\\\\\"accounts\\\\\\\",\\\\\\\"action\\\\\\\":\\\\\\\"subscriptions\\\\\\\"}\\\"\",\"controller\":\"AccountsController\",\"action\":\"subscriptions\"},\"response\":{\"status\":null,\"duration\":null,\"view_rendering_duration\":null,\"db_query_duration\":null}},\"log\":{\"dynamic_data\":\"  \\nActionView::Template::Error (undefined method `price' for nil:NilClass):\\n    56: \\n    57: \\u003cscript\\u003e\\n    58:   var accessibilityTestMonitorPlans = {\\n    59:     plans: \\u003c%= get_dropdown_options_for_a11y_test_and_monoitor.to_json.html_safe %\\u003e,\\n    60:     currentPlan: \\u003c%= get_current_active_plan_by_plan_name(ACCESSIBILITY_TESTING_TEST_AND_MONITOR, @combined_pricing_version).to_json.html_safe %\\u003e\\n    61:   }\\n    62: \\u003c/script\\u003e\\n  \\napp/helpers/account_helper.rb:768:in `block in get_dropdown_options_for_a11y_test_and_monoitor'\\napp/helpers/account_helper.rb:765:in `each'\\napp/helpers/account_helper.rb:765:in `get_dropdown_options_for_a11y_test_and_monoitor'\\napp/views/pricing/_all_pricing.html.erb:59\\napp/views/accounts/subscriptions.html.erb:13\\napp/controllers/accounts_controller.rb:513:in `subscriptions'\\nlib/request_proxy_middleware.rb:191:in `call'\\nlib/minute_based_throttle.rb:162:in `call'\\nlib/minute_based_throttle.rb:162:in `call'\\nconfig/initializers/oink_override.rb:9:in `call'\\nlib/too_many_redirects_middleware.rb:18:in `call'\\nlib/json_parse_errors.rb:10:in `call'\\nlib/bad_multipart_form_data_handler.rb:21:in `call'\\nlib/request_timestamp.rb:14:in `_call'\\nlib/request_timestamp.rb:9:in `call'\\nlib/extract_ip_middleware.rb:31:in `call'\",\"id\":\"451-6429-1-1753362177.149-k8s-mobile.bsstag.com\",\"level\":\"FATAL\"},\"meta\":{\"format\":{\"category\":\"server\",\"version\":5},\"host\":\"rails-live-57f4bffc85-qdb2k\",\"timestamp\":\"2025-07-24T13:02:59.350+00:00\"}}",
-      "timestamp": "2025-07-24T13:02:59.350+00:00",
-      "analysis": {
-        "severity": "HIGH",
-        "category": "View Rendering",
-        "subcategory": "Template Rendering Error",
-        "description": "The view is attempting to access the `price` method on a nil object, likely related to pricing data within the `get_dropdown_options_for_a11y_test_and_monoitor` helper method. This is happening in the `subscriptions` action of the `AccountsController`.",
-        "impact": "The page will fail to render, preventing the user from viewing and managing their subscriptions.  This represents a critical functional failure.",
-        "suggestedAction": "Check partial and layout templates for missing variables or incorrect locals"
-      }
-    },
-    {
-      "lineNumber": 677,
-      "content": "{\"data\":{\"request\":{\"method\":\"GET\",\"endpoint\":\"/accounts/subscriptions\",\"ip\":\"34.233.8.51\",\"id\":\"9c3d291dbab6f9b3689532463d2c085d\",\"user_id\":73,\"params\":\"\\\"{\\\\\\\"controller\\\\\\\":\\\\\\\"accounts\\\\\\\",\\\\\\\"action\\\\\\\":\\\\\\\"subscriptions\\\\\\\"}\\\"\",\"controller\":\"AccountsController\",\"action\":\"subscriptions\"},\"response\":{\"status\":null,\"duration\":null,\"view_rendering_duration\":null,\"db_query_duration\":null}},\"log\":{\"dynamic_data\":\" \\nActionView::Template::Error (wrong number of arguments (given 1, expected 0)):\\n  93:  \\u003c% if render_dropdown %\\u003e\\n  94:   \\u003cdiv class=\\\"plan-dropdown-section\\\"\\u003e\\n  95:    \\u003cdiv class=\\\"plan-dropdown\\\"\\u003e\\n  96:     \\u003c%= select_tag \\\"\\\", options_for_select(get_dropdown_options(select_tag_options_array, plan_name, dropdown_text_version, @cart, @combined_pricing_version), plan_to_highlight_id), common_select_params %\\u003e\\n  97:    \\u003c/div\\u003e\\n  98:    \\u003c%= render :partial =\\u003e 'shared/combined_parallel_test_tool_tip', :locals =\\u003e { :monthly_plan =\\u003e monthly_plan , :only_icon =\\u003e parallel_tooltip_only_icon} if !hide_parallels_tooltip %\\u003e\\n  99:   \\u003c/div\\u003e\\n \\napp/models/concerns/plan_helper.rb:1820:in `to_s'\\napp/models/concerns/plan_helper.rb:1820:in `get_formatted_user_count_test_observability'\\napp/models/concerns/plan_helper.rb:1724:in `formatted_user_count'\\napp/helpers/account_helper.rb:657:in `block in get_dropdown_options'\\napp/helpers/account_helper.rb:657:in `map'\\napp/helpers/account_helper.rb:657:in `get_dropdown_options'\\napp/views/shared/_combined_pricing_plan_details.html.erb:96\\napp/views/static/molecules/accounts/_pricing_plan_block.html.erb:404\\napp/views/static/molecules/accounts/_pricing_plan.html.erb:109\\napp/views/static/habitats/accounts/_plans_blocks_with_sidenav.html.erb:1945\\napp/views/static/molecules/_pricing_container.html.erb:27\\napp/views/static/habitats/accounts/_pricing_plan_tables.html.erb:58\\napp/helpers/application_helper.rb:2655:in `cache_if'\\napp/views/static/habitats/accounts/_pricing_plan_tables.html.erb:51\\napp/views/shared/_combined_pricing.html.erb:50\\napp/views/shared/_all_pricing.html.erb:5\\napp/views/accounts/subscriptions.html.erb:12\\napp/controllers/accounts_controller.rb:330:in `subscriptions'\\nlib/minute_based_throttle.rb:157:in `call'\\nlib/minute_based_throttle.rb:157:in `call'\\nconfig/initializers/oink_override.rb:9:in `call'\\nlib/json_parse_errors.rb:10:in `call'\\nlib/bad_multipart_form_data_handler.rb:21:in `call'\\nlib/request_timestamp.rb:14:in `_call'\\nlib/request_timestamp.rb:9:in `call'\\nlib/extract_ip_middleware.rb:31:in `call'\",\"id\":\"233-947-3-1714638124.630-devhst.bsstag.com\",\"level\":\"FATAL\"},\"meta\":{\"format\":{\"category\":\"server\",\"version\":5},\"host\":\"rails-live-864d95cd6-vv7dd\",\"timestamp\":\"2024-05-02T08:22:11.886+00:00\"}}",
-      "timestamp": "2024-05-02T08:22:11.886+00:00",
-      "analysis": {
-        "severity": "HIGH",
-        "category": "View Rendering",
-        "subcategory": "Template Rendering Error",
-        "description": "A template rendering error occurred in `app/views/shared/_combined_pricing_plan_details.html.erb` on line 96, triggered by a method `get_formatted_user_count_test_observability` in `plan_helper.rb` expecting 0 arguments but receiving 1. This likely means a method call in the view is passing an argument when it shouldn't be.",
-        "impact": "The page `/accounts/subscriptions` is failing to render, preventing users from accessing subscription information.",
-        "suggestedAction": "Check partial and layout templates for missing variables or incorrect locals"
-      }
-    },
-    {
-      "lineNumber": 678,
-      "content": "{\"data\":{\"request\":{\"method\":\"GET\",\"endpoint\":\"/accounts/subscriptions\",\"ip\":\"34.233.8.51\",\"id\":\"26260ff8cbab5d13c4fd089a62953ce2\",\"user_id\":2,\"params\":\"\\\"{\\\\\\\"product\\\\\\\":\\\\\\\"live\\\\\\\",\\\\\\\"controller\\\\\\\":\\\\\\\"accounts\\\\\\\",\\\\\\\"action\\\\\\\":\\\\\\\"subscriptions\\\\\\\"}\\\"\",\"controller\":\"AccountsController\",\"action\":\"subscriptions\"},\"response\":{\"status\":null,\"duration\":null,\"view_rendering_duration\":null,\"db_query_duration\":null}},\"log\":{\"dynamic_data\":\"  \\nActionView::Template::Error (undefined method `price' for nil:NilClass):\\n    94:   \\u003c% if render_dropdown %\\u003e\\n    95:     \\u003cdiv class=\\\"plan-dropdown-section\\\"\\u003e\\n    96:       \\u003cdiv class=\\\"plan-dropdown\\\"\\u003e\\n    97:         \\u003c%= select_tag \\\"\\\", options_for_select(get_dropdown_options(select_tag_options_array, plan_name, dropdown_text_version, @cart, @combined_pricing_version), plan_to_highlight_id), common_select_params %\\u003e\\n    98:       \\u003c/div\\u003e\\n    99:       \\u003c%= render :partial =\\u003e 'shared/combined_parallel_test_tool_tip', :locals =\\u003e { :monthly_plan =\\u003e monthly_plan , :only_icon =\\u003e parallel_tooltip_only_icon} if !hide_parallels_tooltip %\\u003e\\n   100:     \\u003c/div\\u003e\\n  \\napp/helpers/account_helper.rb:597:in `user_count_dropdown_html_options'\\napp/helpers/account_helper.rb:664:in `block in get_dropdown_options'\\napp/helpers/account_helper.rb:664:in `map'\\napp/helpers/account_helper.rb:664:in `get_dropdown_options'\\napp/views/shared/_combined_pricing_plan_details.html.erb:97\\napp/views/static/molecules/accounts/_pricing_plan_block.html.erb:405\\napp/views/static/molecules/accounts/_pricing_plan.html.erb:110\\napp/views/static/habitats/accounts/_plans_blocks_with_sidenav.html.erb:2559\\napp/views/static/molecules/_pricing_container.html.erb:27\\napp/views/static/habitats/accounts/_pricing_plan_tables.html.erb:60\\napp/helpers/application_helper.rb:2819:in `cache_if'\\napp/views/static/habitats/accounts/_pricing_plan_tables.html.erb:53\\napp/views/shared/_combined_pricing.html.erb:49\\napp/views/shared/_all_pricing.html.erb:5\\napp/views/accounts/subscriptions.html.erb:12\\napp/controllers/accounts_controller.rb:477:in `subscriptions'\\nlib/minute_based_throttle.rb:157:in `call'\\nlib/minute_based_throttle.rb:157:in `call'\\nconfig/initializers/oink_override.rb:9:in `call'\\nlib/json_parse_errors.rb:10:in `call'\\nlib/bad_multipart_form_data_handler.rb:21:in `call'\\nlib/request_timestamp.rb:14:in `_call'\\nlib/request_timestamp.rb:9:in `call'\\nlib/extract_ip_middleware.rb:31:in `call'\",\"id\":\"381-709-1-1723106823.932-stagcentral.bsstag.com\",\"level\":\"FATAL\"},\"meta\":{\"format\":{\"category\":\"server\",\"version\":5},\"host\":\"rails-live-7975d6558c-77nm2\",\"timestamp\":\"2024-08-08T08:47:11.827+00:00\"}}",
-      "timestamp": "2024-08-08T08:47:11.827+00:00",
-      "analysis": {
-        "severity": "HIGH",
-        "category": "Runtime",
-        "description": "A `NilClass` error occurred while rendering the subscriptions page, specifically when trying to access the `price` method on a nil object. This likely means that a plan object expected to be present is missing or not correctly loaded.",
-        "impact": "Users attempting to access their subscriptions page will encounter an error, preventing them from managing their subscriptions. This impacts the user experience and may lead to revenue loss.",
-        "suggestedAction": "Investigate the code path in `app/helpers/account_helper.rb`, specifically around line 597 and 664, to determine why the `plan` object is nil. Ensure that the correct plan data is being loaded and passed to the view. Add a check for nil before calling the `price` method to prevent the error. Redeploy the application after fixing the issue."
-      }
-    },
-    {
-      "lineNumber": 681,
-      "content": "{\"data\":{\"request\":{\"method\":\"GET\",\"endpoint\":\"/accounts/subscriptions\",\"ip\":\"34.233.8.51\",\"id\":\"8c74169fb841515ccdfbb91971f9398d\",\"user_id\":891,\"params\":\"\\\"{\\\\\\\"product\\\\\\\":\\\\\\\"live\\\\\\\",\\\\\\\"controller\\\\\\\":\\\\\\\"accounts\\\\\\\",\\\\\\\"action\\\\\\\":\\\\\\\"subscriptions\\\\\\\"}\\\"\",\"controller\":\"AccountsController\",\"action\":\"subscriptions\"},\"response\":{\"status\":null,\"duration\":null,\"view_rendering_duration\":null,\"db_query_duration\":null}},\"log\":{\"dynamic_data\":\"  \\nActionView::Template::Error (undefined method `monthly_price' for nil:NilClass):\\n    354:                 display_price = (default_plan.monthly_price / plan.user_count).ceil if plan.user_count\\n    355:               end\\n    356:             else\\n    357:               display_price = default_plan.monthly_price\\n    358:             end\\n    359:           %\\u003e\\n    360:           \\u003cspan class=\\\"amount\\\"\\u003e\\u003c%= formatted_price_based_on_discount(display_price) %\\u003e\\u003c/span\\u003e\\n  \\napp/views/static/molecules/accounts/_pricing_plan_block.html.erb:357\\napp/views/static/molecules/accounts/_pricing_plan.html.erb:110\\napp/views/static/habitats/accounts/_plans_blocks_with_sidenav.html.erb:2561\\napp/views/static/molecules/_pricing_container.html.erb:36\\napp/views/static/habitats/accounts/_pricing_plan_tables.html.erb:60\\napp/helpers/application_helper.rb:2784:in `cache_if'\\napp/views/static/habitats/accounts/_pricing_plan_tables.html.erb:53\\napp/views/shared/_combined_pricing.html.erb:49\\napp/views/shared/_all_pricing.html.erb:5\\napp/views/accounts/subscriptions.html.erb:12\\napp/controllers/accounts_controller.rb:336:in `subscriptions'\\nlib/minute_based_throttle.rb:157:in `call'\\nlib/minute_based_throttle.rb:157:in `call'\\nconfig/initializers/oink_override.rb:9:in `call'\\nlib/json_parse_errors.rb:10:in `call'\\nlib/bad_multipart_form_data_handler.rb:21:in `call'\\nlib/request_timestamp.rb:14:in `_call'\\nlib/request_timestamp.rb:9:in `call'\\nlib/extract_ip_middleware.rb:31:in `call'\",\"id\":\"214-357-1-1721986203.270-stagcentral.bsstag.com\",\"level\":\"FATAL\"},\"meta\":{\"format\":{\"category\":\"server\",\"version\":5},\"host\":\"rails-live-74b8cbf4d9-dxpff\",\"timestamp\":\"2024-07-26T09:30:06.375+00:00\"}}",
-      "timestamp": "2024-07-26T09:30:06.375+00:00",
-      "analysis": {
         "severity": "MEDIUM",
-        "category": "Runtime",
-        "description": "A `ActionView::Template::Error` occurred while rendering the subscriptions page, specifically a 'wrong number of arguments' error in `plan_helper.rb:1820` within the `get_formatted_user_count_test_observability` method. This likely indicates a change in method signature or incorrect usage of a method requiring zero arguments.",
-        "impact": "Users may encounter errors or a broken page when trying to view or manage their subscriptions, potentially leading to user dissatisfaction and a loss of revenue.",
-        "suggestedAction": "Examine the `get_formatted_user_count_test_observability` method in `plan_helper.rb` and the calling methods, particularly `formatted_user_count` in `plan_helper.rb:1724` and `get_dropdown_options` in `account_helper.rb`, to identify the mismatch in the number of arguments. Correct the code to align with the expected method signature. Deploy the corrected code after thorough testing."
+        "category": "View Rendering",
+        "subcategory": "Template Rendering Error",
+        "description": "Error during template rendering in `app/views/accounts/subscriptions.html.erb` due to an error in `plan_helper.rb` when formatting the user count, specifically in `get_formatted_user_count_test_observability`. The error originated from `to_s` method call.",
+        "impact": "Users may experience errors or incomplete rendering of the subscriptions page, potentially impacting their ability to manage their account subscriptions. The pricing plan section may not render correctly.",
+        "suggestedAction": "Check partial and layout templates for missing variables or incorrect locals",
+        "slackThread": "https://browserstack.slack.com/archives/C01016S56ER/p1723106921992339",
+        "relevantUrls": "https://browserstack.slack.com/archives/C01016S56ER/p1723106921992339"
       }
     },
     {
@@ -94,22 +170,13 @@
       "timestamp": "2024-05-02T08:22:11.847+00:00",
       "analysis": {
         "severity": "MEDIUM",
-        "category": "Runtime",
-        "description": "An error occurred while rendering the `/accounts/subscriptions` page. The error originated in `app/models/concerns/plan_helper.rb` during a `to_s` conversion within the `get_formatted_user_count_test_observability` function, indicating a problem with string formatting related to user counts.",
-        "impact": "Users may experience errors or incomplete information when viewing the subscriptions page, potentially affecting their ability to manage their accounts or understand their plan details. The error may cause UI elements to fail to load or display incorrectly.",
-        "suggestedAction": "Investigate the `get_formatted_user_count_test_observability` function in `app/models/concerns/plan_helper.rb` to identify the cause of the `to_s` conversion error. Ensure that the data being converted to a string is valid and in the expected format. Add error handling or validation to prevent similar errors in the future. Check related view files and helper functions (`account_helper.rb`, `_combined_pricing_plan_details.html.erb`, etc.) for potential issues related to data formatting or display of user counts."
-      }
-    },
-    {
-      "lineNumber": 4,
-      "content": "{\"data\":{\"request\":{\"method\":\"GET\",\"endpoint\":\"/accounts/subscriptions\",\"ip\":\"34.233.8.51\",\"id\":\"9c3d291dbab6f9b3689532463d2c085d\",\"user_id\":73,\"params\":\"\\\"{\\\\\\\"controller\\\\\\\":\\\\\\\"accounts\\\\\\\",\\\\\\\"action\\\\\\\":\\\\\\\"subscriptions\\\\\\\"}\\\"\",\"controller\":\"AccountsController\",\"action\":\"subscriptions\"},\"response\":{\"status\":null,\"duration\":null,\"view_rendering_duration\":null,\"db_query_duration\":null}},\"log\":{\"dynamic_data\":\" \\nActionView::Template::Error (wrong number of arguments (given 1, expected 0)):\\n  93:  \\u003c% if render_dropdown %\\u003e\\n  94:   \\u003cdiv class=\\\"plan-dropdown-section\\\"\\u003e\\n  95:    \\u003cdiv class=\\\"plan-dropdown\\\"\\u003e\\n  96:     \\u003c%= select_tag \\\"\\\", options_for_select(get_dropdown_options(select_tag_options_array, plan_name, dropdown_text_version, @cart, @combined_pricing_version), plan_to_highlight_id), common_select_params %\\u003e\\n  97:    \\u003c/div\\u003e\\n  98:    \\u003c%= render :partial =\\u003e 'shared/combined_parallel_test_tool_tip', :locals =\\u003e { :monthly_plan =\\u003e monthly_plan , :only_icon =\\u003e parallel_tooltip_only_icon} if !hide_parallels_tooltip %\\u003e\\n  99:   \\u003c/div\\u003e\\n \\napp/models/concerns/plan_helper.rb:1820:in `to_s'\\napp/models/concerns/plan_helper.rb:1820:in `get_formatted_user_count_test_observability'\\napp/models/concerns/plan_helper.rb:1724:in `formatted_user_count'\\napp/helpers/account_helper.rb:657:in `block in get_dropdown_options'\\napp/helpers/account_helper.rb:657:in `map'\\napp/helpers/account_helper.rb:657:in `get_dropdown_options'\\napp/views/shared/_combined_pricing_plan_details.html.erb:96\\napp/views/static/molecules/accounts/_pricing_plan_block.html.erb:404\\napp/views/static/molecules/accounts/_pricing_plan.html.erb:109\\napp/views/static/habitats/accounts/_plans_blocks_with_sidenav.html.erb:1945\\napp/views/static/molecules/_pricing_container.html.erb:27\\napp/views/static/habitats/accounts/_pricing_plan_tables.html.erb:58\\napp/helpers/application_helper.rb:2655:in `cache_if'\\napp/views/static/habitats/accounts/_pricing_plan_tables.html.erb:51\\napp/views/shared/_combined_pricing.html.erb:50\\napp/views/shared/_all_pricing.html.erb:5\\napp/views/accounts/subscriptions.html.erb:12\\napp/controllers/accounts_controller.rb:330:in `subscriptions'\\nlib/minute_based_throttle.rb:157:in `call'\\nlib/minute_based_throttle.rb:157:in `call'\\nconfig/initializers/oink_override.rb:9:in `call'\\nlib/json_parse_errors.rb:10:in `call'\\nlib/bad_multipart_form_data_handler.rb:21:in `call'\\nlib/request_timestamp.rb:14:in `_call'\\nlib/request_timestamp.rb:9:in `call'\\nlib/extract_ip_middleware.rb:31:in `call'\",\"id\":\"233-947-3-1714638124.630-devhst.bsstag.com\",\"level\":\"FATAL\"},\"meta\":{\"format\":{\"category\":\"server\",\"version\":5},\"host\":\"rails-live-864d95cd6-vv7dd\",\"timestamp\":\"2024-05-02T08:22:11.886+00:00\"}}",
-      "timestamp": "2024-05-02T08:22:11.886+00:00",
-      "analysis": {
-        "severity": "MEDIUM",
-        "category": "Runtime",
-        "description": "A `wrong number of arguments` error occurred while rendering the `/accounts/subscriptions` page. Specifically, the `get_formatted_user_count_test_observability` method in `plan_helper.rb` was called with one argument, but it expects zero arguments. This occurred during view rendering within the `accounts/subscriptions.html.erb` template.",
-        "impact": "The page `/accounts/subscriptions` failed to render correctly, preventing the user from accessing subscription information. This may lead to user frustration and inability to manage their account.",
-        "suggestedAction": "Examine the `get_formatted_user_count_test_observability` method in `plan_helper.rb` to determine why it's being called with an argument in the view. Update the calling code in `app/helpers/account_helper.rb` line 657 or the method definition to ensure the correct number of arguments are passed. Deploy the fix."
+        "category": "View Rendering",
+        "subcategory": "Template Rendering Error",
+        "description": "Error during view rendering in `accounts/subscriptions` due to an issue within `plan_helper.rb` (likely a `to_s` method call failing) when generating dropdown options for pricing plans.",
+        "impact": "Users may experience a broken or incomplete view when accessing the subscriptions page, potentially affecting their ability to manage their accounts.",
+        "suggestedAction": "Check partial and layout templates for missing variables or incorrect locals",
+        "slackThread": "https://browserstack.slack.com/archives/C01016S56ER/p1723106921992339",
+        "relevantUrls": "https://browserstack.slack.com/archives/C01016S56ER/p1723106921992339"
       }
     },
     {
@@ -118,10 +185,13 @@
       "timestamp": "2025-03-04T10:51:44.524+00:00",
       "analysis": {
         "severity": "MEDIUM",
-        "category": "Runtime",
-        "description": "An error occurred while generating pricing details. The stack trace indicates an issue within the `pricing_helper.rb` file, specifically during the execution of `get_plan_cta`, `get_plan_hash`, `get_plans_details`, and `get_product_plans` functions, ultimately triggered by a request to the `/pricing` endpoint.",
-        "impact": "Users may experience errors or incomplete information when accessing pricing data. This could lead to a degraded user experience and potential loss of revenue if users are unable to determine pricing.",
-        "suggestedAction": "Investigate the `pricing_helper.rb` file, starting with line 865, to identify the root cause of the error. Analyze the data being processed in the `get_plan_cta`, `get_plan_hash`, `get_plans_details` and `get_product_plans` functions to determine if there's a data inconsistency or an unhandled edge case. Add logging or debugging statements to pinpoint the exact location and cause of the error."
+        "category": "Application Logic",
+        "subcategory": "Nil Reference Error",
+        "description": "A runtime error occurred while rendering the `/pricing` page, specifically within the `pricing_helper.rb` file, impacting the display of plan details.",
+        "impact": "Users may experience errors or incomplete information when accessing the pricing page, potentially leading to confusion or inability to sign up for plans.",
+        "suggestedAction": "Add nil checks or guard clauses to prevent accessing undefined objects",
+        "slackThread": "https://browserstack.slack.com/archives/C01016S56ER/p1723106921992339",
+        "relevantUrls": "https://browserstack.slack.com/archives/C01016S56ER/p1723106921992339"
       }
     },
     {
@@ -130,10 +200,13 @@
       "timestamp": "2024-12-27T05:55:20.366+00:00",
       "analysis": {
         "severity": "MEDIUM",
-        "category": "Runtime",
-        "description": "An error occurred while rendering the subscriptions page for a user. The error originated within the pricing helper methods, specifically related to fetching plan details and CTAs.",
-        "impact": "User may experience errors or incomplete information when trying to view subscription details. Potentially impacts subscription management and onboarding flows.",
-        "suggestedAction": "Investigate the pricing helper methods (pricing_helper.rb) to identify the root cause of the error. Check for nil values, invalid data formats, or unexpected conditions in the data used by the pricing logic. Review recent code changes in this area. Examine error logs for more specific error messages."
+        "category": "Application Logic",
+        "subcategory": "Nil Reference Error",
+        "description": "Error occurred while retrieving plan details, specifically within the pricing helper methods. The stack trace points to issues when calling `get_plan_cta`, `get_plan_hash`, and functions related to retrieving product plans and pricing details.",
+        "impact": "Users may experience issues viewing subscription details or incorrect pricing information, potentially leading to lost sales or customer dissatisfaction.",
+        "suggestedAction": "Add nil checks or guard clauses to prevent accessing undefined objects",
+        "slackThread": "https://browserstack.slack.com/archives/C01016S56ER/p1723106921992339",
+        "relevantUrls": "https://browserstack.slack.com/archives/C01016S56ER/p1723106921992339"
       }
     },
     {
@@ -142,10 +215,13 @@
       "timestamp": "2024-05-24T08:24:20.618+00:00",
       "analysis": {
         "severity": "MEDIUM",
-        "category": "Runtime",
-        "description": "Error during rendering of the subscriptions page due to an issue in the `plan_helper.rb` file. Specifically, a `to_s` method call is failing, likely due to unexpected data being passed to it within the `get_formatted_user_count_test_observability` method. This occurs within the view rendering process.",
-        "impact": "The subscriptions page may not render correctly, potentially causing a degraded user experience or preventing users from managing their subscriptions. It only effects the rendering and not the underlying data.",
-        "suggestedAction": "Investigate the `plan_helper.rb` file, particularly line 1829, and determine why the `to_s` method is failing. Check the data being passed to `get_formatted_user_count_test_observability` and ensure it's of the expected type. Add error handling to gracefully handle unexpected data. Consider adding more robust logging/debugging to pinpoint the exact cause if it reoccurs."
+        "category": "View Rendering",
+        "subcategory": "Template Rendering Error",
+        "description": "Error occurred while rendering the `accounts/subscriptions` view, specifically within a nested chain of partials related to pricing plan details. The stack trace indicates a problem within `plan_helper.rb` during the formatting of user counts.",
+        "impact": "Users may experience errors or incomplete information when viewing the subscription page, potentially leading to confusion or inability to manage their subscriptions. Degraded user experience on the subscriptions page.",
+        "suggestedAction": "Check partial and layout templates for missing variables or incorrect locals",
+        "slackThread": "https://browserstack.slack.com/archives/C01016S56ER/p1723106921992339",
+        "relevantUrls": "https://browserstack.slack.com/archives/C01016S56ER/p1723106921992339"
       }
     },
     {
@@ -154,46 +230,13 @@
       "timestamp": "2024-05-02T08:22:11.847+00:00",
       "analysis": {
         "severity": "MEDIUM",
-        "category": "Runtime",
-        "description": "An error occurred while rendering the 'accounts/subscriptions' page, specifically during the conversion of a user count to a string within the PlanHelper module. The 'to_s' method is failing at line 1820 of 'app/models/concerns/plan_helper.rb'.",
-        "impact": "The 'accounts/subscriptions' page may not render correctly, leading to a degraded user experience. Some pricing plans or user count information might be missing or displayed incorrectly.",
-        "suggestedAction": "Investigate the 'to_s' method in 'app/models/concerns/plan_helper.rb' at line 1820. Check the data being passed to 'to_s' to ensure it's a valid type that can be converted to a string. Add error handling or debugging statements to pinpoint the exact cause of the conversion failure. Review the logic within 'get_formatted_user_count_test_observability' and 'formatted_user_count' to ensure correct user count retrieval."
-      }
-    },
-    {
-      "lineNumber": 38,
-      "content": "{\"data\":{\"request\":{\"method\":\"GET\",\"endpoint\":\"/accounts/subscriptions\",\"ip\":\"103.169.60.224\",\"id\":\"97b3e6aed7ff93f69a01708db6179551\",\"user_id\":888523,\"params\":\"{\\\"product\\\":\\\"live\\\",\\\"controller\\\":\\\"accounts\\\",\\\"action\\\":\\\"subscriptions\\\"}\",\"controller\":\"AccountsController\",\"action\":\"subscriptions\"},\"response\":{\"status\":null,\"duration\":null,\"view_rendering_duration\":null,\"db_query_duration\":null}},\"log\":{\"dynamic_data\":\"  \\nActionView::Template::Error (undefined method `get_mrr' for nil:NilClass):\\n    76:   \\u003c% if render_dropdown %\\u003e\\n    77:     \\u003cdiv class=\\\"plan-dropdown-section\\\"\\u003e\\n    78:       \\u003cdiv class=\\\"plan-dropdown\\\"\\u003e\\n    79:         \\u003c%= select_tag \\\"\\\", options_for_select(get_dropdown_options(select_tag_options_array, plan_name, dropdown_text_version, @cart, @combined_pricing_version), plan_to_highlight_id), common_select_params %\\u003e\\n    80:       \\u003c/div\\u003e\\n    81:       \\u003c%= render :partial =\\u003e 'shared/combined_parallel_test_tool_tip', :locals =\\u003e { :monthly_plan =\\u003e monthly_plan , :only_icon =\\u003e parallel_tooltip_only_icon} if !hide_parallels_tooltip %\\u003e\\n    82:     \\u003c/div\\u003e\\n  \\napp/helpers/account_helper.rb:565:in `user_count_dropdown_html_options'\\napp/helpers/account_helper.rb:634:in `block in get_dropdown_options'\\napp/helpers/account_helper.rb:634:in `map'\\napp/helpers/account_helper.rb:634:in `get_dropdown_options'\\napp/views/shared/_combined_pricing_plan_details.html.erb:79\\napp/views/static/molecules/accounts/_pricing_plan_block.html.erb:361\\napp/views/static/molecules/accounts/_pricing_plan.html.erb:106\\napp/views/static/habitats/accounts/_plans_blocks_with_sidenav.html.erb:208\\napp/views/static/molecules/_pricing_container.html.erb:24\\napp/views/static/habitats/accounts/_pricing_plan_tables.html.erb:94\\napp/helpers/application_helper.rb:2444:in `cache_if'\\napp/views/static/habitats/accounts/_pricing_plan_tables.html.erb:68\\napp/views/shared/_combined_pricing.html.erb:50\\napp/views/shared/_all_pricing.html.erb:5\\napp/views/accounts/subscriptions.html.erb:12\\napp/controllers/accounts_controller.rb:267:in `subscriptions'\\nlib/minute_based_throttle.rb:157:in `call'\\nlib/minute_based_throttle.rb:157:in `call'\\nconfig/initializers/oink_override.rb:9:in `call'\\nlib/json_parse_errors.rb:10:in `call'\\nlib/bad_multipart_form_data_handler.rb:21:in `call'\\nlib/request_timestamp.rb:14:in `_call'\\nlib/request_timestamp.rb:9:in `call'\\nlib/extract_ip_middleware.rb:31:in `call'\",\"id\":\"106-428-7-1700147253.854-live-systems.bsstag.com\",\"level\":\"FATAL\"},\"meta\":{\"format\":{\"category\":\"server\",\"version\":5},\"host\":\"rails-live-6dcf8dd767-5mgwc\",\"timestamp\":\"2023-11-16T15:07:35.501+00:00\"}}",
-      "timestamp": "2023-11-16T15:07:35.501+00:00",
-      "analysis": {
-        "severity": "MEDIUM",
-        "category": "Runtime",
-        "description": "The application encountered a `ActionView::Template::Error` due to calling `get_mrr` on a nil object. This occurred while rendering the subscriptions page for a user, specifically within the `_combined_pricing_plan_details.html.erb` template.",
-        "impact": "Users attempting to view their subscription details or pricing plans may encounter a broken page or error message. This impacts user experience and potentially prevents users from managing their subscriptions.",
-        "suggestedAction": "Investigate why the object expected to respond to `get_mrr` is nil. Check the `account_helper.rb` file, particularly around line 565 and 634, to identify the source of the nil object. Ensure that the object is properly initialized and available before calling the `get_mrr` method. Add a nil check to prevent this error from occurring in the future."
-      }
-    },
-    {
-      "lineNumber": 9,
-      "content": "{\"data\":{\"request\":{\"method\":\"GET\",\"endpoint\":\"/pricing\",\"ip\":\"34.233.8.51\",\"id\":\"8fb9c0245eebd039b39ea9d9e7b3d087\",\"user_id\":null,\"params\":\"\\\"{\\\\\\\"controller\\\\\\\":\\\\\\\"accounts\\\\\\\",\\\\\\\"action\\\\\\\":\\\\\\\"pricing\\\\\\\"}\\\"\",\"controller\":\"AccountsController\",\"action\":\"pricing\"},\"response\":{\"status\":null,\"duration\":null,\"view_rendering_duration\":null,\"db_query_duration\":null}},\"log\":{\"dynamic_data\":\"  \\nNoMethodError (undefined method `id' for nil:NilClass):\\n  \\napp/helpers/pricing_helper.rb:865:in `get_plan_cta'\\napp/helpers/pricing_helper.rb:476:in `get_plan_hash'\\napp/helpers/pricing_helper.rb:309:in `block in get_plans_details'\\napp/helpers/pricing_helper.rb:303:in `each'\\napp/helpers/pricing_helper.rb:303:in `get_plans_details'\\napp/helpers/pricing_helper.rb:97:in `block in get_product_plans'\\napp/helpers/pricing_helper.rb:93:in `each'\\napp/helpers/pricing_helper.rb:93:in `get_product_plans'\\napp/helpers/pricing_helper.rb:10:in `get_product_pricing_details'\\napp/controllers/accounts_controller.rb:5267:in `block in pricing'\\napp/controllers/accounts_controller.rb:5266:in `pricing'\\nlib/minute_based_throttle.rb:162:in `call'\\nlib/minute_based_throttle.rb:162:in `call'\\nconfig/initializers/oink_override.rb:9:in `call'\\nlib/too_many_redirects_middleware.rb:11:in `call'\\nlib/json_parse_errors.rb:10:in `call'\\nlib/bad_multipart_form_data_handler.rb:21:in `call'\\nlib/request_timestamp.rb:14:in `_call'\\nlib/request_timestamp.rb:9:in `call'\\nlib/extract_ip_middleware.rb:31:in `call'\",\"id\":\"112-3657-2-1741085503.839-devos2.bsstag.com\",\"level\":\"FATAL\"},\"meta\":{\"format\":{\"category\":\"server\",\"version\":5},\"host\":\"rails-live-56c697fb46-27q9j\",\"timestamp\":\"2025-03-04T10:51:44.553+00:00\"}}",
-      "timestamp": "2025-03-04T10:51:44.553+00:00",
-      "analysis": {
-        "severity": "UNKNOWN",
-        "category": "Other",
-        "description": "AI analysis failed",
-        "impact": "Unable to determine",
-        "suggestedAction": "Manual review required"
-      }
-    },
-    {
-      "lineNumber": 39,
-      "content": "{\"data\":{\"request\":{\"method\":\"GET\",\"endpoint\":\"/accounts/subscriptions\",\"ip\":\"203.194.98.122\",\"id\":\"9421c9ed8c9bbe26bf1955a182767b47\",\"user_id\":22548,\"params\":\"{\\\"product\\\":\\\"live\\\",\\\"controller\\\":\\\"accounts\\\",\\\"action\\\":\\\"subscriptions\\\"}\",\"controller\":\"AccountsController\",\"action\":\"subscriptions\"},\"response\":{\"status\":null,\"duration\":null,\"view_rendering_duration\":null,\"db_query_duration\":null}},\"log\":{\"dynamic_data\":\"  \\nActionView::Template::Error (undefined method `live_testing_minutes_per_user_per_month' for nil:NilClass):\\n    1: \\u003c% plan = @plans[plans_shown_by_default][plan_name] %\\u003e\\n    2: \\u003c% monthly_plan = @plans['monthly'][plan_name] %\\u003e\\n    3: \\u003c%\\n    4:   minutes_of_live = plan.live_testing_minutes_per_user_per_month\\n    5:   annual_amt = formatted_price_based_on_discount(@plans['annual'][plan_name].monthly_price)\\n    6:   monthly_amt = formatted_price_based_on_discount(monthly_plan.monthly_price)\\n    7:   \\n  \\napp/views/static/habitats/accounts/_freelancer_plans.html.erb:4\\napp/views/static/habitats/accounts/_plans_blocks_with_sidenav.html.erb:388\\napp/views/static/habitats/accounts/_pricing_plan_tables.html.erb:181\\napp/helpers/application_helper.rb:2087:in `cache_if'\\napp/views/static/habitats/accounts/_pricing_plan_tables.html.erb:50\\napp/views/shared/_combined_pricing.html.erb:52\\napp/views/shared/_all_pricing.html.erb:5\\napp/views/accounts/subscriptions.html.erb:11\\napp/controllers/accounts_controller.rb:265:in `subscriptions'\\nlib/minute_based_throttle.rb:129:in `call'\\nlib/minute_based_throttle.rb:129:in `call'\\nconfig/initializers/oink_override.rb:9:in `call'\\nlib/json_parse_errors.rb:10:in `call'\\nlib/bad_multipart_form_data_handler.rb:21:in `call'\\nlib/request_timestamp.rb:14:in `_call'\\nlib/request_timestamp.rb:9:in `call'\\nlib/extract_ip_middleware.rb:31:in `call'\",\"id\":\"210-11062-12-1681898587.982-k8s-os2.bsstag.com\",\"level\":\"FATAL\"},\"meta\":{\"format\":{\"category\":\"server\",\"version\":5},\"host\":\"rails-live-657dc7ff48-plzqm\",\"timestamp\":\"2023-04-19T10:03:11.893+00:00\"}}",
-      "timestamp": "2023-04-19T10:03:11.893+00:00",
-      "analysis": {
-        "severity": "UNKNOWN",
-        "category": "Other",
-        "description": "AI analysis failed",
-        "impact": "Unable to determine",
-        "suggestedAction": "Manual review required"
+        "category": "View Rendering",
+        "subcategory": "Template Rendering Error",
+        "description": "Error encountered while rendering a view template, specifically during the `to_s` method call within `plan_helper.rb`.  The error originated in the `accounts/subscriptions` view.",
+        "impact": "Users may experience errors or incomplete rendering of the 'subscriptions' page, impacting their ability to view or manage their account subscriptions.",
+        "suggestedAction": "Check partial and layout templates for missing variables or incorrect locals",
+        "slackThread": "https://browserstack.slack.com/archives/C01016S56ER/p1723106921992339",
+        "relevantUrls": "https://browserstack.slack.com/archives/C01016S56ER/p1723106921992339"
       }
     },
     {
@@ -203,9 +246,12 @@
       "analysis": {
         "severity": "UNKNOWN",
         "category": "Other",
+        "subcategory": "Unknown Error",
         "description": "AI analysis failed",
         "impact": "Unable to determine",
-        "suggestedAction": "Manual review required"
+        "suggestedAction": "Manual investigation required",
+        "slackThread": "N/A",
+        "relevantUrls": "N/A"
       }
     },
     {
@@ -215,9 +261,12 @@
       "analysis": {
         "severity": "UNKNOWN",
         "category": "Other",
+        "subcategory": "Unknown Error",
         "description": "AI analysis failed",
         "impact": "Unable to determine",
-        "suggestedAction": "Manual review required"
+        "suggestedAction": "Manual investigation required",
+        "slackThread": "N/A",
+        "relevantUrls": "N/A"
       }
     },
     {
@@ -227,9 +276,12 @@
       "analysis": {
         "severity": "UNKNOWN",
         "category": "Other",
+        "subcategory": "Unknown Error",
         "description": "AI analysis failed",
         "impact": "Unable to determine",
-        "suggestedAction": "Manual review required"
+        "suggestedAction": "Manual investigation required",
+        "slackThread": "N/A",
+        "relevantUrls": "N/A"
       }
     },
     {
@@ -239,9 +291,27 @@
       "analysis": {
         "severity": "UNKNOWN",
         "category": "Other",
+        "subcategory": "Unknown Error",
         "description": "AI analysis failed",
         "impact": "Unable to determine",
-        "suggestedAction": "Manual review required"
+        "suggestedAction": "Manual investigation required",
+        "slackThread": "N/A",
+        "relevantUrls": "N/A"
+      }
+    },
+    {
+      "lineNumber": 44,
+      "content": "{\"data\":{\"request\":{\"method\":\"GET\",\"endpoint\":\"/accounts/subscriptions\",\"ip\":\"34.233.8.51\",\"id\":\"26260ff8cbab5d13c4fd089a62953ce2\",\"user_id\":2,\"params\":\"\\\"{\\\\\\\"product\\\\\\\":\\\\\\\"live\\\\\\\",\\\\\\\"controller\\\\\\\":\\\\\\\"accounts\\\\\\\",\\\\\\\"action\\\\\\\":\\\\\\\"subscriptions\\\\\\\"}\\\"\",\"controller\":\"AccountsController\",\"action\":\"subscriptions\"},\"response\":{\"status\":null,\"duration\":null,\"view_rendering_duration\":null,\"db_query_duration\":null}},\"log\":{\"dynamic_data\":\"  \\nActionView::Template::Error (undefined method `price' for nil:NilClass):\\n    94:   \\u003c% if render_dropdown %\\u003e\\n    95:     \\u003cdiv class=\\\"plan-dropdown-section\\\"\\u003e\\n    96:       \\u003cdiv class=\\\"plan-dropdown\\\"\\u003e\\n    97:         \\u003c%= select_tag \\\"\\\", options_for_select(get_dropdown_options(select_tag_options_array, plan_name, dropdown_text_version, @cart, @combined_pricing_version), plan_to_highlight_id), common_select_params %\\u003e\\n    98:       \\u003c/div\\u003e\\n    99:       \\u003c%= render :partial =\\u003e 'shared/combined_parallel_test_tool_tip', :locals =\\u003e { :monthly_plan =\\u003e monthly_plan , :only_icon =\\u003e parallel_tooltip_only_icon} if !hide_parallels_tooltip %\\u003e\\n   100:     \\u003c/div\\u003e\\n  \\napp/helpers/account_helper.rb:597:in `user_count_dropdown_html_options'\\napp/helpers/account_helper.rb:664:in `block in get_dropdown_options'\\napp/helpers/account_helper.rb:664:in `map'\\napp/helpers/account_helper.rb:664:in `get_dropdown_options'\\napp/views/shared/_combined_pricing_plan_details.html.erb:97\\napp/views/static/molecules/accounts/_pricing_plan_block.html.erb:405\\napp/views/static/molecules/accounts/_pricing_plan.html.erb:110\\napp/views/static/habitats/accounts/_plans_blocks_with_sidenav.html.erb:2559\\napp/views/static/molecules/_pricing_container.html.erb:27\\napp/views/static/habitats/accounts/_pricing_plan_tables.html.erb:60\\napp/helpers/application_helper.rb:2819:in `cache_if'\\napp/views/static/habitats/accounts/_pricing_plan_tables.html.erb:53\\napp/views/shared/_combined_pricing.html.erb:49\\napp/views/shared/_all_pricing.html.erb:5\\napp/views/accounts/subscriptions.html.erb:12\\napp/controllers/accounts_controller.rb:477:in `subscriptions'\\nlib/minute_based_throttle.rb:157:in `call'\\nlib/minute_based_throttle.rb:157:in `call'\\nconfig/initializers/oink_override.rb:9:in `call'\\nlib/json_parse_errors.rb:10:in `call'\\nlib/bad_multipart_form_data_handler.rb:21:in `call'\\nlib/request_timestamp.rb:14:in `_call'\\nlib/request_timestamp.rb:9:in `call'\\nlib/extract_ip_middleware.rb:31:in `call'\",\"id\":\"381-709-1-1723106823.932-stagcentral.bsstag.com\",\"level\":\"FATAL\"},\"meta\":{\"format\":{\"category\":\"server\",\"version\":5},\"host\":\"rails-live-7975d6558c-77nm2\",\"timestamp\":\"2024-08-08T08:47:11.827+00:00\"}}",
+      "timestamp": "2024-08-08T08:47:11.827+00:00",
+      "analysis": {
+        "severity": "UNKNOWN",
+        "category": "Other",
+        "subcategory": "Unknown Error",
+        "description": "AI analysis failed",
+        "impact": "Unable to determine",
+        "suggestedAction": "Manual investigation required",
+        "slackThread": "N/A",
+        "relevantUrls": "N/A"
       }
     },
     {
@@ -251,9 +321,12 @@
       "analysis": {
         "severity": "UNKNOWN",
         "category": "Other",
+        "subcategory": "Unknown Error",
         "description": "AI analysis failed",
         "impact": "Unable to determine",
-        "suggestedAction": "Manual review required"
+        "suggestedAction": "Manual investigation required",
+        "slackThread": "N/A",
+        "relevantUrls": "N/A"
       }
     },
     {
@@ -263,9 +336,12 @@
       "analysis": {
         "severity": "UNKNOWN",
         "category": "Other",
+        "subcategory": "Unknown Error",
         "description": "AI analysis failed",
         "impact": "Unable to determine",
-        "suggestedAction": "Manual review required"
+        "suggestedAction": "Manual investigation required",
+        "slackThread": "N/A",
+        "relevantUrls": "N/A"
       }
     },
     {
@@ -275,9 +351,12 @@
       "analysis": {
         "severity": "UNKNOWN",
         "category": "Other",
+        "subcategory": "Unknown Error",
         "description": "AI analysis failed",
         "impact": "Unable to determine",
-        "suggestedAction": "Manual review required"
+        "suggestedAction": "Manual investigation required",
+        "slackThread": "N/A",
+        "relevantUrls": "N/A"
       }
     },
     {
@@ -287,9 +366,12 @@
       "analysis": {
         "severity": "UNKNOWN",
         "category": "Other",
+        "subcategory": "Unknown Error",
         "description": "AI analysis failed",
         "impact": "Unable to determine",
-        "suggestedAction": "Manual review required"
+        "suggestedAction": "Manual investigation required",
+        "slackThread": "N/A",
+        "relevantUrls": "N/A"
       }
     },
     {
@@ -299,9 +381,12 @@
       "analysis": {
         "severity": "UNKNOWN",
         "category": "Other",
+        "subcategory": "Unknown Error",
         "description": "AI analysis failed",
         "impact": "Unable to determine",
-        "suggestedAction": "Manual review required"
+        "suggestedAction": "Manual investigation required",
+        "slackThread": "N/A",
+        "relevantUrls": "N/A"
       }
     },
     {
@@ -311,9 +396,12 @@
       "analysis": {
         "severity": "UNKNOWN",
         "category": "Other",
+        "subcategory": "Unknown Error",
         "description": "AI analysis failed",
         "impact": "Unable to determine",
-        "suggestedAction": "Manual review required"
+        "suggestedAction": "Manual investigation required",
+        "slackThread": "N/A",
+        "relevantUrls": "N/A"
       }
     },
     {
@@ -323,9 +411,12 @@
       "analysis": {
         "severity": "UNKNOWN",
         "category": "Other",
+        "subcategory": "Unknown Error",
         "description": "AI analysis failed",
         "impact": "Unable to determine",
-        "suggestedAction": "Manual review required"
+        "suggestedAction": "Manual investigation required",
+        "slackThread": "N/A",
+        "relevantUrls": "N/A"
       }
     },
     {
@@ -335,9 +426,12 @@
       "analysis": {
         "severity": "UNKNOWN",
         "category": "Other",
+        "subcategory": "Unknown Error",
         "description": "AI analysis failed",
         "impact": "Unable to determine",
-        "suggestedAction": "Manual review required"
+        "suggestedAction": "Manual investigation required",
+        "slackThread": "N/A",
+        "relevantUrls": "N/A"
       }
     },
     {
@@ -347,9 +441,12 @@
       "analysis": {
         "severity": "UNKNOWN",
         "category": "Other",
+        "subcategory": "Unknown Error",
         "description": "AI analysis failed",
         "impact": "Unable to determine",
-        "suggestedAction": "Manual review required"
+        "suggestedAction": "Manual investigation required",
+        "slackThread": "N/A",
+        "relevantUrls": "N/A"
       }
     },
     {
@@ -359,9 +456,12 @@
       "analysis": {
         "severity": "UNKNOWN",
         "category": "Other",
+        "subcategory": "Unknown Error",
         "description": "AI analysis failed",
         "impact": "Unable to determine",
-        "suggestedAction": "Manual review required"
+        "suggestedAction": "Manual investigation required",
+        "slackThread": "N/A",
+        "relevantUrls": "N/A"
       }
     },
     {
@@ -371,9 +471,12 @@
       "analysis": {
         "severity": "UNKNOWN",
         "category": "Other",
+        "subcategory": "Unknown Error",
         "description": "AI analysis failed",
         "impact": "Unable to determine",
-        "suggestedAction": "Manual review required"
+        "suggestedAction": "Manual investigation required",
+        "slackThread": "N/A",
+        "relevantUrls": "N/A"
       }
     },
     {
@@ -383,9 +486,12 @@
       "analysis": {
         "severity": "UNKNOWN",
         "category": "Other",
+        "subcategory": "Unknown Error",
         "description": "AI analysis failed",
         "impact": "Unable to determine",
-        "suggestedAction": "Manual review required"
+        "suggestedAction": "Manual investigation required",
+        "slackThread": "N/A",
+        "relevantUrls": "N/A"
       }
     },
     {
@@ -395,9 +501,12 @@
       "analysis": {
         "severity": "UNKNOWN",
         "category": "Other",
+        "subcategory": "Unknown Error",
         "description": "AI analysis failed",
         "impact": "Unable to determine",
-        "suggestedAction": "Manual review required"
+        "suggestedAction": "Manual investigation required",
+        "slackThread": "N/A",
+        "relevantUrls": "N/A"
       }
     },
     {
@@ -407,9 +516,12 @@
       "analysis": {
         "severity": "UNKNOWN",
         "category": "Other",
+        "subcategory": "Unknown Error",
         "description": "AI analysis failed",
         "impact": "Unable to determine",
-        "suggestedAction": "Manual review required"
+        "suggestedAction": "Manual investigation required",
+        "slackThread": "N/A",
+        "relevantUrls": "N/A"
       }
     },
     {
@@ -419,9 +531,12 @@
       "analysis": {
         "severity": "UNKNOWN",
         "category": "Other",
+        "subcategory": "Unknown Error",
         "description": "AI analysis failed",
         "impact": "Unable to determine",
-        "suggestedAction": "Manual review required"
+        "suggestedAction": "Manual investigation required",
+        "slackThread": "N/A",
+        "relevantUrls": "N/A"
       }
     },
     {
@@ -431,9 +546,12 @@
       "analysis": {
         "severity": "UNKNOWN",
         "category": "Other",
+        "subcategory": "Unknown Error",
         "description": "AI analysis failed",
         "impact": "Unable to determine",
-        "suggestedAction": "Manual review required"
+        "suggestedAction": "Manual investigation required",
+        "slackThread": "N/A",
+        "relevantUrls": "N/A"
       }
     },
     {
@@ -443,9 +561,12 @@
       "analysis": {
         "severity": "UNKNOWN",
         "category": "Other",
+        "subcategory": "Unknown Error",
         "description": "AI analysis failed",
         "impact": "Unable to determine",
-        "suggestedAction": "Manual review required"
+        "suggestedAction": "Manual investigation required",
+        "slackThread": "N/A",
+        "relevantUrls": "N/A"
       }
     },
     {
@@ -455,9 +576,12 @@
       "analysis": {
         "severity": "UNKNOWN",
         "category": "Other",
+        "subcategory": "Unknown Error",
         "description": "AI analysis failed",
         "impact": "Unable to determine",
-        "suggestedAction": "Manual review required"
+        "suggestedAction": "Manual investigation required",
+        "slackThread": "N/A",
+        "relevantUrls": "N/A"
       }
     },
     {
@@ -467,9 +591,12 @@
       "analysis": {
         "severity": "UNKNOWN",
         "category": "Other",
+        "subcategory": "Unknown Error",
         "description": "AI analysis failed",
         "impact": "Unable to determine",
-        "suggestedAction": "Manual review required"
+        "suggestedAction": "Manual investigation required",
+        "slackThread": "N/A",
+        "relevantUrls": "N/A"
       }
     },
     {
@@ -479,9 +606,12 @@
       "analysis": {
         "severity": "UNKNOWN",
         "category": "Other",
+        "subcategory": "Unknown Error",
         "description": "AI analysis failed",
         "impact": "Unable to determine",
-        "suggestedAction": "Manual review required"
+        "suggestedAction": "Manual investigation required",
+        "slackThread": "N/A",
+        "relevantUrls": "N/A"
       }
     },
     {
@@ -491,9 +621,12 @@
       "analysis": {
         "severity": "UNKNOWN",
         "category": "Other",
+        "subcategory": "Unknown Error",
         "description": "AI analysis failed",
         "impact": "Unable to determine",
-        "suggestedAction": "Manual review required"
+        "suggestedAction": "Manual investigation required",
+        "slackThread": "N/A",
+        "relevantUrls": "N/A"
       }
     },
     {
@@ -503,9 +636,12 @@
       "analysis": {
         "severity": "UNKNOWN",
         "category": "Other",
+        "subcategory": "Unknown Error",
         "description": "AI analysis failed",
         "impact": "Unable to determine",
-        "suggestedAction": "Manual review required"
+        "suggestedAction": "Manual investigation required",
+        "slackThread": "N/A",
+        "relevantUrls": "N/A"
       }
     },
     {
@@ -515,9 +651,12 @@
       "analysis": {
         "severity": "UNKNOWN",
         "category": "Other",
+        "subcategory": "Unknown Error",
         "description": "AI analysis failed",
         "impact": "Unable to determine",
-        "suggestedAction": "Manual review required"
+        "suggestedAction": "Manual investigation required",
+        "slackThread": "N/A",
+        "relevantUrls": "N/A"
       }
     },
     {
@@ -527,9 +666,12 @@
       "analysis": {
         "severity": "UNKNOWN",
         "category": "Other",
+        "subcategory": "Unknown Error",
         "description": "AI analysis failed",
         "impact": "Unable to determine",
-        "suggestedAction": "Manual review required"
+        "suggestedAction": "Manual investigation required",
+        "slackThread": "N/A",
+        "relevantUrls": "N/A"
       }
     },
     {
@@ -539,9 +681,12 @@
       "analysis": {
         "severity": "UNKNOWN",
         "category": "Other",
+        "subcategory": "Unknown Error",
         "description": "AI analysis failed",
         "impact": "Unable to determine",
-        "suggestedAction": "Manual review required"
+        "suggestedAction": "Manual investigation required",
+        "slackThread": "N/A",
+        "relevantUrls": "N/A"
       }
     },
     {
@@ -551,9 +696,12 @@
       "analysis": {
         "severity": "UNKNOWN",
         "category": "Other",
+        "subcategory": "Unknown Error",
         "description": "AI analysis failed",
         "impact": "Unable to determine",
-        "suggestedAction": "Manual review required"
+        "suggestedAction": "Manual investigation required",
+        "slackThread": "N/A",
+        "relevantUrls": "N/A"
       }
     },
     {
@@ -563,9 +711,12 @@
       "analysis": {
         "severity": "UNKNOWN",
         "category": "Other",
+        "subcategory": "Unknown Error",
         "description": "AI analysis failed",
         "impact": "Unable to determine",
-        "suggestedAction": "Manual review required"
+        "suggestedAction": "Manual investigation required",
+        "slackThread": "N/A",
+        "relevantUrls": "N/A"
       }
     },
     {
@@ -575,9 +726,12 @@
       "analysis": {
         "severity": "UNKNOWN",
         "category": "Other",
+        "subcategory": "Unknown Error",
         "description": "AI analysis failed",
         "impact": "Unable to determine",
-        "suggestedAction": "Manual review required"
+        "suggestedAction": "Manual investigation required",
+        "slackThread": "N/A",
+        "relevantUrls": "N/A"
       }
     },
     {
@@ -587,9 +741,12 @@
       "analysis": {
         "severity": "UNKNOWN",
         "category": "Other",
+        "subcategory": "Unknown Error",
         "description": "AI analysis failed",
         "impact": "Unable to determine",
-        "suggestedAction": "Manual review required"
+        "suggestedAction": "Manual investigation required",
+        "slackThread": "N/A",
+        "relevantUrls": "N/A"
       }
     },
     {
@@ -599,9 +756,12 @@
       "analysis": {
         "severity": "UNKNOWN",
         "category": "Other",
+        "subcategory": "Unknown Error",
         "description": "AI analysis failed",
         "impact": "Unable to determine",
-        "suggestedAction": "Manual review required"
+        "suggestedAction": "Manual investigation required",
+        "slackThread": "N/A",
+        "relevantUrls": "N/A"
       }
     },
     {
@@ -611,9 +771,12 @@
       "analysis": {
         "severity": "UNKNOWN",
         "category": "Other",
+        "subcategory": "Unknown Error",
         "description": "AI analysis failed",
         "impact": "Unable to determine",
-        "suggestedAction": "Manual review required"
+        "suggestedAction": "Manual investigation required",
+        "slackThread": "N/A",
+        "relevantUrls": "N/A"
       }
     },
     {
@@ -623,9 +786,12 @@
       "analysis": {
         "severity": "UNKNOWN",
         "category": "Other",
+        "subcategory": "Unknown Error",
         "description": "AI analysis failed",
         "impact": "Unable to determine",
-        "suggestedAction": "Manual review required"
+        "suggestedAction": "Manual investigation required",
+        "slackThread": "N/A",
+        "relevantUrls": "N/A"
       }
     },
     {
@@ -635,9 +801,12 @@
       "analysis": {
         "severity": "UNKNOWN",
         "category": "Other",
+        "subcategory": "Unknown Error",
         "description": "AI analysis failed",
         "impact": "Unable to determine",
-        "suggestedAction": "Manual review required"
+        "suggestedAction": "Manual investigation required",
+        "slackThread": "N/A",
+        "relevantUrls": "N/A"
       }
     },
     {
@@ -647,9 +816,12 @@
       "analysis": {
         "severity": "UNKNOWN",
         "category": "Other",
+        "subcategory": "Unknown Error",
         "description": "AI analysis failed",
         "impact": "Unable to determine",
-        "suggestedAction": "Manual review required"
+        "suggestedAction": "Manual investigation required",
+        "slackThread": "N/A",
+        "relevantUrls": "N/A"
       }
     },
     {
@@ -659,9 +831,12 @@
       "analysis": {
         "severity": "UNKNOWN",
         "category": "Other",
+        "subcategory": "Unknown Error",
         "description": "AI analysis failed",
         "impact": "Unable to determine",
-        "suggestedAction": "Manual review required"
+        "suggestedAction": "Manual investigation required",
+        "slackThread": "N/A",
+        "relevantUrls": "N/A"
       }
     },
     {
@@ -671,9 +846,12 @@
       "analysis": {
         "severity": "UNKNOWN",
         "category": "Other",
+        "subcategory": "Unknown Error",
         "description": "AI analysis failed",
         "impact": "Unable to determine",
-        "suggestedAction": "Manual review required"
+        "suggestedAction": "Manual investigation required",
+        "slackThread": "N/A",
+        "relevantUrls": "N/A"
       }
     },
     {
@@ -683,9 +861,12 @@
       "analysis": {
         "severity": "UNKNOWN",
         "category": "Other",
+        "subcategory": "Unknown Error",
         "description": "AI analysis failed",
         "impact": "Unable to determine",
-        "suggestedAction": "Manual review required"
+        "suggestedAction": "Manual investigation required",
+        "slackThread": "N/A",
+        "relevantUrls": "N/A"
       }
     },
     {
@@ -695,9 +876,12 @@
       "analysis": {
         "severity": "UNKNOWN",
         "category": "Other",
+        "subcategory": "Unknown Error",
         "description": "AI analysis failed",
         "impact": "Unable to determine",
-        "suggestedAction": "Manual review required"
+        "suggestedAction": "Manual investigation required",
+        "slackThread": "N/A",
+        "relevantUrls": "N/A"
       }
     },
     {
@@ -707,9 +891,12 @@
       "analysis": {
         "severity": "UNKNOWN",
         "category": "Other",
+        "subcategory": "Unknown Error",
         "description": "AI analysis failed",
         "impact": "Unable to determine",
-        "suggestedAction": "Manual review required"
+        "suggestedAction": "Manual investigation required",
+        "slackThread": "N/A",
+        "relevantUrls": "N/A"
       }
     },
     {
@@ -719,9 +906,12 @@
       "analysis": {
         "severity": "UNKNOWN",
         "category": "Other",
+        "subcategory": "Unknown Error",
         "description": "AI analysis failed",
         "impact": "Unable to determine",
-        "suggestedAction": "Manual review required"
+        "suggestedAction": "Manual investigation required",
+        "slackThread": "N/A",
+        "relevantUrls": "N/A"
       }
     },
     {
@@ -731,9 +921,12 @@
       "analysis": {
         "severity": "UNKNOWN",
         "category": "Other",
+        "subcategory": "Unknown Error",
         "description": "AI analysis failed",
         "impact": "Unable to determine",
-        "suggestedAction": "Manual review required"
+        "suggestedAction": "Manual investigation required",
+        "slackThread": "N/A",
+        "relevantUrls": "N/A"
       }
     },
     {
@@ -743,9 +936,12 @@
       "analysis": {
         "severity": "UNKNOWN",
         "category": "Other",
+        "subcategory": "Unknown Error",
         "description": "AI analysis failed",
         "impact": "Unable to determine",
-        "suggestedAction": "Manual review required"
+        "suggestedAction": "Manual investigation required",
+        "slackThread": "N/A",
+        "relevantUrls": "N/A"
       }
     },
     {
@@ -755,9 +951,12 @@
       "analysis": {
         "severity": "UNKNOWN",
         "category": "Other",
+        "subcategory": "Unknown Error",
         "description": "AI analysis failed",
         "impact": "Unable to determine",
-        "suggestedAction": "Manual review required"
+        "suggestedAction": "Manual investigation required",
+        "slackThread": "N/A",
+        "relevantUrls": "N/A"
       }
     },
     {
@@ -767,9 +966,12 @@
       "analysis": {
         "severity": "UNKNOWN",
         "category": "Other",
+        "subcategory": "Unknown Error",
         "description": "AI analysis failed",
         "impact": "Unable to determine",
-        "suggestedAction": "Manual review required"
+        "suggestedAction": "Manual investigation required",
+        "slackThread": "N/A",
+        "relevantUrls": "N/A"
       }
     },
     {
@@ -779,9 +981,12 @@
       "analysis": {
         "severity": "UNKNOWN",
         "category": "Other",
+        "subcategory": "Unknown Error",
         "description": "AI analysis failed",
         "impact": "Unable to determine",
-        "suggestedAction": "Manual review required"
+        "suggestedAction": "Manual investigation required",
+        "slackThread": "N/A",
+        "relevantUrls": "N/A"
       }
     },
     {
@@ -791,9 +996,12 @@
       "analysis": {
         "severity": "UNKNOWN",
         "category": "Other",
+        "subcategory": "Unknown Error",
         "description": "AI analysis failed",
         "impact": "Unable to determine",
-        "suggestedAction": "Manual review required"
+        "suggestedAction": "Manual investigation required",
+        "slackThread": "N/A",
+        "relevantUrls": "N/A"
       }
     },
     {
@@ -803,9 +1011,12 @@
       "analysis": {
         "severity": "UNKNOWN",
         "category": "Other",
+        "subcategory": "Unknown Error",
         "description": "AI analysis failed",
         "impact": "Unable to determine",
-        "suggestedAction": "Manual review required"
+        "suggestedAction": "Manual investigation required",
+        "slackThread": "N/A",
+        "relevantUrls": "N/A"
       }
     },
     {
@@ -815,9 +1026,12 @@
       "analysis": {
         "severity": "UNKNOWN",
         "category": "Other",
+        "subcategory": "Unknown Error",
         "description": "AI analysis failed",
         "impact": "Unable to determine",
-        "suggestedAction": "Manual review required"
+        "suggestedAction": "Manual investigation required",
+        "slackThread": "N/A",
+        "relevantUrls": "N/A"
       }
     },
     {
@@ -827,9 +1041,12 @@
       "analysis": {
         "severity": "UNKNOWN",
         "category": "Other",
+        "subcategory": "Unknown Error",
         "description": "AI analysis failed",
         "impact": "Unable to determine",
-        "suggestedAction": "Manual review required"
+        "suggestedAction": "Manual investigation required",
+        "slackThread": "N/A",
+        "relevantUrls": "N/A"
       }
     },
     {
@@ -839,9 +1056,12 @@
       "analysis": {
         "severity": "UNKNOWN",
         "category": "Other",
+        "subcategory": "Unknown Error",
         "description": "AI analysis failed",
         "impact": "Unable to determine",
-        "suggestedAction": "Manual review required"
+        "suggestedAction": "Manual investigation required",
+        "slackThread": "N/A",
+        "relevantUrls": "N/A"
       }
     },
     {
@@ -851,9 +1071,12 @@
       "analysis": {
         "severity": "UNKNOWN",
         "category": "Other",
+        "subcategory": "Unknown Error",
         "description": "AI analysis failed",
         "impact": "Unable to determine",
-        "suggestedAction": "Manual review required"
+        "suggestedAction": "Manual investigation required",
+        "slackThread": "N/A",
+        "relevantUrls": "N/A"
       }
     },
     {
@@ -863,9 +1086,12 @@
       "analysis": {
         "severity": "UNKNOWN",
         "category": "Other",
+        "subcategory": "Unknown Error",
         "description": "AI analysis failed",
         "impact": "Unable to determine",
-        "suggestedAction": "Manual review required"
+        "suggestedAction": "Manual investigation required",
+        "slackThread": "N/A",
+        "relevantUrls": "N/A"
       }
     },
     {
@@ -875,9 +1101,12 @@
       "analysis": {
         "severity": "UNKNOWN",
         "category": "Other",
+        "subcategory": "Unknown Error",
         "description": "AI analysis failed",
         "impact": "Unable to determine",
-        "suggestedAction": "Manual review required"
+        "suggestedAction": "Manual investigation required",
+        "slackThread": "N/A",
+        "relevantUrls": "N/A"
       }
     },
     {
@@ -887,9 +1116,12 @@
       "analysis": {
         "severity": "UNKNOWN",
         "category": "Other",
+        "subcategory": "Unknown Error",
         "description": "AI analysis failed",
         "impact": "Unable to determine",
-        "suggestedAction": "Manual review required"
+        "suggestedAction": "Manual investigation required",
+        "slackThread": "N/A",
+        "relevantUrls": "N/A"
       }
     },
     {
@@ -899,9 +1131,12 @@
       "analysis": {
         "severity": "UNKNOWN",
         "category": "Other",
+        "subcategory": "Unknown Error",
         "description": "AI analysis failed",
         "impact": "Unable to determine",
-        "suggestedAction": "Manual review required"
+        "suggestedAction": "Manual investigation required",
+        "slackThread": "N/A",
+        "relevantUrls": "N/A"
       }
     },
     {
@@ -911,9 +1146,12 @@
       "analysis": {
         "severity": "UNKNOWN",
         "category": "Other",
+        "subcategory": "Unknown Error",
         "description": "AI analysis failed",
         "impact": "Unable to determine",
-        "suggestedAction": "Manual review required"
+        "suggestedAction": "Manual investigation required",
+        "slackThread": "N/A",
+        "relevantUrls": "N/A"
       }
     },
     {
@@ -923,9 +1161,12 @@
       "analysis": {
         "severity": "UNKNOWN",
         "category": "Other",
+        "subcategory": "Unknown Error",
         "description": "AI analysis failed",
         "impact": "Unable to determine",
-        "suggestedAction": "Manual review required"
+        "suggestedAction": "Manual investigation required",
+        "slackThread": "N/A",
+        "relevantUrls": "N/A"
       }
     },
     {
@@ -935,9 +1176,12 @@
       "analysis": {
         "severity": "UNKNOWN",
         "category": "Other",
+        "subcategory": "Unknown Error",
         "description": "AI analysis failed",
         "impact": "Unable to determine",
-        "suggestedAction": "Manual review required"
+        "suggestedAction": "Manual investigation required",
+        "slackThread": "N/A",
+        "relevantUrls": "N/A"
       }
     },
     {
@@ -947,9 +1191,12 @@
       "analysis": {
         "severity": "UNKNOWN",
         "category": "Other",
+        "subcategory": "Unknown Error",
         "description": "AI analysis failed",
         "impact": "Unable to determine",
-        "suggestedAction": "Manual review required"
+        "suggestedAction": "Manual investigation required",
+        "slackThread": "N/A",
+        "relevantUrls": "N/A"
       }
     },
     {
@@ -959,9 +1206,12 @@
       "analysis": {
         "severity": "UNKNOWN",
         "category": "Other",
+        "subcategory": "Unknown Error",
         "description": "AI analysis failed",
         "impact": "Unable to determine",
-        "suggestedAction": "Manual review required"
+        "suggestedAction": "Manual investigation required",
+        "slackThread": "N/A",
+        "relevantUrls": "N/A"
       }
     }
   ]

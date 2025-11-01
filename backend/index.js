@@ -307,14 +307,14 @@ Analyze this log error and provide:
 3. Subcategory - must match one of the subcategories under the chosen category
 4. Brief description of the issue
 5. Potential impact
-6. Suggested action - must exactly match the suggestedAction for the chosen subcategory
-7. Slack thread - must exactly match the slackthread for the chosen subcategory
+6. Suggested action - will be automatically matched from the subcategory
+7. Slack thread URL - if you can identify a relevant Slack discussion URL, include it; otherwise leave empty
 
 Log entry:
 ${error.content}
 
-Respond ONLY with valid JSON format with keys: severity, category, subcategory, description, impact, suggestedAction, slackthread
-IMPORTANT: Use ONLY the predefined categories, severity levels, and suggested actions listed above.`;
+Respond ONLY with valid JSON format with keys: severity, category, subcategory, description, impact, slackthread
+IMPORTANT: Use ONLY the predefined categories and severity levels. The slackthread field is optional.`;
 
     // Call Gemini API using fetch
     const response = await fetch(GEMINI_API_URL, {
@@ -380,6 +380,7 @@ IMPORTANT: Use ONLY the predefined categories, severity levels, and suggested ac
     // Validate and normalize subcategory
     let subcategory = analysis.subcategory || "Unknown Error";
     let suggestedAction = analysis.suggestedAction || "Manual investigation required";
+    let relevantUrls = "";
     
     if (categoryObj) {
       const subcategoryNames = categoryObj.subcategories.map(sub => sub.subcategory);
@@ -393,16 +394,19 @@ IMPORTANT: Use ONLY the predefined categories, severity levels, and suggested ac
         if (match) {
           subcategory = match.subcategory;
           suggestedAction = match.suggestion;
+          relevantUrls = match.relevant_urls || "";
         } else {
           // Use first subcategory as fallback
           subcategory = categoryObj.subcategories[0].subcategory;
           suggestedAction = categoryObj.subcategories[0].suggestion;
+          relevantUrls = categoryObj.subcategories[0].relevant_urls || "";
         }
       } else {
         // Find the matching subcategory and use its suggestion
         const subcategoryObj = categoryObj.subcategories.find(sub => sub.subcategory === subcategory);
         if (subcategoryObj) {
           suggestedAction = subcategoryObj.suggestion;
+          relevantUrls = subcategoryObj.relevant_urls || "";
         }
       }
     }
@@ -416,6 +420,8 @@ IMPORTANT: Use ONLY the predefined categories, severity levels, and suggested ac
         description: analysis.description || "No description available",
         impact: analysis.impact || "Unknown impact",
         suggestedAction: suggestedAction,
+        slackThread: analysis.slackthread || relevantUrls || "N/A",
+        relevantUrls: relevantUrls || "N/A",
       },
     };
   } catch (err) {
@@ -425,9 +431,12 @@ IMPORTANT: Use ONLY the predefined categories, severity levels, and suggested ac
       analysis: {
         severity: "UNKNOWN",
         category: "Other",
+        subcategory: "Unknown Error",
         description: "AI analysis failed",
         impact: "Unable to determine",
         suggestedAction: "Manual investigation required",
+        slackThread: "N/A",
+        relevantUrls: "N/A",
       },
     };
   }
@@ -552,6 +561,7 @@ function displayReport(report) {
     console.log(`   Description: ${error.analysis.description}`);
     console.log(`   Impact: ${error.analysis.impact}`);
     console.log(`   Suggested Action: ${error.analysis.suggestedAction}`);
+    console.log(`   Slack Thread: ${error.analysis.slackThread || error.analysis.relevantUrls || "N/A"}`);
     console.log(`   Log Content: ${error.content.substring(0, 150)}...`);
     console.log("-".repeat(80));
   });
@@ -602,5 +612,15 @@ async function main() {
   }
 }
 
-// Run the main function
-main();
+// Run the main function only if called directly
+if (require.main === module) {
+  main();
+}
+
+// Export functions for use as a module
+module.exports = {
+  parseLogFile,
+  analyzeErrors,
+  generateReport,
+  saveReport,
+};
