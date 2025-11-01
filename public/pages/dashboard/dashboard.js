@@ -160,36 +160,26 @@ function createErrorCard(error) {
     : '<span class="slack-thread-missing">No Slack thread</span>';
 
   card.innerHTML = `
-    <div class="card-main">
-      <div class="card-header">
-        <h3 class="card-title">${error.title}</h3>
-        <span class="severity-badge severity-${error.severity.toLowerCase()}">${
-    error.severity
-  }</span>
+    <div class="error-card__inner">
+      <header class="error-card__header">
+        <h3 class="error-card__title" title="${escapeAttr(error.title)}">${error.title}</h3>
+        <span class="severity-badge severity-${error.severity.toLowerCase()}">${error.severity}</span>
+      </header>
+      <div class="error-card__tags">
+        <span class="chip chip-category" title="Category">${error.category}</span>
+        <span class="chip chip-code" title="Error Code">${error.errorCode}</span>
       </div>
-      <div class="card-meta">
-        <div class="card-meta-item">
-          <span class="card-meta-label">Category:</span>
-          <span class="card-meta-value">${error.category}</span>
+      <div class="error-card__recommendation" title="Recommendation">
+        <span class="recommendation-label">Recommendation:</span>
+        <span class="recommendation-text">${escapeHtmlShort(error.solution)}</span>
+      </div>
+      <div class="error-card__meta">
+        <span class="error-card__timestamp" title="Timestamp">${error.timestamp}</span>
+        <div class="error-card__actions">
+          <button class="btn btn-small view-details-btn" type="button" aria-label="View details for ${escapeAttr(error.title)}">Details</button>
+          ${slackHtml}
         </div>
-        <div class="card-meta-item">
-          <span class="card-meta-label">Code:</span>
-          <span class="card-meta-value">${error.errorCode}</span>
-        </div>
       </div>
-      <div class="card-recommendation">
-        <span class="rec-label">Recommendation:</span>
-        <span class="rec-text">${escapeHtmlShort(error.solution)}</span>
-      </div>
-      <div class="card-slack">
-        ${slackHtml}
-      </div>
-    </div>
-    <div class="card-footer">
-      <span class="card-footer-item">${error.timestamp}</span>
-      <button class="btn btn-small view-details-btn" type="button" aria-label="View details for ${escapeAttr(
-        error.title
-      )}">Details</button>
     </div>
   `;
 
