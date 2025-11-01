@@ -307,7 +307,8 @@ Analyze this log error and provide:
 3. Subcategory - must match one of the subcategories under the chosen category
 4. Brief description of the issue
 5. Potential impact
-6. Suggested action - must exactly match the suggestion for the chosen subcategory
+6. Suggested action - must exactly match the suggestedAction for the chosen subcategory
+7. Slack thread - look up on Slack if there is an existing thread discussing this error
 
 Log entry:
 ${error.content}
