@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>AI Log Analysis Dashboard</title>
+    <title>LogPulse - AI-driven log insights with recommendations</title>
     <link rel="stylesheet" href="/components/shared.css" />
     <link rel="stylesheet" href="/pages/dashboard/dashboard.css" />
   </head>
@@ -12,8 +12,8 @@
     <header class="header">
       <div class="header-content">
         <div class="header-title">
-          <h1>AI Log Analysis Dashboard</h1>
-          <p>Real-time error detection and AI-powered solutions</p>
+          <h1>LogPulse - AI-driven log insights with recommendations</h1>
+          <p>Pulse on errors, clarity in action, act fast!</p>
         </div>
       </div>
     </header>
@@ -25,9 +25,8 @@
         <div class="control-group">
           <label for="env-selector">Select Environment:</label>
           <select id="env-selector" class="env-select">
-            <option value="production">Production</option>
-            <option value="staging" selected>Staging</option>
-            <option value="development">Development</option>
+            <option value="production">devos</option>
+            <option value="staging" selected>devos2</option>
           </select>
         </div>
         <button class="btn btn-primary" id="run-analysis-btn">
@@ -52,12 +51,11 @@
       <!-- Filter Section -->
       <section class="filter-section">
         <div class="filter-wrapper">
-          <label for="category-filter">Filter by Category:</label>
+          <label for="category-filter">Filters:</label>
           <select id="category-filter" class="category-select">
             <option value="all">All Categories</option>
-            <option value="Thread">Thread</option>
-            <option value="Database">Database</option>
-            <option value="Initialization">Initialization</option>
+            <option value="Runtime">Runtime</option>
+            <option value="Migration">Migration</option>
             <option value="Configuration">Configuration</option>
             <option value="Other">Other</option>
           </select>

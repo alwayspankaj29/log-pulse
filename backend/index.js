@@ -71,107 +71,107 @@ const SEVERITY_LEVELS = ['CRITICAL', 'HIGH', 'MEDIUM'];
 
 const ERROR_CATEGORIES = [
   {
-    category: "Application Logic",
+    category: "Syntax Errors",
     subcategories: [
       {
         subcategory: "Nil Reference Error",
         suggestion: "Add nil checks or guard clauses to prevent accessing undefined objects",
-        relevant_urls: "https://browserstack.slack.com/archives/C01016S56ER/p1723106921992339"
+        slackthread: "https://browserstack.slack.com/archives/C01016S56ER/p1723106921992339"
       },
       {
         subcategory: "Wrong Number of Arguments",
         suggestion: "Verify method signatures and update method calls accordingly",
-        relevant_urls: "https://browserstack.slack.com/archives/C01016S56ER/p1723106921992339"
+        slackthread: "https://browserstack.slack.com/archives/C01016S56ER/p1723106921992339"
       },
       {
         subcategory: "Undefined Method",
         suggestion: "Ensure the method exists for the object’s class or module",
-        relevant_urls: "https://browserstack.slack.com/archives/C01016S56ER/p1723106921992339"
+        slackthread: "https://browserstack.slack.com/archives/C01016S56ER/p1723106921992339"
       },
       {
         subcategory: "Unexpected Data Type",
         suggestion: "Validate and sanitize inputs before method invocation",
-        relevant_urls: "https://browserstack.slack.com/archives/C01016S56ER/p1723106921992339"
+        slackthread: "https://browserstack.slack.com/archives/C01016S56ER/p1723106921992339"
       }
     ]
   },
   {
-    category: "View Rendering",
+    category: "Templating",
     subcategories: [
       {
         subcategory: "Template Rendering Error",
         suggestion: "Check partial and layout templates for missing variables or incorrect locals",
-        relevant_urls: "https://browserstack.slack.com/archives/C01016S56ER/p1723106921992339"
+        slackthread: "https://browserstack.slack.com/archives/C01016S56ER/p1723106921992339"
       },
       {
         subcategory: "Missing Partial",
         suggestion: "Ensure the referenced partials exist and paths are correct",
-        relevant_urls: "https://browserstack.slack.com/archives/C01016S56ER/p1723106921992339"
+        slackthread: "https://browserstack.slack.com/archives/C01016S56ER/p1723106921992339"
       },
       {
         subcategory: "Helper Method Error",
         suggestion: "Fix logic in Rails helpers or ensure helpers are properly included in the view context",
-        relevant_urls: "https://browserstack.slack.com/archives/C01016S56ER/p1723106921992339"
+        slackthread: "https://browserstack.slack.com/archives/C01016S56ER/p1723106921992339"
       }
     ]
   },
   {
-    category: "Controller & Routing",
+    category: "Routing",
     subcategories: [
       {
         subcategory: "Action Dispatch Error",
         suggestion: "Verify controller actions exist and match routes",
-        relevant_urls: "https://browserstack.slack.com/archives/C01016S56ER/p1723106921992339"
+        slackthread: "https://browserstack.slack.com/archives/C01016S56ER/p1723106921992339"
       },
       {
         subcategory: "Invalid Parameters",
         suggestion: "Validate params and ensure required keys exist",
-        relevant_urls: "https://browserstack.slack.com/archives/C01016S56ER/p1723106921992339"
+        slackthread: "https://browserstack.slack.com/archives/C01016S56ER/p1723106921992339"
       },
       {
         subcategory: "Routing Error",
         suggestion: "Check routes.rb and ensure proper HTTP verb and path configuration",
-        relevant_urls: "https://browserstack.slack.com/archives/C01016S56ER/p1723106921992339"
+        slackthread: "https://browserstack.slack.com/archives/C01016S56ER/p1723106921992339"
       }
     ]
   },
   {
-    category: "Database",
+    category: "Migration",
     subcategories: [
       {
         subcategory: "ActiveRecord Query Error",
         suggestion: "Inspect model queries for syntax or relation issues",
-        relevant_urls: "https://browserstack.slack.com/archives/C01016S56ER/p1723106921992339"
+        slackthread: "https://browserstack.slack.com/archives/C01016S56ER/p1723106921992339"
       },
       {
         subcategory: "Record Not Found",
         suggestion: "Add existence checks or rescue from ActiveRecord::RecordNotFound",
-        relevant_urls: "https://browserstack.slack.com/archives/C01016S56ER/p1723106921992339"
+        slackthread: "https://browserstack.slack.com/archives/C01016S56ER/p1723106921992339"
       },
       {
         subcategory: "Transaction Failure",
         suggestion: "Investigate rollback causes or DB constraints",
-        relevant_urls: "https://browserstack.slack.com/archives/C01016S56ER/p1723106921992339"
+        slackthread: "https://browserstack.slack.com/archives/C01016S56ER/p1723106921992339"
       }
     ]
   },
   {
-    category: "Middleware",
+    category: "Compilation",
     subcategories: [
       {
         subcategory: "Request Handling Error",
         suggestion: "Check custom middleware logic for null references or incorrect assumptions",
-        relevant_urls: "https://browserstack.slack.com/archives/C01016S56ER/p1723106921992339"
+        slackthread: "https://browserstack.slack.com/archives/C01016S56ER/p1723106921992339"
       },
       {
         subcategory: "Throttling Issue",
         suggestion: "Adjust rate limits or monitor excessive requests",
-        relevant_urls: "https://browserstack.slack.com/archives/C01016S56ER/p1723106921992339"
+        slackthread: "https://browserstack.slack.com/archives/C01016S56ER/p1723106921992339"
       },
       {
         subcategory: "JSON Parsing Error",
         suggestion: "Ensure valid JSON bodies and proper encoding",
-        relevant_urls: "https://browserstack.slack.com/archives/C01016S56ER/p1723106921992339"
+        slackthread: "https://browserstack.slack.com/archives/C01016S56ER/p1723106921992339"
       }
     ]
   },
@@ -181,17 +181,17 @@ const ERROR_CATEGORIES = [
       {
         subcategory: "High Memory Usage",
         suggestion: "Profile memory allocation and optimize large objects or caches",
-        relevant_urls: "https://browserstack.slack.com/archives/C01016S56ER/p1723106921992339"
+        slackthread: "https://browserstack.slack.com/archives/C01016S56ER/p1723106921992339"
       },
       {
         subcategory: "Long Query Duration",
         suggestion: "Use indexes and optimize DB queries",
-        relevant_urls: "https://browserstack.slack.com/archives/C01016S56ER/p1723106921992339"
+        slackthread: "https://browserstack.slack.com/archives/C01016S56ER/p1723106921992339"
       },
       {
         subcategory: "Slow View Rendering",
         suggestion: "Cache partials or reduce template complexity",
-        relevant_urls: "https://browserstack.slack.com/archives/C01016S56ER/p1723106921992339"
+        slackthread: "https://browserstack.slack.com/archives/C01016S56ER/p1723106921992339"
       }
     ]
   },
@@ -201,27 +201,27 @@ const ERROR_CATEGORIES = [
       {
         subcategory: "Missing Environment Variable",
         suggestion: "Define required env vars in the deployment configuration",
-        relevant_urls: "https://browserstack.slack.com/archives/C01016S56ER/p1723106921992339"
+        slackthread: "https://browserstack.slack.com/archives/C01016S56ER/p1723106921992339"
       },
       {
         subcategory: "Improper Deployment Config",
         suggestion: "Verify config files for environment-specific values",
-        relevant_urls: "https://browserstack.slack.com/archives/C01016S56ER/p1723106921992339"
+        slackthread: "https://browserstack.slack.com/archives/C01016S56ER/p1723106921992339"
       },
       {
         subcategory: "Dependency Mismatch",
         suggestion: "Check Gemfile.lock or package versions for compatibility",
-        relevant_urls: "https://browserstack.slack.com/archives/C01016S56ER/p1723106921992339"
+        slackthread: "https://browserstack.slack.com/archives/C01016S56ER/p1723106921992339"
       }
     ]
   },
   {
-    category: "Other",
+    category: "Unknown",
     subcategories: [
       {
         subcategory: "Unknown Error",
         suggestion: "Manual investigation required",
-        relevant_urls: "https://browserstack.slack.com/archives/C01016S56ER/p1723106921992339"
+        slackthread: "https://browserstack.slack.com/archives/C01016S56ER/p1723106921992339"
       }
     ]
   }
@@ -308,12 +308,12 @@ Analyze this log error and provide:
 4. Brief description of the issue
 5. Potential impact
 6. Suggested action - must exactly match the suggestedAction for the chosen subcategory
-7. Slack thread - look up on Slack if there is an existing thread discussing this error
+7. Slack thread - must exactly match the slackthread for the chosen subcategory
 
 Log entry:
 ${error.content}
 
-Respond ONLY with valid JSON format with keys: severity, category, subcategory, description, impact, suggestedAction
+Respond ONLY with valid JSON format with keys: severity, category, subcategory, description, impact, suggestedAction, slackthread
 IMPORTANT: Use ONLY the predefined categories, severity levels, and suggested actions listed above.`;
 
     // Call Gemini API using fetch

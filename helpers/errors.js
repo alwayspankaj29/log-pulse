@@ -52,7 +52,7 @@ function transformErrorReportData(errorReportData) {
       timestamp: error.timestamp || new Date().toISOString(),
       lineNumber: error.lineNumber,
       content: error.content,
-      slackThreadSuggestion: null, // No slack integration in error_report.json format
+      slackThreadSuggestion: analysis.slackthread || "https://browserstack.slack.com/archives/C02D3CWKF6Y/p1741085627615559?thread_ts=1741065769.408149&cid=C02D3CWKF6Y",
     };
   });
 }
