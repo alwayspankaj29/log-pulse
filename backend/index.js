@@ -33,7 +33,7 @@ const ERROR_CATEGORIES = [
 ];
 
 // Predefined severity levels
-const SEVERITY_LEVELS = ["CRITICAL", "HIGH", "MEDIUM", "LOW"];
+const SEVERITY_LEVELS = ['CRITICAL', 'HIGH', 'MEDIUM'];
 
 // Predefined suggested actions
 const SUGGESTED_ACTIONS = [
@@ -72,17 +72,18 @@ const SUGGESTED_ACTIONS = [
 // Error patterns using regex
 const ERROR_PATTERNS = [
   /error/i,
+  /timeout/i,
   /exception/i,
   /fail(ed|ure)?/i,
   /critical/i,
   /fatal/i,
-  /warning/i,
-  /warn/i,
-  /severe/i,
-  /emergency/i,
-  /alert/i,
-  /stack trace/i,
-  /"level"\s*:\s*"(ERROR|WARN|FATAL|CRITICAL)"/i,
+  // /warning/i,
+  // /warn/i,
+  // /severe/i,
+  // /emergency/i,
+  // /alert/i,
+  // /stack trace/i,
+  // /"level"\s*:\s*"(ERROR|WARN|FATAL|CRITICAL)"/i
 ];
 
 // Check if a log line contains an error
@@ -408,8 +409,8 @@ async function main() {
 
     // Step 4: Save report to file
     saveReport(report);
-
-    console.log("\n✅ Analysis complete!");
+      
+    console.log('\n✅ Analysis complete!');
   } catch (error) {
     console.error("❌ Error during analysis:", error.message);
     process.exit(1);
