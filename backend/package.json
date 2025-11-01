@@ -1,0 +1,23 @@
+{
+  "name": "log-error-analyzer",
+  "version": "1.0.0",
+  "description": "AI-powered log parser for error detection and severity analysis",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "analyze": "node index.js production.log",
+    "test": "node test.js"
+  },
+  "keywords": [
+    "log-parser",
+    "error-detection",
+    "ai-analysis",
+    "gemini",
+    "regex"
+  ],
+  "author": "",
+  "license": "MIT",
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}
