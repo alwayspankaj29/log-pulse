@@ -437,7 +437,7 @@ function renderSummary(data) {
         <div class="chips-row">${severityParts || '<span class="metric-empty">No data</span>'}</div>
       </div>
       <div class="summary-block">
-        <h3 class="summary-subtitle">Categories</h3>
+        <h3 class="summary-subtitle">Error Types</h3>
         <div class="chips-row">${catParts || '<span class="metric-empty">No data</span>'} ${moreHtml}</div>
       </div>
     </div>
@@ -449,7 +449,7 @@ function renderSummary(data) {
 function renderSlackCell(error) {
   if (error.slackThread) {
     const display = truncateMiddle(error.slackThread, 40);
-    return `<span class="slack-thread-text" title="Slack thread"><a class="slack-link-inline" href="${error.slackThread}" target="_blank" rel="noopener noreferrer">${display}</a></span>`;
+    return `<span class="slack-thread-text" title="Slack thread"><a class="slack-link-inline" href="${error.slackThread}" target="_blank" rel="noopener noreferrer">Slack Thread</a></span>`;
   }
   return '<span class="slack-missing-inline" title="No Slack thread yet">No thread</span>';
 }

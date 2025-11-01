@@ -3,7 +3,7 @@ const readline = require("readline");
 
 // Gemini API configuration
 const GEMINI_API_KEY =
-  process.env.GEMINI_API_KEY || "AIzaSyC-zZvoar7ULg1rRYsSj_7W3aMDILuR9O0";
+  process.env.GEMINI_API_KEY || "AIzaSyAqnVwbjd7qwz1V0nocePOYKNEROeCCc6k";
 const GEMINI_API_URL =
   "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent";
 

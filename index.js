@@ -28,7 +28,7 @@ app.get("/", (req, res) => {
 // Example: /api/errors?logFile=devos.log
 app.get("/api/errors", async (req, res) => {
   try {
-    const logFileName = req.query.logFile; // Optional parameter
+    const logFileName = req.query.env_name + '.log'; // Optional parameter
     
     if (logFileName) {
       console.log(`📁 Analyzing log file: ${logFileName}`);

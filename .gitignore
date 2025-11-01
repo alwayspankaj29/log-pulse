@@ -1,4 +1,5 @@
 # Logs
+error_report.json
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
