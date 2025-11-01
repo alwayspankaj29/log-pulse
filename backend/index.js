@@ -3,7 +3,7 @@ const readline = require("readline");
 
 // Gemini API configuration
 const GEMINI_API_KEY =
-  process.env.GEMINI_API_KEY || "AIzaSyCQ2xk-qCTDceveVcao7hzBeO3GNo700ZU";
+  process.env.GEMINI_API_KEY || "AIzaSyC-zZvoar7ULg1rRYsSj_7W3aMDILuR9O0";
 const GEMINI_API_URL =
   "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent";
 
@@ -303,16 +303,16 @@ async function analyzeError(error) {
 
 Analyze this log error and provide:
 1. Severity rating - MUST be one of: ${SEVERITY_LEVELS.join(", ")}
-2. Category - one of: ${Object.keys(ERROR_CATEGORIES).join(", ")}
+2. Category - one of: ${ERROR_CATEGORIES.map(cat => cat.category).join(", ")}
 3. Subcategory - must match one of the subcategories under the chosen category
 4. Brief description of the issue
 5. Potential impact
-6. Suggested action - must exactly match the suggestedAction for the chosen subcategory
+6. Suggested action - must exactly match the suggestion for the chosen subcategory
 
 Log entry:
 ${error.content}
 
-Respond ONLY with valid JSON format with keys: severity, category, description, impact, suggestedAction
+Respond ONLY with valid JSON format with keys: severity, category, subcategory, description, impact, suggestedAction
 IMPORTANT: Use ONLY the predefined categories, severity levels, and suggested actions listed above.`;
 
     // Call Gemini API using fetch
@@ -362,34 +362,56 @@ IMPORTANT: Use ONLY the predefined categories, severity levels, and suggested ac
 
     // Validate and normalize category
     let category = analysis.category || "Other";
-    if (!ERROR_CATEGORIES.includes(category)) {
+    const categoryNames = ERROR_CATEGORIES.map(cat => cat.category);
+    if (!categoryNames.includes(category)) {
       // Try to find closest match
       const match = ERROR_CATEGORIES.find(
         (cat) =>
-          category.toLowerCase().includes(cat.toLowerCase()) ||
-          cat.toLowerCase().includes(category.toLowerCase())
+          category.toLowerCase().includes(cat.category.toLowerCase()) ||
+          cat.category.toLowerCase().includes(category.toLowerCase())
       );
-      category = match || "Other";
+      category = match ? match.category : "Other";
     }
 
-    // Validate and normalize suggested action
-    // let suggestedAction =
-    //   analysis.suggestedAction || "Manual investigation required";
-    // if (!SUGGESTED_ACTIONS.includes(suggestedAction)) {
-    //   // Try to find closest match
-    //   const match = SUGGESTED_ACTIONS.find(
-    //     (action) =>
-    //       action.toLowerCase().includes(suggestedAction.toLowerCase()) ||
-    //       suggestedAction.toLowerCase().includes(action.toLowerCase())
-    //   );
-    //   suggestedAction = match || "Manual investigation required";
-    // }
+    // Find the category object
+    const categoryObj = ERROR_CATEGORIES.find(cat => cat.category === category);
+    
+    // Validate and normalize subcategory
+    let subcategory = analysis.subcategory || "Unknown Error";
+    let suggestedAction = analysis.suggestedAction || "Manual investigation required";
+    
+    if (categoryObj) {
+      const subcategoryNames = categoryObj.subcategories.map(sub => sub.subcategory);
+      if (!subcategoryNames.includes(subcategory)) {
+        // Try to find closest match
+        const match = categoryObj.subcategories.find(
+          (sub) =>
+            subcategory.toLowerCase().includes(sub.subcategory.toLowerCase()) ||
+            sub.subcategory.toLowerCase().includes(subcategory.toLowerCase())
+        );
+        if (match) {
+          subcategory = match.subcategory;
+          suggestedAction = match.suggestion;
+        } else {
+          // Use first subcategory as fallback
+          subcategory = categoryObj.subcategories[0].subcategory;
+          suggestedAction = categoryObj.subcategories[0].suggestion;
+        }
+      } else {
+        // Find the matching subcategory and use its suggestion
+        const subcategoryObj = categoryObj.subcategories.find(sub => sub.subcategory === subcategory);
+        if (subcategoryObj) {
+          suggestedAction = subcategoryObj.suggestion;
+        }
+      }
+    }
 
     return {
       ...error,
       analysis: {
         severity: severity,
         category: category,
+        subcategory: subcategory,
         description: analysis.description || "No description available",
         impact: analysis.impact || "Unknown impact",
         suggestedAction: suggestedAction,
@@ -524,6 +546,7 @@ function displayReport(report) {
     console.log(`\n${icon} ERROR #${index + 1} [Line ${error.lineNumber}]`);
     console.log(`   Severity: ${error.analysis.severity}`);
     console.log(`   Category: ${error.analysis.category}`);
+    console.log(`   Subcategory: ${error.analysis.subcategory || "N/A"}`);
     console.log(`   Timestamp: ${error.timestamp || "N/A"}`);
     console.log(`   Description: ${error.analysis.description}`);
     console.log(`   Impact: ${error.analysis.impact}`);
@@ -546,7 +569,7 @@ async function main() {
   console.log("🚀 Starting Log Error Analysis...");
   console.log(`📁 Log file: ${logFilePath}`);
   console.log(`\n📋 Using Predefined Categories:`);
-  console.log(`   ${ERROR_CATEGORIES.join(", ")}`);
+  console.log(`   ${ERROR_CATEGORIES.map(cat => cat.category).join(", ")}`);
   console.log(`\n🔥 Severity Levels: ${SEVERITY_LEVELS.join(", ")}`);
   // console.log(
   //   `\n💡 Available Actions: ${SUGGESTED_ACTIONS.length} predefined actions\n`
