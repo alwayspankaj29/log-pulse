@@ -1,13 +1,128 @@
 // Initialize app when page loads
 document.addEventListener("DOMContentLoaded", () => {
-  renderAllErrors();
+  // Do NOT auto-fetch errors; user must click Run AI Analysis
   setupFilterListener();
   setupModalHandlers();
   setupAnalysisButton();
   setupEnvironmentSelector(); // Add environment selector listener
+  showPreAnalysisPlaceholder();
 });
 
-const errors = window.errors || [];
+const API_URL = "/api/errors";
+let errors = [];
+let loadedErrors = [];
+let hasLoadedErrors = false; // track if analysis has been run
+
+// Fetch errors from API
+async function fetchErrors() {
+  setStatus("Loading errors...");
+  try {
+    const res = await fetch(API_URL, {
+      headers: { Accept: "application/json" },
+    });
+    if (!res.ok) throw new Error("Failed to load errors");
+    const data = await res.json();
+    return data.errors || [];
+  } catch (err) {
+    console.error(err);
+    setStatus("Failed to load errors");
+    return [];
+  }
+}
+
+// Transform API data to dashboard format
+function transformErrorData(apiErrors) {
+  return apiErrors.map((apiError, index) => {
+    return {
+      id: index + 1,
+      title: apiError.title || "Unknown Error",
+      category: apiError.category || "Other",
+      severity: mapSeverityLevel(apiError.severity) || "Medium",
+      errorCode: apiError.id || `ERR_${String(index + 1).padStart(3, "0")}`,
+      timestamp:
+        formatTimestamp(apiError.timestamp) || new Date().toLocaleString(),
+      stackTrace: formatStackTrace(apiError.content, apiError.description),
+      solution: apiError.recommendation || "No solution available",
+      fixSteps: generateFixSteps(apiError.recommendation),
+      slackThread: apiError.slackThreadSuggestion?.url || null,
+      impact: apiError.impact || "Unknown impact",
+      lineNumber: apiError.lineNumber || 0,
+    };
+  });
+}
+
+// Map severity levels from API format to UI format
+function mapSeverityLevel(apiSeverity) {
+  const severityMapping = {
+    CRITICAL: "Critical",
+    HIGH: "High",
+    MEDIUM: "Medium",
+    LOW: "Low",
+    UNKNOWN: "Medium", // Default unknown to medium
+  };
+  return severityMapping[apiSeverity] || "Medium";
+}
+
+// Format timestamp from API
+function formatTimestamp(timestamp) {
+  if (!timestamp) return new Date().toLocaleString();
+
+  try {
+    const date = new Date(timestamp);
+    return date.toLocaleString();
+  } catch (e) {
+    return timestamp; // Return as-is if parsing fails
+  }
+}
+
+// Format stack trace from content and description
+function formatStackTrace(content, description) {
+  let stackTrace = `Description: ${description}\n\n`;
+
+  try {
+    const parsed = JSON.parse(content);
+    if (parsed.log && parsed.log.dynamic_data) {
+      stackTrace += `Stack Trace:\n${parsed.log.dynamic_data}`;
+    } else if (parsed.log && parsed.log.kind) {
+      stackTrace += `Log Kind: ${parsed.log.kind}\n`;
+      if (parsed.data) {
+        stackTrace += `Request Data: ${JSON.stringify(parsed.data, null, 2)}`;
+      }
+    } else {
+      stackTrace += `Raw Content:\n${content}`;
+    }
+  } catch (e) {
+    // If JSON parsing fails, include raw content
+    stackTrace += `Raw Content:\n${content}`;
+  }
+
+  return stackTrace;
+}
+
+// Generate fix steps from recommendation
+function generateFixSteps(recommendation) {
+  if (!recommendation) return ["Investigate the issue manually"];
+
+  const steps = recommendation
+    .split(".")
+    .filter((step) => step.trim().length > 0);
+  return steps.length > 0 ? steps.map((step) => step.trim()) : [recommendation];
+}
+
+// Set status message
+function setStatus(msg) {
+  console.log("Status:", msg);
+  // You could add a status element to the HTML if needed
+}
+
+// Load errors from API and render them
+async function loadAndRenderErrors() {
+  const apiErrors = await fetchErrors();
+  errors = transformErrorData(apiErrors);
+  loadedErrors = [...errors];
+  renderAllErrors();
+  hasLoadedErrors = true;
+}
 
 // Render all error cards
 function renderAllErrors() {
@@ -40,6 +155,10 @@ function createErrorCard(error) {
     return colors[severity] || "#6b7280";
   }
 
+  const slackHtml = error.slackThread
+    ? `<a class="slack-thread-link" href="${error.slackThread}" target="_blank" rel="noopener noreferrer">Slack Thread</a>`
+    : '<span class="slack-thread-missing">No Slack thread</span>';
+
   card.innerHTML = `
     <div class="card-main">
       <div class="card-header">
@@ -58,17 +177,51 @@ function createErrorCard(error) {
           <span class="card-meta-value">${error.errorCode}</span>
         </div>
       </div>
+      <div class="card-recommendation">
+        <span class="rec-label">Recommendation:</span>
+        <span class="rec-text">${escapeHtmlShort(error.solution)}</span>
+      </div>
+      <div class="card-slack">
+        ${slackHtml}
+      </div>
     </div>
     <div class="card-footer">
       <span class="card-footer-item">${error.timestamp}</span>
+      <button class="btn btn-small view-details-btn" type="button" aria-label="View details for ${escapeAttr(
+        error.title
+      )}">Details</button>
     </div>
   `;
 
-  card.addEventListener("click", () => {
+  // Attach listener only to button
+  const detailsBtn = card.querySelector(".view-details-btn");
+  detailsBtn.addEventListener("click", (e) => {
+    e.stopPropagation();
     openErrorModal(error);
   });
 
   return card;
+}
+
+// Escape for short inline text (truncate if very long)
+function escapeHtmlShort(str) {
+  if (!str) return "";
+  const cleaned = str
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#39;");
+  return cleaned.length > 180 ? cleaned.slice(0, 177) + "…" : cleaned;
+}
+
+function escapeAttr(str) {
+  if (!str) return "";
+  return str
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;");
 }
 
 // Setup filter dropdown listener
@@ -231,14 +384,24 @@ function runAIAnalysis() {
   const btn = document.getElementById("run-analysis-btn");
   const originalText = btn.innerHTML;
 
+  // Prevent double-trigger while already analyzing
+  if (btn.disabled) return;
+
   // Show loading state
   btn.disabled = true;
   btn.innerHTML = '<span class="btn-icon">⏳</span>Analyzing...';
 
-  // Simulate analysis delay (2 seconds)
-  setTimeout(() => {
+  // Reload data from API after analysis delay
+  setTimeout(async () => {
+    await loadAndRenderErrors();
+
     btn.disabled = false;
-    btn.innerHTML = originalText;
+    // After first run, keep original button text or change to Re-run Analysis
+    if (!hasLoadedErrors) {
+      btn.innerHTML = originalText;
+    } else {
+      btn.innerHTML = '<span class="btn-icon">🔄</span>Re-run AI Analysis';
+    }
 
     // Reset filter to show all errors
     document.getElementById("category-filter").value = "all";
@@ -252,10 +415,29 @@ function runAIAnalysis() {
 function setupEnvironmentSelector() {
   const envSelector = document.getElementById("env-selector");
 
-  envSelector.addEventListener("change", (e) => {
+  envSelector.addEventListener("change", async (e) => {
     const selectedEnv = e.target.value;
-    console.log("[v0] Environment changed to:", selectedEnv);
-    // In production, this would fetch logs for the selected environment
+    console.log("Environment changed to:", selectedEnv);
+
+    if (hasLoadedErrors) {
+      // Only reload if analysis has already been run
+      setStatus(`Loading errors for ${selectedEnv} environment...`);
+      await loadAndRenderErrors();
+    } else {
+      setStatus("Run AI Analysis to load errors for the selected environment.");
+    }
+
     alert(`Environment switched to: ${selectedEnv.toUpperCase()}`);
   });
+}
+
+// Show placeholder content before first analysis run
+function showPreAnalysisPlaceholder() {
+  const logsList = document.getElementById("logs-list");
+  if (!logsList) return;
+  logsList.innerHTML = `<div class="pre-analysis-placeholder">
+    <p>No analysis run yet.</p>
+    <p>Click <strong>Run AI Analysis</strong> to generate the latest error insights.</p>
+  </div>`;
+  updateErrorCount(0);
 }

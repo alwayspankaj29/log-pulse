@@ -1,38 +1,52 @@
-const path = require('path');
-const express = require('express');
+const path = require("path");
+const express = require("express");
 const app = express();
 const PORT = process.env.PORT || 3000;
 
 // Middleware
 app.use(express.json());
-app.use(express.static('public'));
+app.use(express.static("public"));
 
 // Helpers
-const { getAllErrors, getErrorById } = require('./helpers/errors');
+const { getAllErrors, getErrorById } = require("./helpers/errors");
 
-// Root route - serve the frontend UI (index.html)
-app.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname, 'public', 'index.html'));
+// Serve dashboard as primary UI
+app.get("/dashboard", (req, res) => {
+  res.sendFile(
+    path.join(__dirname, "public", "pages", "dashboard", "index.html")
+  );
 });
 
-// Serve dashboard at /dashboard
-app.get('/dashboard', (req, res) => {
-  res.sendFile(path.join(__dirname, 'public', 'pages', 'dashboard', 'index.html'));
+// Optionally redirect root to /dashboard (choose ONE: redirect or 404)
+app.get("/", (req, res) => {
+  // Uncomment next line to redirect instead of 404
+  // return res.redirect('/dashboard');
+  res.status(404).json({ message: "Root path removed. Use /dashboard" });
 });
 
 // GET all errors
-app.get('/api/errors', (req, res) => {
-  const data = getAllErrors();
-  res.json({ count: data.length, errors: data });
+app.get("/api/errors", async (req, res) => {
+  try {
+    const data = await getAllErrors();
+    res.json({ count: data.length, errors: data });
+  } catch (error) {
+    console.error("Error fetching errors:", error);
+    res.status(500).json({ message: "Internal server error", errors: [] });
+  }
 });
 
 // Optional: GET single error by id (future use by frontend)
-app.get('/api/errors/:id', (req, res) => {
-  const error = getErrorById(req.params.id);
-  if (!error) {
-    return res.status(404).json({ message: 'Error not found' });
+app.get("/api/errors/:id", async (req, res) => {
+  try {
+    const error = await getErrorById(req.params.id);
+    if (!error) {
+      return res.status(404).json({ message: "Error not found" });
+    }
+    res.json(error);
+  } catch (error) {
+    console.error("Error fetching error by ID:", error);
+    res.status(500).json({ message: "Internal server error" });
   }
-  res.json(error);
 });
 
 app.listen(PORT, () => {

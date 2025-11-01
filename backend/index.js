@@ -1,38 +1,73 @@
-const fs = require('fs');
-const readline = require('readline');
+const fs = require("fs");
+const readline = require("readline");
 
 // Gemini API configuration
-const GEMINI_API_KEY = process.env.GEMINI_API_KEY || 'AIzaSyCQ2xk-qCTDceveVcao7hzBeO3GNo700ZU';
-const GEMINI_API_URL = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent';
+const GEMINI_API_KEY =
+  process.env.GEMINI_API_KEY || "AIzaSyCQ2xk-qCTDceveVcao7hzBeO3GNo700ZU";
+const GEMINI_API_URL =
+  "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent";
 
 // Predefined error categories
 const ERROR_CATEGORIES = [
-  'Database',
-  'Network',
-  'Authentication',
-  'Authorization',
-  'Configuration',
-  'Memory',
-  'Disk',
-  'API',
-  'Timeout',
-  'Connection',
-  'Thread',
-  'Concurrency',
-  'Performance',
-  'Deployment',
-  'Security',
-  'Validation',
-  'Syntax',
-  'Runtime',
-  'Initialization',
-  'Resource Exhaustion',
-  'Other'
+  "Database",
+  "Network",
+  "Authentication",
+  "Authorization",
+  "Configuration",
+  "Memory",
+  "Disk",
+  "API",
+  "Timeout",
+  "Connection",
+  "Thread",
+  "Concurrency",
+  "Performance",
+  "Deployment",
+  "Security",
+  "Validation",
+  "Syntax",
+  "Runtime",
+  "Initialization",
+  "Resource Exhaustion",
+  "Other",
 ];
 
 // Predefined severity levels
-const SEVERITY_LEVELS = ['CRITICAL', 'HIGH', 'MEDIUM', 'LOW'];
+const SEVERITY_LEVELS = ["CRITICAL", "HIGH", "MEDIUM", "LOW"];
 
+// Predefined suggested actions
+const SUGGESTED_ACTIONS = [
+  "Restart service immediately",
+  "Check database connection",
+  "Review network configuration",
+  "Verify authentication credentials",
+  "Update security permissions",
+  "Monitor memory usage",
+  "Free up disk space",
+  "Review API endpoints",
+  "Increase timeout limits",
+  "Check connection pools",
+  "Optimize thread usage",
+  "Review concurrent processes",
+  "Optimize performance bottlenecks",
+  "Verify deployment configuration",
+  "Review security settings",
+  "Validate input parameters",
+  "Fix syntax errors",
+  "Debug runtime issues",
+  "Check initialization scripts",
+  "Scale resources",
+  "Contact system administrator",
+  "Review logs for patterns",
+  "Update configuration files",
+  "Restart dependent services",
+  "Clear cache",
+  "Update system dependencies",
+  "Monitor system health",
+  "Schedule maintenance window",
+  "Review error handling",
+  "Manual investigation required",
+];
 
 // Error patterns using regex
 const ERROR_PATTERNS = [
@@ -47,12 +82,12 @@ const ERROR_PATTERNS = [
   /emergency/i,
   /alert/i,
   /stack trace/i,
-  /"level"\s*:\s*"(ERROR|WARN|FATAL|CRITICAL)"/i
+  /"level"\s*:\s*"(ERROR|WARN|FATAL|CRITICAL)"/i,
 ];
 
 // Check if a log line contains an error
 function isError(line) {
-  return ERROR_PATTERNS.some(pattern => pattern.test(line));
+  return ERROR_PATTERNS.some((pattern) => pattern.test(line));
 }
 
 // Extract timestamp from log line
@@ -72,29 +107,29 @@ async function parseLogFile(logFilePath) {
     const fileStream = fs.createReadStream(logFilePath);
     const rl = readline.createInterface({
       input: fileStream,
-      crlfDelay: Infinity
+      crlfDelay: Infinity,
     });
 
     const errors = [];
     let lineNumber = 0;
 
-    rl.on('line', (line) => {
+    rl.on("line", (line) => {
       lineNumber++;
       if (isError(line)) {
         errors.push({
           lineNumber,
           content: line,
-          timestamp: extractTimestamp(line)
+          timestamp: extractTimestamp(line),
         });
       }
     });
 
-    rl.on('close', () => {
+    rl.on("close", () => {
       console.log(`✅ Parsing complete. Found ${errors.length} errors.`);
       resolve(errors);
     });
 
-    rl.on('error', (err) => {
+    rl.on("error", (err) => {
       reject(err);
     });
   });
@@ -106,70 +141,86 @@ async function analyzeError(error) {
     const prompt = `You are an expert system administrator analyzing log errors. Provide concise, actionable analysis.
 
 Analyze this log error and provide:
-1. Severity rating - MUST be one of: ${SEVERITY_LEVELS.join(', ')}
-2. Error category - MUST be one of: ${ERROR_CATEGORIES.join(', ')}
+1. Severity rating - MUST be one of: ${SEVERITY_LEVELS.join(", ")}
+2. Error category - MUST be one of: ${ERROR_CATEGORIES.join(", ")}
 3. Brief description of the issue
 4. Potential impact
-5. Suggested action
+5. Suggested action - MUST be one of: ${SUGGESTED_ACTIONS.join(", ")}
 
 Log entry:
 ${error.content}
 
 Respond ONLY with valid JSON format with keys: severity, category, description, impact, suggestedAction
-IMPORTANT: Use ONLY the predefined categories and severity levels listed above.`;
+IMPORTANT: Use ONLY the predefined categories, severity levels, and suggested actions listed above.`;
 
     // Call Gemini API using fetch
     const response = await fetch(GEMINI_API_URL, {
-      method: 'POST',
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json',
-        'x-goog-api-key': GEMINI_API_KEY
+        "Content-Type": "application/json",
+        "x-goog-api-key": GEMINI_API_KEY,
       },
       body: JSON.stringify({
         contents: [
           {
             parts: [
               {
-                text: prompt
-              }
-            ]
-          }
-        ]
-      })
+                text: prompt,
+              },
+            ],
+          },
+        ],
+      }),
     });
 
     if (!response.ok) {
-      throw new Error(`API request failed: ${response.status} ${response.statusText}`);
+      throw new Error(
+        `API request failed: ${response.status} ${response.statusText}`
+      );
     }
 
     const data = await response.json();
     const text = data.candidates[0].content.parts[0].text;
-    
+
     // Extract JSON from response (remove markdown code blocks if present)
     let jsonText = text.trim();
-    if (jsonText.startsWith('```json')) {
-      jsonText = jsonText.replace(/```json\n?/g, '').replace(/```\n?/g, '');
-    } else if (jsonText.startsWith('```')) {
-      jsonText = jsonText.replace(/```\n?/g, '');
+    if (jsonText.startsWith("```json")) {
+      jsonText = jsonText.replace(/```json\n?/g, "").replace(/```\n?/g, "");
+    } else if (jsonText.startsWith("```")) {
+      jsonText = jsonText.replace(/```\n?/g, "");
     }
-    
+
     const analysis = JSON.parse(jsonText);
 
     // Validate and normalize severity
-    let severity = (analysis.severity || '').toUpperCase();
+    let severity = (analysis.severity || "").toUpperCase();
     if (!SEVERITY_LEVELS.includes(severity)) {
-      severity = 'MEDIUM'; // Default fallback
+      severity = "MEDIUM"; // Default fallback
     }
 
     // Validate and normalize category
-    let category = analysis.category || 'Other';
+    let category = analysis.category || "Other";
     if (!ERROR_CATEGORIES.includes(category)) {
       // Try to find closest match
-      const match = ERROR_CATEGORIES.find(cat => 
-        category.toLowerCase().includes(cat.toLowerCase()) || 
-        cat.toLowerCase().includes(category.toLowerCase())
+      const match = ERROR_CATEGORIES.find(
+        (cat) =>
+          category.toLowerCase().includes(cat.toLowerCase()) ||
+          cat.toLowerCase().includes(category.toLowerCase())
       );
-      category = match || 'Other';
+      category = match || "Other";
+    }
+
+    // Validate and normalize suggested action
+    let suggestedAction =
+      analysis.suggestedAction || "Manual investigation required";
+    if (!SUGGESTED_ACTIONS.includes(suggestedAction)) {
+      // Try to find closest match
+      const match = SUGGESTED_ACTIONS.find(
+        (action) =>
+          action.toLowerCase().includes(suggestedAction.toLowerCase()) ||
+          suggestedAction.toLowerCase().includes(action.toLowerCase())
+      );
+      suggestedAction = match || "Manual investigation required";
     }
 
     return {
@@ -177,22 +228,22 @@ IMPORTANT: Use ONLY the predefined categories and severity levels listed above.`
       analysis: {
         severity: severity,
         category: category,
-        description: analysis.description || 'No description available',
-        impact: analysis.impact || 'Unknown impact',
-        suggestedAction: analysis.suggestedAction || 'No suggestion available'
-      }
+        description: analysis.description || "No description available",
+        impact: analysis.impact || "Unknown impact",
+        suggestedAction: suggestedAction,
+      },
     };
   } catch (err) {
     console.error(`❌ Error analyzing log entry: ${err.message}`);
     return {
       ...error,
       analysis: {
-        severity: 'UNKNOWN',
-        category: 'Other',
-        description: 'AI analysis failed',
-        impact: 'Unable to determine',
-        suggestedAction: 'Manual review required'
-      }
+        severity: "UNKNOWN",
+        category: "Other",
+        description: "AI analysis failed",
+        impact: "Unable to determine",
+        suggestedAction: "Manual investigation required",
+      },
     };
   }
 }
@@ -200,7 +251,7 @@ IMPORTANT: Use ONLY the predefined categories and severity levels listed above.`
 // Analyze all errors with AI in batches
 async function analyzeErrors(errors) {
   if (errors.length === 0) {
-    console.log('⚠️  No errors to analyze.');
+    console.log("⚠️  No errors to analyze.");
     return [];
   }
 
@@ -212,7 +263,7 @@ async function analyzeErrors(errors) {
   for (let i = 0; i < errors.length; i += batchSize) {
     const batch = errors.slice(i, i + batchSize);
     const batchResults = await Promise.all(
-      batch.map(error => analyzeError(error))
+      batch.map((error) => analyzeError(error))
     );
     analyzedErrors.push(...batchResults);
   }
@@ -241,13 +292,13 @@ function countByCategory(errors) {
 // Get icon for severity level
 function getSeverityIcon(severity) {
   const icons = {
-    CRITICAL: '🔴',
-    HIGH: '🟠',
-    MEDIUM: '🟡',
-    LOW: '🟢',
-    UNKNOWN: '⚪'
+    CRITICAL: "🔴",
+    HIGH: "🟠",
+    MEDIUM: "🟡",
+    LOW: "🟢",
+    UNKNOWN: "⚪",
   };
-  return icons[severity] || '⚪';
+  return icons[severity] || "⚪";
 }
 
 // Generate report
@@ -256,12 +307,20 @@ function generateReport(analyzedErrors) {
     summary: {
       totalErrors: analyzedErrors.length,
       severityCounts: countBySeverity(analyzedErrors),
-      categoryCounts: countByCategory(analyzedErrors)
+      categoryCounts: countByCategory(analyzedErrors),
     },
     errors: analyzedErrors.sort((a, b) => {
-      const severityOrder = { CRITICAL: 0, HIGH: 1, MEDIUM: 2, LOW: 3, UNKNOWN: 4 };
-      return severityOrder[a.analysis.severity] - severityOrder[b.analysis.severity];
-    })
+      const severityOrder = {
+        CRITICAL: 0,
+        HIGH: 1,
+        MEDIUM: 2,
+        LOW: 3,
+        UNKNOWN: 4,
+      };
+      return (
+        severityOrder[a.analysis.severity] - severityOrder[b.analysis.severity]
+      );
+    }),
   };
 
   return report;
@@ -269,14 +328,14 @@ function generateReport(analyzedErrors) {
 
 // Display report in console
 function displayReport(report) {
-  console.log('\n' + '='.repeat(80));
-  console.log('📊 ERROR ANALYSIS REPORT');
-  console.log('='.repeat(80));
+  console.log("\n" + "=".repeat(80));
+  console.log("📊 ERROR ANALYSIS REPORT");
+  console.log("=".repeat(80));
 
-  console.log('\n📈 SUMMARY:');
+  console.log("\n📈 SUMMARY:");
   console.log(`   Total Errors: ${report.summary.totalErrors}`);
-  
-  console.log('\n🔥 Severity Breakdown:');
+
+  console.log("\n🔥 Severity Breakdown:");
   Object.entries(report.summary.severityCounts)
     .sort(([a], [b]) => {
       const order = { CRITICAL: 0, HIGH: 1, MEDIUM: 2, LOW: 3, UNKNOWN: 4 };
@@ -287,53 +346,56 @@ function displayReport(report) {
       console.log(`   ${icon} ${severity}: ${count}`);
     });
 
-  console.log('\n📁 Category Breakdown:');
+  console.log("\n📁 Category Breakdown:");
   Object.entries(report.summary.categoryCounts)
     .sort(([, a], [, b]) => b - a)
     .forEach(([category, count]) => {
       console.log(`   • ${category}: ${count}`);
     });
 
-  console.log('\n' + '='.repeat(80));
-  console.log('🔍 DETAILED ERROR ANALYSIS');
-  console.log('='.repeat(80));
+  console.log("\n" + "=".repeat(80));
+  console.log("🔍 DETAILED ERROR ANALYSIS");
+  console.log("=".repeat(80));
 
   report.errors.forEach((error, index) => {
     const icon = getSeverityIcon(error.analysis.severity);
     console.log(`\n${icon} ERROR #${index + 1} [Line ${error.lineNumber}]`);
     console.log(`   Severity: ${error.analysis.severity}`);
     console.log(`   Category: ${error.analysis.category}`);
-    console.log(`   Timestamp: ${error.timestamp || 'N/A'}`);
+    console.log(`   Timestamp: ${error.timestamp || "N/A"}`);
     console.log(`   Description: ${error.analysis.description}`);
     console.log(`   Impact: ${error.analysis.impact}`);
     console.log(`   Suggested Action: ${error.analysis.suggestedAction}`);
     console.log(`   Log Content: ${error.content.substring(0, 150)}...`);
-    console.log('-'.repeat(80));
+    console.log("-".repeat(80));
   });
 }
 
 // Save report to JSON file
-function saveReport(report, filename = 'error_report.json') {
+function saveReport(report, filename = "error_report.json") {
   fs.writeFileSync(filename, JSON.stringify(report, null, 2));
   console.log(`\n💾 Report saved to ${filename}`);
 }
 
 // Main execution
 async function main() {
-  const logFilePath = process.argv[2] || './production.log';
+  const logFilePath = process.argv[2] || "./production.log";
 
-  console.log('🚀 Starting Log Error Analysis...');
+  console.log("🚀 Starting Log Error Analysis...");
   console.log(`📁 Log file: ${logFilePath}`);
   console.log(`\n📋 Using Predefined Categories:`);
-  console.log(`   ${ERROR_CATEGORIES.join(', ')}`);
-  console.log(`\n🔥 Severity Levels: ${SEVERITY_LEVELS.join(', ')}\n`);
+  console.log(`   ${ERROR_CATEGORIES.join(", ")}`);
+  console.log(`\n🔥 Severity Levels: ${SEVERITY_LEVELS.join(", ")}`);
+  console.log(
+    `\n💡 Available Actions: ${SUGGESTED_ACTIONS.length} predefined actions\n`
+  );
 
   try {
     // Step 1: Parse log file and extract errors using regex
     const errors = await parseLogFile(logFilePath);
 
     if (errors.length === 0) {
-      console.log('✅ No errors found in the log file.');
+      console.log("✅ No errors found in the log file.");
       return;
     }
 
@@ -347,9 +409,9 @@ async function main() {
     // Step 4: Save report to file
     saveReport(report);
 
-    console.log('\n✅ Analysis complete!');
+    console.log("\n✅ Analysis complete!");
   } catch (error) {
-    console.error('❌ Error during analysis:', error.message);
+    console.error("❌ Error during analysis:", error.message);
     process.exit(1);
   }
 }

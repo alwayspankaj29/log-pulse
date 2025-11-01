@@ -42,14 +42,11 @@
           <label for="category-filter">Filter by Category:</label>
           <select id="category-filter" class="category-select">
             <option value="all">All Categories</option>
+            <option value="Thread">Thread</option>
             <option value="Database">Database</option>
-            <option value="CSS">CSS</option>
-            <option value="Memory">Memory Leak</option>
-            <option value="API">API</option>
-            <option value="Runtime">Runtime</option>
-            <option value="Connection">Connection</option>
-            <option value="Authentication">Authentication</option>
-            <option value="Performance">Performance</option>
+            <option value="Initialization">Initialization</option>
+            <option value="Configuration">Configuration</option>
+            <option value="Other">Other</option>
           </select>
         </div>
       </section>
@@ -58,7 +55,7 @@
       <section class="logs-section">
         <div class="logs-header">
           <h2>Error Logs</h2>
-          <span class="error-count" id="error-count">8 errors</span>
+          <span class="error-count" id="error-count">Loading...</span>
         </div>
         <div class="logs-list" id="logs-list">
           <!-- Error cards will be rendered here by JavaScript in Phase 2 -->
@@ -140,7 +137,6 @@
       </div>
     </dialog>
 
-    <script src="/js/dummy-data.js"></script>
     <script src="/js/utils.js"></script>
     <script src="/pages/dashboard/dashboard.js"></script>
   </body>
