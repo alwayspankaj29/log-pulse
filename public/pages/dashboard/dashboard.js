@@ -50,6 +50,7 @@ function transformErrorData(apiErrors) {
       timestamp:
         formatTimestamp(apiError.timestamp) || new Date().toLocaleString(),
       stackTrace: formatStackTrace(apiError.content, apiError.description),
+      description: apiError.description,
       solution: apiError.recommendation || "No solution available",
       fixSteps: generateFixSteps(apiError.recommendation),
       slackThread: apiError.slackThreadSuggestion || null,
@@ -158,8 +159,8 @@ function renderErrorTable(data) {
         <span class="severity-badge severity-${error.severity.toLowerCase()}">${error.severity}</span>
       </td>
       <td class="cell-category">${error.category}</td>
+      <td class="cell-description">${escapeHtmlShort(error.description)}</td>
       <td class="cell-slack">${renderSlackCell(error)}</td>
-      <td class="cell-description">${escapeHtmlShort(error.solution || error.title)}</td>
     `;
 
     tr.addEventListener("click", () => toggleRowExpansion(error));
@@ -177,37 +178,34 @@ function renderErrorTable(data) {
 // Create individual error card element
 // Insert an expansion row beneath the clicked row
 function insertExpansionRow(error, tbody) {
+  console.log("Inserting expansion row for error:", error);
   const expansion = document.createElement("tr");
   expansion.className = "expansion-row";
   expansion.dataset.expansionFor = error.id;
   const actionsList = error.fixSteps
-    .map((step, i) => `<li><span class="step-index">${i + 1}.</span> ${escapeAttr(step)}</li>`) // numbered
+    .map((step) => `<li>${escapeAttr(step)}</li>`) // numbered
     .join("");
   expansion.innerHTML = `
     <td colspan="5">
       <div class="expansion-wrapper">
         <div class="expansion-header">
           <div class="exp-metrics">
-            <span class="exp-badge severity-${error.severity.toLowerCase()}">Severity: ${error.severity}</span>
-            <span class="exp-badge">Category: ${error.category}</span>
-            <span class="exp-badge">Line #: ${error.lineNumber}</span>
+            <span class="exp-badge severity-${error.severity.toLowerCase()}"></span>
+            <span class="exp-badge"></span>
+            <span class="exp-badge"></span>
           </div>
           <button class="close-expansion" aria-label="Collapse details">×</button>
         </div>
         <div class="expansion-section">
-          <h4>Description</h4>
-          <p>${escapeAttr(error.title)}</p>
-        </div>
-        <div class="expansion-section">
-          <h4>Impact</h4>
+          <h4>Impact Area</h4>
           <p>${escapeAttr(error.impact)}</p>
         </div>
         <div class="expansion-section">
-          <h4>Suggested Actions</h4>
+          <h4>Recommendations</h4>
           <ol class="actions-list">${actionsList}</ol>
         </div>
         <div class="expansion-section">
-          <h4>Stack Trace / Content</h4>
+          <h4>Log Trace</h4>
           <pre class="exp-stack">${escapeAttr(error.stackTrace)}</pre>
         </div>
         <div class="expansion-footer">
@@ -361,7 +359,7 @@ function runAIAnalysis() {
     renderErrorTable(errors);
 
     // Show success message
-    alert("AI Analysis complete! Logs updated and ready for review.");
+    // alert("AI Analysis complete! Logs updated and ready for review.");
   }, 2000);
 }
 
