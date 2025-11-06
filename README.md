@@ -38,11 +38,16 @@ This repo exposes an API that returns analysed log error objects generated from 
    ```
 3. Open the dashboard UI:
    ```
-   http://localhost:6000/dashboard
+   http://localhost:3000/dashboard
    ```
 4. Call the API directly (example):
    ```sh
-   curl http://localhost:6000/api/errors | jq
+   curl http://localhost:3000/api/errors | jq
+   ```
+5. Generate error_report.json manually:
+   ```sh
+   node index.js devos2.log
+   # or node index.js devos.log
    ```
 
 ---
@@ -72,7 +77,7 @@ log-pulse/
 
 | Variable | Purpose     | Default |
 | -------- | ----------- | ------- |
-| `PORT`   | Server port | `6000`  |
+| `PORT`   | Server port | `3000`  |
 
 ---
 
