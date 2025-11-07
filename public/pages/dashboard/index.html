@@ -52,7 +52,7 @@
       <section class="filter-section">
         <div class="filter-wrapper">
           <label for="category-filter">Filter by error types:</label>
-          <select id="category-filter" class="category-select">
+          <select id="category-filter" class="category-select filter-select">
             <option value="all">All</option>
             <option value="Syntax">Syntax</option>
             <option value="Templating">Templating</option>
@@ -62,6 +62,16 @@
             <option value="Performance">Performance</option>
             <option value="Configuration">Configuration</option>
             <option value="Unknown">Unknown</option>
+          </select>
+        </div>
+        <div class="filter-wrapper">
+          <label for="severity-filter">Filter by severity:</label>
+          <select id="severity-filter" class="severity-select filter-select">
+            <option value="all">All</option>
+            <option value="critical">Critical</option>
+            <option value="high">High</option>
+            <option value="medium">Medium</option>
+            <option value="low">Low</option>
           </select>
         </div>
       </section>

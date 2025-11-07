@@ -12,6 +12,7 @@ let errors = [];
 let loadedErrors = [];
 let hasLoadedErrors = false; // track if analysis has been run
 let expandedRowId = null; // currently expanded error id
+let filteredErrorsView = []; // errors after applying active filters
 
 // Fetch errors from API
 async function fetchErrors() {
@@ -129,9 +130,8 @@ async function loadAndRenderErrors() {
   const apiErrors = await fetchErrors();
   errors = transformErrorData(apiErrors);
   loadedErrors = [...errors];
-  renderSummary(errors);
-  renderErrorTable(errors);
   hasLoadedErrors = true;
+  applyFilters();
   // Reveal summary section on first successful load
   const summarySection = document.getElementById('summary-section');
   if (summarySection) summarySection.classList.remove('hidden');
@@ -218,7 +218,7 @@ function insertExpansionRow(error, tbody) {
   closeBtn.addEventListener("click", (e) => {
     e.stopPropagation();
     expandedRowId = null;
-    renderErrorTable(errors);
+    renderErrorTable(filteredErrorsView);
   });
   tbody.appendChild(expansion);
   // After inserting, adjust height
@@ -245,7 +245,7 @@ function toggleRowExpansion(error) {
   } else {
     expandedRowId = error.id; // expand new one
   }
-  renderErrorTable(errors);
+  renderErrorTable(filteredErrorsView);
   // height recalculated in insertExpansionRow
 }
 
@@ -272,23 +272,39 @@ function escapeAttr(str) {
 
 // Setup filter dropdown listener
 function setupFilterListener() {
-  const filterSelect = document.getElementById("category-filter");
-  if (!filterSelect) return;
-  filterSelect.addEventListener("change", (e) => {
-    const selectedCategory = e.target.value;
-    filterErrors(selectedCategory);
-  });
+  const categorySelect = document.getElementById("category-filter");
+  const severitySelect = document.getElementById("severity-filter");
+
+  if (categorySelect) {
+    categorySelect.addEventListener("change", applyFilters);
+  }
+
+  if (severitySelect) {
+    severitySelect.addEventListener("change", applyFilters);
+  }
 }
 
-// Filter errors by category
-function filterErrors(category) {
-  const filteredErrors =
-    category === "all"
-      ? errors
-      : errors.filter((error) => error.category === category);
+// Apply category and severity filters to the error list
+function applyFilters() {
+  const categorySelect = document.getElementById("category-filter");
+  const severitySelect = document.getElementById("severity-filter");
+  const selectedCategory = categorySelect ? categorySelect.value : "all";
+  const selectedSeverity = severitySelect ? severitySelect.value : "all";
+
+  filteredErrorsView = errors.filter((error) => {
+    const categoryMatches =
+      selectedCategory === "all" || error.category === selectedCategory;
+    const normalizedSeverity = error.severity
+      ? error.severity.toLowerCase()
+      : "";
+    const severityMatches =
+      selectedSeverity === "all" || normalizedSeverity === selectedSeverity;
+    return categoryMatches && severityMatches;
+  });
+
   expandedRowId = null; // reset expansion when filtering
-  renderSummary(filteredErrors);
-  renderErrorTable(filteredErrors);
+  renderSummary(filteredErrorsView);
+  renderErrorTable(filteredErrorsView);
 }
 
 // Update error count display
@@ -354,9 +370,11 @@ function runAIAnalysis() {
     }
 
     // Reset filter to show all errors
-    document.getElementById("category-filter").value = "all";
-    renderSummary(errors);
-    renderErrorTable(errors);
+    const categoryFilter = document.getElementById("category-filter");
+    if (categoryFilter) categoryFilter.value = "all";
+    const severityFilter = document.getElementById("severity-filter");
+    if (severityFilter) severityFilter.value = "all";
+    applyFilters();
 
     // Show success message
     // alert("AI Analysis complete! Logs updated and ready for review.");

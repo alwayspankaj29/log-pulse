@@ -83,8 +83,10 @@
   margin-bottom: var(--spacing-md);
   margin-left: 0.7rem;
   display: flex;
-  justify-content: space-between;
   align-items: center;
+  gap: var(--spacing-md);
+  flex-wrap: wrap;
+  justify-content: flex-start;
 }
 
 .filter-wrapper {
@@ -98,9 +100,33 @@
   font-weight: 500;
   white-space: nowrap;
 }
+.filter-select {
+  padding: var(--spacing-sm) var(--spacing-md);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  background-color: var(--bg-secondary);
+  color: var(--text-primary);
+  font-size: 14px;
+  cursor: pointer;
+  transition: all var(--transition-base);
+}
+
+.filter-select:hover {
+  border-color: var(--primary);
+}
+
+.filter-select:focus {
+  outline: none;
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.1);
+}
 
 .category-select {
   min-width: 200px;
+}
+
+.severity-select {
+  min-width: 160px;
 }
 
 /* Added button styles for "Run AI Analysis" button */
