@@ -113,10 +113,11 @@ function formatStackTrace(content, description) {
 function generateFixSteps(recommendation) {
   if (!recommendation) return ["Investigate the issue manually"];
 
-  const steps = recommendation
-    .split(".")
-    .filter((step) => step.trim().length > 0);
-  return steps.length > 0 ? steps.map((step) => step.trim()) : [recommendation];
+  // const steps = recommendation
+  //   .split(".")
+  //   .filter((step) => step.trim().length > 0);
+  // return steps.length > 0 ? steps.map((step) => step.trim()) : [recommendation];
+  return [recommendation];
 }
 
 // Set status message
