@@ -3,7 +3,7 @@ const readline = require("readline");
 
 // Gemini API configuration
 const GEMINI_API_KEY =
-  process.env.GEMINI_API_KEY || "AIzaSyCQ2xk-qCTDceveVcao7hzBeO3GNo700ZU";
+  process.env.GEMINI_API_KEY || "AIzaSyAX6EBm7koC6wGFJAhIol4USdUFh_oESWg";
 const GEMINI_API_URL =
   "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent";
 
@@ -308,13 +308,12 @@ Analyze this log error and provide:
 4. Brief description of the issue
 5. Potential impact
 6. Suggested action - will be automatically matched from the subcategory
-7. Slack thread URL - PLease include slack thread from ${ERROR_CATEGORIES.find(cat => cat.category === category)?.slackThread}
 
 Log entry:
 ${error.content}
 
-Respond ONLY with valid JSON format with keys: severity, category, subcategory, description, impact, slackthread
-IMPORTANT: Use ONLY the predefined categories and severity levels. The slackthread field is optional.`;
+Respond ONLY with valid JSON format with keys: severity, category, subcategory, description, impact
+IMPORTANT: Use ONLY the predefined categories and severity levels.`;
 
     // Call Gemini API using fetch
     const response = await fetch(GEMINI_API_URL, {
