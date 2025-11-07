@@ -2,181 +2,26 @@
   "summary": {
     "totalErrors": 16,
     "severityCounts": {
-      "HIGH": 7,
-      "MEDIUM": 5,
-      "CRITICAL": 4
+      "UNKNOWN": 16
     },
     "categoryCounts": {
-      "Templating": 12,
-      "Syntax": 2,
-      "Routing": 1,
-      "Configuration": 1
+      "Other": 16
     }
   },
   "errors": [
-    {
-      "lineNumber": 673,
-      "content": "{\"data\":{\"request\":{\"method\":\"GET\",\"endpoint\":\"/pricing\",\"ip\":\"34.233.8.51\",\"id\":\"8fb9c0245eebd039b39ea9d9e7b3d087\",\"user_id\":null,\"params\":\"\\\"{\\\\\\\"controller\\\\\\\":\\\\\\\"accounts\\\\\\\",\\\\\\\"action\\\\\\\":\\\\\\\"pricing\\\\\\\"}\\\"\",\"controller\":\"AccountsController\",\"action\":\"pricing\"},\"response\":{\"status\":null,\"duration\":null,\"view_rendering_duration\":null,\"db_query_duration\":null}},\"log\":{\"dynamic_data\":\"  \\nNoMethodError (undefined method `id' for nil:NilClass):\\n  \\napp/helpers/pricing_helper.rb:865:in `get_plan_cta'\\napp/helpers/pricing_helper.rb:476:in `get_plan_hash'\\napp/helpers/pricing_helper.rb:309:in `block in get_plans_details'\\napp/helpers/pricing_helper.rb:303:in `each'\\napp/helpers/pricing_helper.rb:303:in `get_plans_details'\\napp/helpers/pricing_helper.rb:97:in `block in get_product_plans'\\napp/helpers/pricing_helper.rb:93:in `each'\\napp/helpers/pricing_helper.rb:93:in `get_product_plans'\\napp/helpers/pricing_helper.rb:10:in `get_product_pricing_details'\\napp/controllers/accounts_controller.rb:5267:in `block in pricing'\\napp/controllers/accounts_controller.rb:5266:in `pricing'\\nlib/minute_based_throttle.rb:162:in `call'\\nlib/minute_based_throttle.rb:162:in `call'\\nconfig/initializers/oink_override.rb:9:in `call'\\nlib/too_many_redirects_middleware.rb:11:in `call'\\nlib/json_parse_errors.rb:10:in `call'\\nlib/bad_multipart_form_data_handler.rb:21:in `call'\\nlib/request_timestamp.rb:14:in `_call'\\nlib/request_timestamp.rb:9:in `call'\\nlib/extract_ip_middleware.rb:31:in `call'\",\"id\":\"112-3657-2-1741085503.839-devos2.bsstag.com\",\"level\":\"FATAL\"},\"meta\":{\"format\":{\"category\":\"server\",\"version\":5},\"host\":\"rails-live-56c697fb46-27q9j\",\"timestamp\":\"2025-03-04T10:51:44.553+00:00\"}}",
-      "timestamp": "2025-03-04T10:51:44.553+00:00",
-      "analysis": {
-        "severity": "CRITICAL",
-        "category": "Syntax",
-        "subcategory": "Nil Reference Error",
-        "description": "The application encountered a `NoMethodError` while trying to call the `id` method on a nil object within the `pricing_helper.rb` file. This occurred during the rendering of the `/pricing` endpoint, specifically in the `get_plan_cta` method.",
-        "impact": "Users attempting to access the `/pricing` page will encounter an error, preventing them from viewing pricing information and potentially disrupting the user experience and conversion rates.",
-        "suggestedAction": "Add nil checks or guard clauses to prevent accessing undefined objects",
-        "slackThread": "N/A",
-        "relevantUrls": "N/A"
-      }
-    },
-    {
-      "lineNumber": 676,
-      "content": "{\"data\":{\"request\":{\"method\":\"GET\",\"endpoint\":\"/accounts/subscriptions\",\"ip\":\"34.233.8.51\",\"id\":\"9c3d291dbab6f9b3689532463d2c085d\",\"user_id\":73,\"params\":\"\\\"{\\\\\\\"controller\\\\\\\":\\\\\\\"accounts\\\\\\\",\\\\\\\"action\\\\\\\":\\\\\\\"subscriptions\\\\\\\"}\\\"\",\"controller\":\"AccountsController\",\"action\":\"subscriptions\"},\"response\":{\"status\":null,\"duration\":null,\"view_rendering_duration\":null,\"db_query_duration\":null}},\"log\":{\"dynamic_data\":\"  \\nActionView::Template::Error (undefined method `price' for nil:NilClass):\\n    56: \\n    57: \\u003cscript\\u003e\\n    58:   var accessibilityTestMonitorPlans = {\\n    59:     plans: \\u003c%= get_dropdown_options_for_a11y_test_and_monoitor.to_json.html_safe %\\u003e,\\n    60:     currentPlan: \\u003c%= get_current_active_plan_by_plan_name(ACCESSIBILITY_TESTING_TEST_AND_MONITOR, @combined_pricing_version).to_json.html_safe %\\u003e\\n    61:   }\\n    62: \\u003c/script\\u003e\\n  \\napp/helpers/account_helper.rb:768:in `block in get_dropdown_options_for_a11y_test_and_monoitor'\\napp/helpers/account_helper.rb:765:in `each'\\napp/helpers/account_helper.rb:765:in `get_dropdown_options_for_a11y_test_and_monoitor'\\napp/views/pricing/_all_pricing.html.erb:59\\napp/views/accounts/subscriptions.html.erb:13\\napp/controllers/accounts_controller.rb:513:in `subscriptions'\\nlib/request_proxy_middleware.rb:191:in `call'\\nlib/minute_based_throttle.rb:162:in `call'\\nlib/minute_based_throttle.rb:162:in `call'\\nconfig/initializers/oink_override.rb:9:in `call'\\nlib/too_many_redirects_middleware.rb:18:in `call'\\nlib/json_parse_errors.rb:10:in `call'\\nlib/bad_multipart_form_data_handler.rb:21:in `call'\\nlib/request_timestamp.rb:14:in `_call'\\nlib/request_timestamp.rb:9:in `call'\\nlib/extract_ip_middleware.rb:31:in `call'\",\"id\":\"451-6429-1-1753362177.149-k8s-mobile.bsstag.com\",\"level\":\"FATAL\"},\"meta\":{\"format\":{\"category\":\"server\",\"version\":5},\"host\":\"rails-live-57f4bffc85-qdb2k\",\"timestamp\":\"2025-07-24T13:02:59.350+00:00\"}}",
-      "timestamp": "2025-07-24T13:02:59.350+00:00",
-      "analysis": {
-        "severity": "CRITICAL",
-        "category": "Templating",
-        "subcategory": "Template Rendering Error",
-        "description": "A `price` method is being called on a nil object within a view template (`app/views/pricing/_all_pricing.html.erb:59`) when rendering the subscriptions page. This is likely due to missing or incorrect data being passed to the view, specifically within the `get_dropdown_options_for_a11y_test_and_monoitor` helper.",
-        "impact": "The application is throwing a FATAL error and failing to render the subscriptions page for user 73. This prevents the user from accessing subscription information and managing their account.",
-        "suggestedAction": "Check partial and layout templates for missing variables or incorrect locals",
-        "slackThread": "Ensure all required data is being passed to the view, particularly the data used by the `get_dropdown_options_for_a11y_test_and_monoitor` helper. Add a nil check before calling the `price` method to prevent the error. Investigate why the expected data is nil in this instance.",
-        "relevantUrls": "N/A"
-      }
-    },
-    {
-      "lineNumber": 679,
-      "content": "{\"data\":{\"request\":{\"method\":\"GET\",\"endpoint\":\"/dashboard\",\"ip\":\"149.255.36.2\",\"id\":\"f6351d7813fc2ec35d073f19432ece65\",\"user_id\":44163,\"params\":\"\\\"{\\\\\\\"controller\\\\\\\":\\\\\\\"user\\\\\\\",\\\\\\\"action\\\\\\\":\\\\\\\"dashboard\\\\\\\"}\\\"\",\"controller\":\"UserController\",\"action\":\"dashboard\"},\"response\":{\"status\":null,\"duration\":null,\"view_rendering_duration\":null,\"db_query_duration\":null}},\"log\":{\"dynamic_data\":\"  \\nNoMethodError (undefined method `get_growth_allocation_value' for nil:NilClass):\\n  \\napp/helpers/growth_helper.rb:1966:in `testing_toolkit_adoption_enabled?'\\napp/models/user_property.rb:989:in `get_live_for_teams_setup_checklist'\\napp/helpers/application_helper.rb:3954:in `show_live_checklist_for_paid_user?'\\napp/controllers/user_controller.rb:660:in `dashboard'\\nlib/request_proxy_middleware.rb:191:in `call'\\nlib/minute_based_throttle.rb:162:in `call'\\nlib/minute_based_throttle.rb:162:in `call'\\nconfig/initializers/oink_override.rb:9:in `call'\\nlib/too_many_redirects_middleware.rb:18:in `call'\\nlib/json_parse_errors.rb:10:in `call'\\nlib/bad_multipart_form_data_handler.rb:21:in `call'\\nlib/request_timestamp.rb:14:in `_call'\\nlib/request_timestamp.rb:9:in `call'\\nlib/extract_ip_middleware.rb:31:in `call'\",\"id\":\"440-5756-1-1758026969.935-live-k8s-mobile.bsstag.com\",\"level\":\"FATAL\"},\"meta\":{\"format\":{\"category\":\"server\",\"version\":5},\"host\":\"rails-live-6d6d876d4c-bk865\",\"timestamp\":\"2025-09-16T12:49:30.180+00:00\"}}",
-      "timestamp": "2025-09-16T12:49:30.180+00:00",
-      "analysis": {
-        "severity": "CRITICAL",
-        "category": "Syntax",
-        "subcategory": "Nil Reference Error",
-        "description": "A `NoMethodError` occurred while rendering the user dashboard, specifically when calling `get_growth_allocation_value` on a nil object within the `growth_helper.rb` file. This likely means that a variable expected to hold an object is unexpectedly nil.",
-        "impact": "The user dashboard failed to load, preventing the user (user_id: 44163) from accessing essential information and functionality. This could lead to user frustration and potential loss of revenue if the dashboard provides access to key services.",
-        "suggestedAction": "Add nil checks or guard clauses to prevent accessing undefined objects",
-        "slackThread": "N/A",
-        "relevantUrls": "N/A"
-      }
-    },
-    {
-      "lineNumber": 681,
-      "content": "{\"data\":{\"request\":{\"method\":\"GET\",\"endpoint\":\"/accounts/subscriptions\",\"ip\":\"34.233.8.51\",\"id\":\"8c74169fb841515ccdfbb91971f9398d\",\"user_id\":891,\"params\":\"\\\"{\\\\\\\"product\\\\\\\":\\\\\\\"live\\\\\\\",\\\\\\\"controller\\\\\\\":\\\\\\\"accounts\\\\\\\",\\\\\\\"action\\\\\\\":\\\\\\\"subscriptions\\\\\\\"}\\\"\",\"controller\":\"AccountsController\",\"action\":\"subscriptions\"},\"response\":{\"status\":null,\"duration\":null,\"view_rendering_duration\":null,\"db_query_duration\":null}},\"log\":{\"dynamic_data\":\"  \\nActionView::Template::Error (undefined method `monthly_price' for nil:NilClass):\\n    354:                 display_price = (default_plan.monthly_price / plan.user_count).ceil if plan.user_count\\n    355:               end\\n    356:             else\\n    357:               display_price = default_plan.monthly_price\\n    358:             end\\n    359:           %\\u003e\\n    360:           \\u003cspan class=\\\"amount\\\"\\u003e\\u003c%= formatted_price_based_on_discount(display_price) %\\u003e\\u003c/span\\u003e\\n  \\napp/views/static/molecules/accounts/_pricing_plan_block.html.erb:357\\napp/views/static/molecules/accounts/_pricing_plan.html.erb:110\\napp/views/static/habitats/accounts/_plans_blocks_with_sidenav.html.erb:2561\\napp/views/static/molecules/_pricing_container.html.erb:36\\napp/views/static/habitats/accounts/_pricing_plan_tables.html.erb:60\\napp/helpers/application_helper.rb:2784:in `cache_if'\\napp/views/static/habitats/accounts/_pricing_plan_tables.html.erb:53\\napp/views/shared/_combined_pricing.html.erb:49\\napp/views/shared/_all_pricing.html.erb:5\\napp/views/accounts/subscriptions.html.erb:12\\napp/controllers/accounts_controller.rb:336:in `subscriptions'\\nlib/minute_based_throttle.rb:157:in `call'\\nlib/minute_based_throttle.rb:157:in `call'\\nconfig/initializers/oink_override.rb:9:in `call'\\nlib/json_parse_errors.rb:10:in `call'\\nlib/bad_multipart_form_data_handler.rb:21:in `call'\\nlib/request_timestamp.rb:14:in `_call'\\nlib/request_timestamp.rb:9:in `call'\\nlib/extract_ip_middleware.rb:31:in `call'\",\"id\":\"214-357-1-1721986203.270-stagcentral.bsstag.com\",\"level\":\"FATAL\"},\"meta\":{\"format\":{\"category\":\"server\",\"version\":5},\"host\":\"rails-live-74b8cbf4d9-dxpff\",\"timestamp\":\"2024-07-26T09:30:06.375+00:00\"}}",
-      "timestamp": "2024-07-26T09:30:06.375+00:00",
-      "analysis": {
-        "severity": "CRITICAL",
-        "category": "Templating",
-        "subcategory": "Template Rendering Error",
-        "description": "The application is crashing because it is trying to call the `monthly_price` method on a nil object (`default_plan`). This occurred while rendering the `app/views/static/molecules/accounts/_pricing_plan_block.html.erb` template.",
-        "impact": "Users accessing the `/accounts/subscriptions` endpoint will experience a server error, preventing them from viewing subscription information.",
-        "suggestedAction": "Check partial and layout templates for missing variables or incorrect locals",
-        "slackThread": "N/A",
-        "relevantUrls": "N/A"
-      }
-    },
     {
       "lineNumber": 668,
       "content": "{\"data\":{\"request\":{\"method\":\"GET\",\"endpoint\":\"/accounts/subscriptions\",\"ip\":\"34.233.8.51\",\"id\":\"9c3d291dbab6f9b3689532463d2c085d\",\"user_id\":73,\"params\":\"\\\"{\\\\\\\"controller\\\\\\\":\\\\\\\"accounts\\\\\\\",\\\\\\\"action\\\\\\\":\\\\\\\"subscriptions\\\\\\\"}\\\"\",\"controller\":\"AccountsController\",\"action\":\"subscriptions\"},\"response\":{\"status\":null,\"duration\":null,\"view_rendering_duration\":null,\"db_query_duration\":null}},\"log\":{\"dynamic_data\":\"Error Start Debug [\\\"app/models/concerns/plan_helper.rb:1820:in `to_s'\\\", \\\"app/models/concerns/plan_helper.rb:1820:in `get_formatted_user_count_test_observability'\\\", \\\"app/models/concerns/plan_helper.rb:1724:in `formatted_user_count'\\\", \\\"app/helpers/account_helper.rb:657:in `block in get_dropdown_options'\\\", \\\"app/helpers/account_helper.rb:657:in `map'\\\", \\\"app/helpers/account_helper.rb:657:in `get_dropdown_options'\\\", \\\"app/views/shared/_combined_pricing_plan_details.html.erb:96\\\", \\\"app/views/static/molecules/accounts/_pricing_plan_block.html.erb:404\\\", \\\"app/views/static/molecules/accounts/_pricing_plan.html.erb:109\\\", \\\"app/views/static/habitats/accounts/_plans_blocks_with_sidenav.html.erb:1945\\\", \\\"app/views/static/molecules/_pricing_container.html.erb:27\\\", \\\"app/views/static/habitats/accounts/_pricing_plan_tables.html.erb:58\\\", \\\"app/helpers/application_helper.rb:2655:in `cache_if'\\\", \\\"app/views/static/habitats/accounts/_pricing_plan_tables.html.erb:51\\\", \\\"app/views/shared/_combined_pricing.html.erb:50\\\", \\\"app/views/shared/_all_pricing.html.erb:5\\\", \\\"app/views/accounts/subscriptions.html.erb:12\\\", \\\"app/controllers/accounts_controller.rb:330:in `subscriptions'\\\", \\\"lib/minute_based_throttle.rb:157:in `call'\\\", \\\"lib/minute_based_throttle.rb:157:in `call'\\\", \\\"config/initializers/oink_override.rb:9:in `call'\\\", \\\"lib/json_parse_errors.rb:10:in `call'\\\", \\\"lib/bad_multipart_form_data_handler.rb:21:in `call'\\\", \\\"lib/request_timestamp.rb:14:in `_call'\\\", \\\"lib/request_timestamp.rb:9:in `call'\\\", \\\"lib/extract_ip_middleware.rb:31:in `call'\\\"]\",\"id\":\"233-947-3-1714638124.630-devhst.bsstag.com\",\"level\":\"ERROR\"},\"meta\":{\"format\":{\"category\":\"server\",\"version\":5},\"host\":\"rails-live-864d95cd6-vv7dd\",\"timestamp\":\"2024-05-02T08:22:11.847+00:00\"}}",
       "timestamp": "2024-05-02T08:22:11.847+00:00",
       "analysis": {
-        "severity": "HIGH",
-        "category": "Templating",
-        "subcategory": "Template Rendering Error",
-        "description": "Error occurred while rendering the `accounts/subscriptions` template. The error originates from `app/models/concerns/plan_helper.rb` within the `to_s` method. Stack trace indicates the issue is related to displaying pricing plan details and user counts.",
-        "impact": "Users may experience errors or incomplete information when accessing the subscriptions page. This can prevent users from viewing or managing their subscriptions, potentially leading to revenue loss or customer dissatisfaction.",
-        "suggestedAction": "Check partial and layout templates for missing variables or incorrect locals",
-        "slackThread": "N/A",
-        "relevantUrls": "N/A"
-      }
-    },
-    {
-      "lineNumber": 675,
-      "content": "{\"data\":{\"request\":{\"method\":\"GET\",\"endpoint\":\"/accounts/subscriptions\",\"ip\":\"34.233.8.51\",\"id\":\"9c3d291dbab6f9b3689532463d2c085d\",\"user_id\":73,\"params\":\"\\\"{\\\\\\\"controller\\\\\\\":\\\\\\\"accounts\\\\\\\",\\\\\\\"action\\\\\\\":\\\\\\\"subscriptions\\\\\\\"}\\\"\",\"controller\":\"AccountsController\",\"action\":\"subscriptions\"},\"response\":{\"status\":null,\"duration\":null,\"view_rendering_duration\":null,\"db_query_duration\":null}},\"log\":{\"dynamic_data\":\" \\nActionView::Template::Error (wrong number of arguments (given 1, expected 0)):\\n  93:  \\u003c% if render_dropdown %\\u003e\\n  94:   \\u003cdiv class=\\\"plan-dropdown-section\\\"\\u003e\\n  95:    \\u003cdiv class=\\\"plan-dropdown\\\"\\u003e\\n  96:     \\u003c%= select_tag \\\"\\\", options_for_select(get_dropdown_options(select_tag_options_array, plan_name, dropdown_text_version, @cart, @combined_pricing_version), plan_to_highlight_id), common_select_params %\\u003e\\n  97:    \\u003c/div\\u003e\\n  98:    \\u003c%= render :partial =\\u003e 'shared/combined_parallel_test_tool_tip', :locals =\\u003e { :monthly_plan =\\u003e monthly_plan , :only_icon =\\u003e parallel_tooltip_only_icon} if !hide_parallels_tooltip %\\u003e\\n  99:   \\u003c/div\\u003e\\n \\napp/models/concerns/plan_helper.rb:1820:in `to_s'\\napp/models/concerns/plan_helper.rb:1820:in `get_formatted_user_count_test_observability'\\napp/models/concerns/plan_helper.rb:1724:in `formatted_user_count'\\napp/helpers/account_helper.rb:657:in `block in get_dropdown_options'\\napp/helpers/account_helper.rb:657:in `map'\\napp/helpers/account_helper.rb:657:in `get_dropdown_options'\\napp/views/shared/_combined_pricing_plan_details.html.erb:96\\napp/views/static/molecules/accounts/_pricing_plan_block.html.erb:404\\napp/views/static/molecules/accounts/_pricing_plan.html.erb:109\\napp/views/static/habitats/accounts/_plans_blocks_with_sidenav.html.erb:1945\\napp/views/static/molecules/_pricing_container.html.erb:27\\napp/views/static/habitats/accounts/_pricing_plan_tables.html.erb:58\\napp/helpers/application_helper.rb:2655:in `cache_if'\\napp/views/static/habitats/accounts/_pricing_plan_tables.html.erb:51\\napp/views/shared/_combined_pricing.html.erb:50\\napp/views/shared/_all_pricing.html.erb:5\\napp/views/accounts/subscriptions.html.erb:12\\napp/controllers/accounts_controller.rb:330:in `subscriptions'\\nlib/minute_based_throttle.rb:157:in `call'\\nlib/minute_based_throttle.rb:157:in `call'\\nconfig/initializers/oink_override.rb:9:in `call'\\nlib/json_parse_errors.rb:10:in `call'\\nlib/bad_multipart_form_data_handler.rb:21:in `call'\\nlib/request_timestamp.rb:14:in `_call'\\nlib/request_timestamp.rb:9:in `call'\\nlib/extract_ip_middleware.rb:31:in `call'\",\"id\":\"233-947-3-1714638124.630-devhst.bsstag.com\",\"level\":\"FATAL\"},\"meta\":{\"format\":{\"category\":\"server\",\"version\":5},\"host\":\"rails-live-864d95cd6-vv7dd\",\"timestamp\":\"2024-05-02T08:22:11.886+00:00\"}}",
-      "timestamp": "2024-05-02T08:22:11.886+00:00",
-      "analysis": {
-        "severity": "HIGH",
-        "category": "Templating",
-        "subcategory": "Template Rendering Error",
-        "description": "A template rendering error occurred due to an incorrect number of arguments being passed to the `to_s` method within the `plan_helper.rb` model. Specifically, the method expected 0 arguments but received 1.",
-        "impact": "The accounts/subscriptions page failed to render, impacting user experience and potentially preventing users from managing their subscriptions.",
-        "suggestedAction": "Check partial and layout templates for missing variables or incorrect locals",
-        "slackThread": "N/A",
-        "relevantUrls": "N/A"
-      }
-    },
-    {
-      "lineNumber": 677,
-      "content": "{\"data\":{\"request\":{\"method\":\"GET\",\"endpoint\":\"/accounts/subscriptions\",\"ip\":\"34.233.8.51\",\"id\":\"9c3d291dbab6f9b3689532463d2c085d\",\"user_id\":73,\"params\":\"\\\"{\\\\\\\"controller\\\\\\\":\\\\\\\"accounts\\\\\\\",\\\\\\\"action\\\\\\\":\\\\\\\"subscriptions\\\\\\\"}\\\"\",\"controller\":\"AccountsController\",\"action\":\"subscriptions\"},\"response\":{\"status\":null,\"duration\":null,\"view_rendering_duration\":null,\"db_query_duration\":null}},\"log\":{\"dynamic_data\":\" \\nActionView::Template::Error (wrong number of arguments (given 1, expected 0)):\\n  93:  \\u003c% if render_dropdown %\\u003e\\n  94:   \\u003cdiv class=\\\"plan-dropdown-section\\\"\\u003e\\n  95:    \\u003cdiv class=\\\"plan-dropdown\\\"\\u003e\\n  96:     \\u003c%= select_tag \\\"\\\", options_for_select(get_dropdown_options(select_tag_options_array, plan_name, dropdown_text_version, @cart, @combined_pricing_version), plan_to_highlight_id), common_select_params %\\u003e\\n  97:    \\u003c/div\\u003e\\n  98:    \\u003c%= render :partial =\\u003e 'shared/combined_parallel_test_tool_tip', :locals =\\u003e { :monthly_plan =\\u003e monthly_plan , :only_icon =\\u003e parallel_tooltip_only_icon} if !hide_parallels_tooltip %\\u003e\\n  99:   \\u003c/div\\u003e\\n \\napp/models/concerns/plan_helper.rb:1820:in `to_s'\\napp/models/concerns/plan_helper.rb:1820:in `get_formatted_user_count_test_observability'\\napp/models/concerns/plan_helper.rb:1724:in `formatted_user_count'\\napp/helpers/account_helper.rb:657:in `block in get_dropdown_options'\\napp/helpers/account_helper.rb:657:in `map'\\napp/helpers/account_helper.rb:657:in `get_dropdown_options'\\napp/views/shared/_combined_pricing_plan_details.html.erb:96\\napp/views/static/molecules/accounts/_pricing_plan_block.html.erb:404\\napp/views/static/molecules/accounts/_pricing_plan.html.erb:109\\napp/views/static/habitats/accounts/_plans_blocks_with_sidenav.html.erb:1945\\napp/views/static/molecules/_pricing_container.html.erb:27\\napp/views/static/habitats/accounts/_pricing_plan_tables.html.erb:58\\napp/helpers/application_helper.rb:2655:in `cache_if'\\napp/views/static/habitats/accounts/_pricing_plan_tables.html.erb:51\\napp/views/shared/_combined_pricing.html.erb:50\\napp/views/shared/_all_pricing.html.erb:5\\napp/views/accounts/subscriptions.html.erb:12\\napp/controllers/accounts_controller.rb:330:in `subscriptions'\\nlib/minute_based_throttle.rb:157:in `call'\\nlib/minute_based_throttle.rb:157:in `call'\\nconfig/initializers/oink_override.rb:9:in `call'\\nlib/json_parse_errors.rb:10:in `call'\\nlib/bad_multipart_form_data_handler.rb:21:in `call'\\nlib/request_timestamp.rb:14:in `_call'\\nlib/request_timestamp.rb:9:in `call'\\nlib/extract_ip_middleware.rb:31:in `call'\",\"id\":\"233-947-3-1714638124.630-devhst.bsstag.com\",\"level\":\"FATAL\"},\"meta\":{\"format\":{\"category\":\"server\",\"version\":5},\"host\":\"rails-live-864d95cd6-vv7dd\",\"timestamp\":\"2024-05-02T08:22:11.886+00:00\"}}",
-      "timestamp": "2024-05-02T08:22:11.886+00:00",
-      "analysis": {
-        "severity": "HIGH",
-        "category": "Templating",
-        "subcategory": "Template Rendering Error",
-        "description": "Template rendering error due to an incorrect number of arguments passed to a method. Specifically, `get_formatted_user_count_test_observability` in `plan_helper.rb` is called with one argument when it expects zero.",
-        "impact": "The page at /accounts/subscriptions will fail to render, disrupting the user experience for users attempting to view or manage their subscriptions.",
-        "suggestedAction": "Check partial and layout templates for missing variables or incorrect locals",
-        "slackThread": "N/A",
-        "relevantUrls": "N/A"
-      }
-    },
-    {
-      "lineNumber": 678,
-      "content": "{\"data\":{\"request\":{\"method\":\"GET\",\"endpoint\":\"/accounts/subscriptions\",\"ip\":\"34.233.8.51\",\"id\":\"26260ff8cbab5d13c4fd089a62953ce2\",\"user_id\":2,\"params\":\"\\\"{\\\\\\\"product\\\\\\\":\\\\\\\"live\\\\\\\",\\\\\\\"controller\\\\\\\":\\\\\\\"accounts\\\\\\\",\\\\\\\"action\\\\\\\":\\\\\\\"subscriptions\\\\\\\"}\\\"\",\"controller\":\"AccountsController\",\"action\":\"subscriptions\"},\"response\":{\"status\":null,\"duration\":null,\"view_rendering_duration\":null,\"db_query_duration\":null}},\"log\":{\"dynamic_data\":\"  \\nActionView::Template::Error (undefined method `price' for nil:NilClass):\\n    94:   \\u003c% if render_dropdown %\\u003e\\n    95:     \\u003cdiv class=\\\"plan-dropdown-section\\\"\\u003e\\n    96:       \\u003cdiv class=\\\"plan-dropdown\\\"\\u003e\\n    97:         \\u003c%= select_tag \\\"\\\", options_for_select(get_dropdown_options(select_tag_options_array, plan_name, dropdown_text_version, @cart, @combined_pricing_version), plan_to_highlight_id), common_select_params %\\u003e\\n    98:       \\u003c/div\\u003e\\n    99:       \\u003c%= render :partial =\\u003e 'shared/combined_parallel_test_tool_tip', :locals =\\u003e { :monthly_plan =\\u003e monthly_plan , :only_icon =\\u003e parallel_tooltip_only_icon} if !hide_parallels_tooltip %\\u003e\\n   100:     \\u003c/div\\u003e\\n  \\napp/helpers/account_helper.rb:597:in `user_count_dropdown_html_options'\\napp/helpers/account_helper.rb:664:in `block in get_dropdown_options'\\napp/helpers/account_helper.rb:664:in `map'\\napp/helpers/account_helper.rb:664:in `get_dropdown_options'\\napp/views/shared/_combined_pricing_plan_details.html.erb:97\\napp/views/static/molecules/accounts/_pricing_plan_block.html.erb:405\\napp/views/static/molecules/accounts/_pricing_plan.html.erb:110\\napp/views/static/habitats/accounts/_plans_blocks_with_sidenav.html.erb:2559\\napp/views/static/molecules/_pricing_container.html.erb:27\\napp/views/static/habitats/accounts/_pricing_plan_tables.html.erb:60\\napp/helpers/application_helper.rb:2819:in `cache_if'\\napp/views/static/habitats/accounts/_pricing_plan_tables.html.erb:53\\napp/views/shared/_combined_pricing.html.erb:49\\napp/views/shared/_all_pricing.html.erb:5\\napp/views/accounts/subscriptions.html.erb:12\\napp/controllers/accounts_controller.rb:477:in `subscriptions'\\nlib/minute_based_throttle.rb:157:in `call'\\nlib/minute_based_throttle.rb:157:in `call'\\nconfig/initializers/oink_override.rb:9:in `call'\\nlib/json_parse_errors.rb:10:in `call'\\nlib/bad_multipart_form_data_handler.rb:21:in `call'\\nlib/request_timestamp.rb:14:in `_call'\\nlib/request_timestamp.rb:9:in `call'\\nlib/extract_ip_middleware.rb:31:in `call'\",\"id\":\"381-709-1-1723106823.932-stagcentral.bsstag.com\",\"level\":\"FATAL\"},\"meta\":{\"format\":{\"category\":\"server\",\"version\":5},\"host\":\"rails-live-7975d6558c-77nm2\",\"timestamp\":\"2024-08-08T08:47:11.827+00:00\"}}",
-      "timestamp": "2024-08-08T08:47:11.827+00:00",
-      "analysis": {
-        "severity": "HIGH",
-        "category": "Templating",
-        "subcategory": "Template Rendering Error",
-        "description": "The template is trying to access the `price` method on a nil object. This is happening within the `_combined_pricing_plan_details.html.erb` template, specifically within a dropdown rendering.",
-        "impact": "The page `/accounts/subscriptions` is failing to render, resulting in a broken user experience.",
-        "suggestedAction": "Check partial and layout templates for missing variables or incorrect locals",
-        "slackThread": "N/A",
-        "relevantUrls": "N/A"
-      }
-    },
-    {
-      "lineNumber": 680,
-      "content": "{\"data\":{\"request\":{\"method\":\"POST\",\"endpoint\":\"/users\",\"ip\":\"34.233.8.51\",\"id\":\"ddd003502472f0f8e780178bc1aab0ed\",\"user_id\":null,\"params\":\"\\\"{\\\\\\\"utf8\\\\\\\":\\\\\\\"✓\\\\\\\",\\\\\\\"authenticity_token\\\\\\\":\\\\\\\"[FILTERED]\\\\\\\",\\\\\\\"user\\\\\\\":{\\\\\\\"full_name\\\\\\\":\\\\\\\"Automationbs\\\\\\\",\\\\\\\"email\\\\\\\":\\\\\\\"[FILTERED]\\\\\\\",\\\\\\\"password\\\\\\\":\\\\\\\"[FILTERED]\\\\\\\",\\\\\\\"user_persona_role\\\\\\\":\\\\\\\"\\\\\\\",\\\\\\\"user_persona_source\\\\\\\":\\\\\\\"\\\\\\\",\\\\\\\"group_attributes\\\\\\\":{\\\\\\\"name\\\\\\\":\\\\\\\"\\\\\\\"}},\\\\\\\"terms_and_conditions\\\\\\\":\\\\\\\"1\\\\\\\",\\\\\\\"utm_source\\\\\\\":\\\\\\\"undefined\\\\\\\",\\\\\\\"utm_medium\\\\\\\":\\\\\\\"undefined\\\\\\\",\\\\\\\"utm_campaign\\\\\\\":\\\\\\\"undefined\\\\\\\",\\\\\\\"utm_platform\\\\\\\":\\\\\\\"undefined\\\\\\\",\\\\\\\"utm_content\\\\\\\":\\\\\\\"undefined\\\\\\\",\\\\\\\"utm_campaigncode\\\\\\\":\\\\\\\"undefined\\\\\\\",\\\\\\\"utm_term\\\\\\\":\\\\\\\"undefined\\\\\\\",\\\\\\\"product_exploration_referrer\\\\\\\":\\\\\\\"https://stagqd.bsstag.com/\\\\\\\",\\\\\\\"gaCID\\\\\\\":\\\\\\\"1914395736.1734457436\\\\\\\",\\\\\\\"gaLoaded\\\\\\\":\\\\\\\"ga_not_found\\\\\\\",\\\\\\\"v4_auth_form\\\\\\\":\\\\\\\"[FILTERED]\\\\\\\",\\\\\\\"controller\\\\\\\":\\\\\\\"users/registrations\\\\\\\",\\\\\\\"action\\\\\\\":\\\\\\\"create\\\\\\\"}\\\"\",\"controller\":\"Users::RegistrationsController\",\"action\":\"create\"},\"response\":{\"status\":null,\"duration\":null,\"view_rendering_duration\":null,\"db_query_duration\":null}},\"log\":{\"dynamic_data\":\" \\nActiveRecord::RecordNotFound (Couldn't find Plan with 'id'=1027):\\n \\napp/models/group.rb:278:in `get_bug_capture_default_group_plan'\\napp/models/group.rb:285:in `create_bug_capture_group_plan_and_assign_plan'\\napp/models/user.rb:313:in `_save'\\napp/controllers/users/registrations_controller.rb:495:in `create'\\nlib/minute_based_throttle.rb:162:in `call'\\nlib/minute_based_throttle.rb:162:in `call'\\nconfig/initializers/oink_override.rb:9:in `call'\\nlib/json_parse_errors.rb:10:in `call'\\nlib/bad_multipart_form_data_handler.rb:21:in `call'\\nlib/request_timestamp.rb:14:in `_call'\\nlib/request_timestamp.rb:9:in `call'\\nlib/extract_ip_middleware.rb:31:in `call'\",\"id\":\"110-123-1-1734457787.783-stagqd.bsstag.com\",\"level\":\"FATAL\"},\"meta\":{\"format\":{\"category\":\"server\",\"version\":5},\"host\":\"rails-live-756bc6dc7f-mrms4\",\"timestamp\":\"2024-12-17T17:49:48.802+00:00\"}}",
-      "timestamp": "2024-12-17T17:49:48.802+00:00",
-      "analysis": {
-        "severity": "HIGH",
-        "category": "Routing",
-        "subcategory": "Action Dispatch Error",
-        "description": "User registration failed due to a missing Plan record with id 1027. The application was unable to find the specified plan when creating a new user's group plan.",
-        "impact": "New user registration is failing, potentially blocking new users from accessing the application. This could also affect downstream processes dependent on successful user creation.",
-        "suggestedAction": "Verify controller actions exist and match routes",
-        "slackThread": "N/A",
-        "relevantUrls": "N/A"
-      }
-    },
-    {
-      "lineNumber": 683,
-      "content": "{\"data\":{\"request\":{\"method\":\"GET\",\"endpoint\":\"/accounts/subscriptions\",\"ip\":\"34.233.8.51\",\"id\":\"592a36674278a2e5b71d203644d4d82a\",\"user_id\":1549,\"params\":\"\\\"{\\\\\\\"controller\\\\\\\":\\\\\\\"accounts\\\\\\\",\\\\\\\"action\\\\\\\":\\\\\\\"subscriptions\\\\\\\"}\\\"\",\"controller\":\"AccountsController\",\"action\":\"subscriptions\"},\"response\":{\"status\":null,\"duration\":null,\"view_rendering_duration\":null,\"db_query_duration\":null}},\"log\":{\"dynamic_data\":\"  \\nActionView::Template::Error (wrong number of arguments (given 1, expected 0)):\\n    93:   \\u003c% if render_dropdown %\\u003e\\n    94:     \\u003cdiv class=\\\"plan-dropdown-section\\\"\\u003e\\n    95:       \\u003cdiv class=\\\"plan-dropdown\\\"\\u003e\\n    96:         \\u003c%= select_tag \\\"\\\", options_for_select(get_dropdown_options(select_tag_options_array, plan_name, dropdown_text_version, @cart, @combined_pricing_version), plan_to_highlight_id), common_select_params %\\u003e\\n    97:       \\u003c/div\\u003e\\n    98:       \\u003c%= render :partial =\\u003e 'shared/combined_parallel_test_tool_tip', :locals =\\u003e { :monthly_plan =\\u003e monthly_plan , :only_icon =\\u003e parallel_tooltip_only_icon} if !hide_parallels_tooltip %\\u003e\\n    99:     \\u003c/div\\u003e\\n  \\napp/models/concerns/plan_helper.rb:1774:in `to_s'\\napp/models/concerns/plan_helper.rb:1774:in `get_formatted_user_count_test_observability'\\napp/models/concerns/plan_helper.rb:1678:in `formatted_user_count'\\napp/helpers/account_helper.rb:657:in `block in get_dropdown_options'\\napp/helpers/account_helper.rb:657:in `map'\\napp/helpers/account_helper.rb:657:in `get_dropdown_options'\\napp/views/shared/_combined_pricing_plan_details.html.erb:96\\napp/views/static/molecules/accounts/_pricing_plan_block.html.erb:398\\napp/views/static/molecules/accounts/_pricing_plan.html.erb:109\\napp/views/static/habitats/accounts/_plans_blocks_with_sidenav.html.erb:1894\\napp/views/static/molecules/_pricing_container.html.erb:25\\napp/views/static/habitats/accounts/_pricing_plan_tables.html.erb:58\\napp/helpers/application_helper.rb:2564:in `cache_if'\\napp/views/static/habitats/accounts/_pricing_plan_tables.html.erb:51\\napp/views/shared/_combined_pricing.html.erb:50\\napp/views/shared/_all_pricing.html.erb:5\\napp/views/accounts/subscriptions.html.erb:12\\napp/controllers/accounts_controller.rb:317:in `subscriptions'\\nlib/minute_based_throttle.rb:157:in `call'\\nlib/minute_based_throttle.rb:157:in `call'\\nconfig/initializers/oink_override.rb:9:in `call'\\nlib/json_parse_errors.rb:10:in `call'\\nlib/bad_multipart_form_data_handler.rb:21:in `call'\\nlib/request_timestamp.rb:14:in `_call'\\nlib/request_timestamp.rb:9:in `call'\\nlib/extract_ip_middleware.rb:31:in `call'\",\"id\":\"344-260-3-1710832555.935-pcp.bsstag.com\",\"level\":\"FATAL\"},\"meta\":{\"format\":{\"category\":\"server\",\"version\":5},\"host\":\"rails-live-6879b4fd69-vj2qd\",\"timestamp\":\"2024-03-19T07:15:59.898+00:00\"}}",
-      "timestamp": "2024-03-19T07:15:59.898+00:00",
-      "analysis": {
-        "severity": "HIGH",
-        "category": "Templating",
-        "subcategory": "Template Rendering Error",
-        "description": "A template error occurred in `_combined_pricing_plan_details.html.erb` due to an incorrect number of arguments being passed to the `to_s` method within `plan_helper.rb`. Specifically, the `get_formatted_user_count_test_observability` method is calling `to_s` with one argument when it expects none.",
-        "impact": "Users will experience errors when viewing the subscriptions page, potentially preventing them from managing their subscriptions or viewing pricing information. This affects the `accounts/subscriptions` endpoint.",
-        "suggestedAction": "Check partial and layout templates for missing variables or incorrect locals",
-        "slackThread": "N/A",
-        "relevantUrls": "N/A"
-      }
-    },
-    {
-      "lineNumber": 686,
-      "content": "{\"data\":{\"request\":{\"method\":\"GET\",\"endpoint\":\"/accounts/subscriptions\",\"ip\":\"34.233.8.51\",\"id\":\"af7f173275f3381320c59f021be49584\",\"user_id\":695,\"params\":\"\\\"{\\\\\\\"product\\\\\\\":\\\\\\\"live\\\\\\\",\\\\\\\"controller\\\\\\\":\\\\\\\"accounts\\\\\\\",\\\\\\\"action\\\\\\\":\\\\\\\"subscriptions\\\\\\\"}\\\"\",\"controller\":\"AccountsController\",\"action\":\"subscriptions\"},\"response\":{\"status\":null,\"duration\":null,\"view_rendering_duration\":null,\"db_query_duration\":null}},\"log\":{\"dynamic_data\":\"  \\nActionView::Template::Error (wrong number of arguments (given 1, expected 0)):\\n    93:   \\u003c% if render_dropdown %\\u003e\\n    94:     \\u003cdiv class=\\\"plan-dropdown-section\\\"\\u003e\\n    95:       \\u003cdiv class=\\\"plan-dropdown\\\"\\u003e\\n    96:         \\u003c%= select_tag \\\"\\\", options_for_select(get_dropdown_options(select_tag_options_array, plan_name, dropdown_text_version, @cart, @combined_pricing_version), plan_to_highlight_id), common_select_params %\\u003e\\n    97:       \\u003c/div\\u003e\\n    98:       \\u003c%= render :partial =\\u003e 'shared/combined_parallel_test_tool_tip', :locals =\\u003e { :monthly_plan =\\u003e monthly_plan , :only_icon =\\u003e parallel_tooltip_only_icon} if !hide_parallels_tooltip %\\u003e\\n    99:     \\u003c/div\\u003e\\n  \\napp/models/concerns/plan_helper.rb:1756:in `to_s'\\napp/models/concerns/plan_helper.rb:1756:in `get_formatted_user_count_test_observability'\\napp/models/concerns/plan_helper.rb:1660:in `formatted_user_count'\\napp/helpers/account_helper.rb:657:in `block in get_dropdown_options'\\napp/helpers/account_helper.rb:657:in `map'\\napp/helpers/account_helper.rb:657:in `get_dropdown_options'\\napp/views/shared/_combined_pricing_plan_details.html.erb:96\\napp/views/static/molecules/accounts/_pricing_plan_block.html.erb:398\\napp/views/static/molecules/accounts/_pricing_plan.html.erb:109\\napp/views/static/habitats/accounts/_plans_blocks_with_sidenav.html.erb:1894\\napp/views/static/molecules/_pricing_container.html.erb:25\\napp/views/static/habitats/accounts/_pricing_plan_tables.html.erb:58\\napp/helpers/application_helper.rb:2563:in `cache_if'\\napp/views/static/habitats/accounts/_pricing_plan_tables.html.erb:51\\napp/views/shared/_combined_pricing.html.erb:50\\napp/views/shared/_all_pricing.html.erb:5\\napp/views/accounts/subscriptions.html.erb:12\\napp/controllers/accounts_controller.rb:310:in `subscriptions'\\nlib/minute_based_throttle.rb:157:in `call'\\nlib/minute_based_throttle.rb:157:in `call'\\nconfig/initializers/oink_override.rb:9:in `call'\\nlib/json_parse_errors.rb:10:in `call'\\nlib/bad_multipart_form_data_handler.rb:21:in `call'\\nlib/request_timestamp.rb:14:in `_call'\\nlib/request_timestamp.rb:9:in `call'\\nlib/extract_ip_middleware.rb:31:in `call'\",\"id\":\"237-1911-1-1710153833.218-devaccessibility.bsstag.com\",\"level\":\"FATAL\"},\"meta\":{\"format\":{\"category\":\"server\",\"version\":5},\"host\":\"rails-live-7dd4954cf5-9jftk\",\"timestamp\":\"2024-03-11T10:43:57.264+00:00\"}}",
-      "timestamp": "2024-03-11T10:43:57.264+00:00",
-      "analysis": {
-        "severity": "HIGH",
-        "category": "Templating",
-        "subcategory": "Template Rendering Error",
-        "description": "ActionView::Template::Error: wrong number of arguments (given 1, expected 0) in `plan_helper.rb:1756` during rendering of `accounts/subscriptions.html.erb`. The method `get_formatted_user_count_test_observability` is being called with an incorrect number of arguments.",
-        "impact": "The subscriptions page is failing to render, preventing users from viewing or managing their subscriptions.",
-        "suggestedAction": "Check partial and layout templates for missing variables or incorrect locals",
-        "slackThread": "N/A",
-        "relevantUrls": "N/A"
+        "severity": "UNKNOWN",
+        "category": "Other",
+        "subcategory": "Unknown Error",
+        "description": "AI analysis failed",
+        "impact": "Unable to determine",
+        "suggestedAction": "Manual investigation required",
+        "slackThread": "https://browserstack.slack.com/archives/C02D3CWKF6Y/p1741085627615559?thread_ts=1741065769.408149&cid=C02D3CWKF6Y",
+        "relevantUrls": "https://browserstack.slack.com/archives/C02D3CWKF6Y/p1741085627615559?thread_ts=1741065769.408149&cid=C02D3CWKF6Y"
       }
     },
     {
@@ -184,14 +29,29 @@
       "content": "{\"data\":{\"request\":{\"method\":\"GET\",\"endpoint\":\"/pricing\",\"ip\":\"34.233.8.51\",\"id\":\"8fb9c0245eebd039b39ea9d9e7b3d087\",\"user_id\":null,\"params\":\"\\\"{\\\\\\\"controller\\\\\\\":\\\\\\\"accounts\\\\\\\",\\\\\\\"action\\\\\\\":\\\\\\\"pricing\\\\\\\"}\\\"\",\"controller\":\"AccountsController\",\"action\":\"pricing\"},\"response\":{\"status\":null,\"duration\":null,\"view_rendering_duration\":null,\"db_query_duration\":null}},\"log\":{\"dynamic_data\":\"Error Start Debug [\\\"app/helpers/pricing_helper.rb:865:in `get_plan_cta'\\\", \\\"app/helpers/pricing_helper.rb:476:in `get_plan_hash'\\\", \\\"app/helpers/pricing_helper.rb:309:in `block in get_plans_details'\\\", \\\"app/helpers/pricing_helper.rb:303:in `each'\\\", \\\"app/helpers/pricing_helper.rb:303:in `get_plans_details'\\\", \\\"app/helpers/pricing_helper.rb:97:in `block in get_product_plans'\\\", \\\"app/helpers/pricing_helper.rb:93:in `each'\\\", \\\"app/helpers/pricing_helper.rb:93:in `get_product_plans'\\\", \\\"app/helpers/pricing_helper.rb:10:in `get_product_pricing_details'\\\", \\\"app/controllers/accounts_controller.rb:5267:in `block in pricing'\\\", \\\"app/controllers/accounts_controller.rb:5266:in `pricing'\\\", \\\"lib/minute_based_throttle.rb:162:in `call'\\\", \\\"lib/minute_based_throttle.rb:162:in `call'\\\", \\\"config/initializers/oink_override.rb:9:in `call'\\\", \\\"lib/too_many_redirects_middleware.rb:11:in `call'\\\", \\\"lib/json_parse_errors.rb:10:in `call'\\\", \\\"lib/bad_multipart_form_data_handler.rb:21:in `call'\\\", \\\"lib/request_timestamp.rb:14:in `_call'\\\", \\\"lib/request_timestamp.rb:9:in `call'\\\", \\\"lib/extract_ip_middleware.rb:31:in `call'\\\"]\",\"id\":\"112-3657-2-1741085503.839-devos2.bsstag.com\",\"level\":\"ERROR\"},\"meta\":{\"format\":{\"category\":\"server\",\"version\":5},\"host\":\"rails-live-56c697fb46-27q9j\",\"timestamp\":\"2025-03-04T10:51:44.524+00:00\"}}",
       "timestamp": "2025-03-04T10:51:44.524+00:00",
       "analysis": {
-        "severity": "MEDIUM",
-        "category": "Templating",
-        "subcategory": "Helper Method Error",
-        "description": "An error occurred while rendering the pricing page, specifically within the `pricing_helper.rb` file. The stack trace indicates issues in multiple helper methods related to plan details and CTAs.",
-        "impact": "The pricing page may not render correctly, potentially preventing users from viewing plans and making purchases. This can lead to a loss of revenue and user dissatisfaction.",
-        "suggestedAction": "Fix logic in Rails helpers or ensure helpers are properly included in the view context",
-        "slackThread": "N/A",
-        "relevantUrls": "N/A"
+        "severity": "UNKNOWN",
+        "category": "Other",
+        "subcategory": "Unknown Error",
+        "description": "AI analysis failed",
+        "impact": "Unable to determine",
+        "suggestedAction": "Manual investigation required",
+        "slackThread": "https://browserstack.slack.com/archives/C02D3CWKF6Y/p1741085627615559?thread_ts=1741065769.408149&cid=C02D3CWKF6Y",
+        "relevantUrls": "https://browserstack.slack.com/archives/C02D3CWKF6Y/p1741085627615559?thread_ts=1741065769.408149&cid=C02D3CWKF6Y"
+      }
+    },
+    {
+      "lineNumber": 673,
+      "content": "{\"data\":{\"request\":{\"method\":\"GET\",\"endpoint\":\"/pricing\",\"ip\":\"34.233.8.51\",\"id\":\"8fb9c0245eebd039b39ea9d9e7b3d087\",\"user_id\":null,\"params\":\"\\\"{\\\\\\\"controller\\\\\\\":\\\\\\\"accounts\\\\\\\",\\\\\\\"action\\\\\\\":\\\\\\\"pricing\\\\\\\"}\\\"\",\"controller\":\"AccountsController\",\"action\":\"pricing\"},\"response\":{\"status\":null,\"duration\":null,\"view_rendering_duration\":null,\"db_query_duration\":null}},\"log\":{\"dynamic_data\":\"  \\nNoMethodError (undefined method `id' for nil:NilClass):\\n  \\napp/helpers/pricing_helper.rb:865:in `get_plan_cta'\\napp/helpers/pricing_helper.rb:476:in `get_plan_hash'\\napp/helpers/pricing_helper.rb:309:in `block in get_plans_details'\\napp/helpers/pricing_helper.rb:303:in `each'\\napp/helpers/pricing_helper.rb:303:in `get_plans_details'\\napp/helpers/pricing_helper.rb:97:in `block in get_product_plans'\\napp/helpers/pricing_helper.rb:93:in `each'\\napp/helpers/pricing_helper.rb:93:in `get_product_plans'\\napp/helpers/pricing_helper.rb:10:in `get_product_pricing_details'\\napp/controllers/accounts_controller.rb:5267:in `block in pricing'\\napp/controllers/accounts_controller.rb:5266:in `pricing'\\nlib/minute_based_throttle.rb:162:in `call'\\nlib/minute_based_throttle.rb:162:in `call'\\nconfig/initializers/oink_override.rb:9:in `call'\\nlib/too_many_redirects_middleware.rb:11:in `call'\\nlib/json_parse_errors.rb:10:in `call'\\nlib/bad_multipart_form_data_handler.rb:21:in `call'\\nlib/request_timestamp.rb:14:in `_call'\\nlib/request_timestamp.rb:9:in `call'\\nlib/extract_ip_middleware.rb:31:in `call'\",\"id\":\"112-3657-2-1741085503.839-devos2.bsstag.com\",\"level\":\"FATAL\"},\"meta\":{\"format\":{\"category\":\"server\",\"version\":5},\"host\":\"rails-live-56c697fb46-27q9j\",\"timestamp\":\"2025-03-04T10:51:44.553+00:00\"}}",
+      "timestamp": "2025-03-04T10:51:44.553+00:00",
+      "analysis": {
+        "severity": "UNKNOWN",
+        "category": "Other",
+        "subcategory": "Unknown Error",
+        "description": "AI analysis failed",
+        "impact": "Unable to determine",
+        "suggestedAction": "Manual investigation required",
+        "slackThread": "https://browserstack.slack.com/archives/C02D3CWKF6Y/p1741085627615559?thread_ts=1741065769.408149&cid=C02D3CWKF6Y",
+        "relevantUrls": "https://browserstack.slack.com/archives/C02D3CWKF6Y/p1741085627615559?thread_ts=1741065769.408149&cid=C02D3CWKF6Y"
       }
     },
     {
@@ -199,14 +59,119 @@
       "content": "{\"data\":{\"request\":{\"method\":\"GET\",\"endpoint\":\"/accounts/subscriptions\",\"ip\":\"34.233.8.51\",\"id\":\"9c3d291dbab6f9b3689532463d2c085d\",\"user_id\":73,\"params\":\"\\\"{\\\\\\\"controller\\\\\\\":\\\\\\\"accounts\\\\\\\",\\\\\\\"action\\\\\\\":\\\\\\\"subscriptions\\\\\\\"}\\\"\",\"controller\":\"AccountsController\",\"action\":\"subscriptions\"},\"response\":{\"status\":null,\"duration\":null,\"view_rendering_duration\":null,\"db_query_duration\":null}},\"log\":{\"dynamic_data\":\"Error Start Debug [\\\"app/models/concerns/plan_helper.rb:1820:in `to_s'\\\", \\\"app/models/concerns/plan_helper.rb:1820:in `get_formatted_user_count_test_observability'\\\", \\\"app/models/concerns/plan_helper.rb:1724:in `formatted_user_count'\\\", \\\"app/helpers/account_helper.rb:657:in `block in get_dropdown_options'\\\", \\\"app/helpers/account_helper.rb:657:in `map'\\\", \\\"app/helpers/account_helper.rb:657:in `get_dropdown_options'\\\", \\\"app/views/shared/_combined_pricing_plan_details.html.erb:96\\\", \\\"app/views/static/molecules/accounts/_pricing_plan_block.html.erb:404\\\", \\\"app/views/static/molecules/accounts/_pricing_plan.html.erb:109\\\", \\\"app/views/static/habitats/accounts/_plans_blocks_with_sidenav.html.erb:1945\\\", \\\"app/views/static/molecules/_pricing_container.html.erb:27\\\", \\\"app/views/static/habitats/accounts/_pricing_plan_tables.html.erb:58\\\", \\\"app/helpers/application_helper.rb:2655:in `cache_if'\\\", \\\"app/views/static/habitats/accounts/_pricing_plan_tables.html.erb:51\\\", \\\"app/views/shared/_combined_pricing.html.erb:50\\\", \\\"app/views/shared/_all_pricing.html.erb:5\\\", \\\"app/views/accounts/subscriptions.html.erb:12\\\", \\\"app/controllers/accounts_controller.rb:330:in `subscriptions'\\\", \\\"lib/minute_based_throttle.rb:157:in `call'\\\", \\\"lib/minute_based_throttle.rb:157:in `call'\\\", \\\"config/initializers/oink_override.rb:9:in `call'\\\", \\\"lib/json_parse_errors.rb:10:in `call'\\\", \\\"lib/bad_multipart_form_data_handler.rb:21:in `call'\\\", \\\"lib/request_timestamp.rb:14:in `_call'\\\", \\\"lib/request_timestamp.rb:9:in `call'\\\", \\\"lib/extract_ip_middleware.rb:31:in `call'\\\"]\",\"id\":\"233-947-3-1714638124.630-devhst.bsstag.com\",\"level\":\"ERROR\"},\"meta\":{\"format\":{\"category\":\"server\",\"version\":5},\"host\":\"rails-live-864d95cd6-vv7dd\",\"timestamp\":\"2024-05-02T08:22:11.847+00:00\"}}",
       "timestamp": "2024-05-02T08:22:11.847+00:00",
       "analysis": {
-        "severity": "MEDIUM",
-        "category": "Templating",
-        "subcategory": "Template Rendering Error",
-        "description": "Error rendering the subscriptions page due to a `to_s` method call failure within `plan_helper.rb` during the generation of user count information within the pricing plan details. This happened while generating dropdown options in `account_helper.rb`.",
-        "impact": "Users may experience errors or incomplete information when viewing their subscription details or pricing plans. The page might load with missing elements or throw an error during rendering, affecting user experience.",
-        "suggestedAction": "Check partial and layout templates for missing variables or incorrect locals",
-        "slackThread": "N/A",
-        "relevantUrls": "N/A"
+        "severity": "UNKNOWN",
+        "category": "Other",
+        "subcategory": "Unknown Error",
+        "description": "AI analysis failed",
+        "impact": "Unable to determine",
+        "suggestedAction": "Manual investigation required",
+        "slackThread": "https://browserstack.slack.com/archives/C02D3CWKF6Y/p1741085627615559?thread_ts=1741065769.408149&cid=C02D3CWKF6Y",
+        "relevantUrls": "https://browserstack.slack.com/archives/C02D3CWKF6Y/p1741085627615559?thread_ts=1741065769.408149&cid=C02D3CWKF6Y"
+      }
+    },
+    {
+      "lineNumber": 675,
+      "content": "{\"data\":{\"request\":{\"method\":\"GET\",\"endpoint\":\"/accounts/subscriptions\",\"ip\":\"34.233.8.51\",\"id\":\"9c3d291dbab6f9b3689532463d2c085d\",\"user_id\":73,\"params\":\"\\\"{\\\\\\\"controller\\\\\\\":\\\\\\\"accounts\\\\\\\",\\\\\\\"action\\\\\\\":\\\\\\\"subscriptions\\\\\\\"}\\\"\",\"controller\":\"AccountsController\",\"action\":\"subscriptions\"},\"response\":{\"status\":null,\"duration\":null,\"view_rendering_duration\":null,\"db_query_duration\":null}},\"log\":{\"dynamic_data\":\" \\nActionView::Template::Error (wrong number of arguments (given 1, expected 0)):\\n  93:  \\u003c% if render_dropdown %\\u003e\\n  94:   \\u003cdiv class=\\\"plan-dropdown-section\\\"\\u003e\\n  95:    \\u003cdiv class=\\\"plan-dropdown\\\"\\u003e\\n  96:     \\u003c%= select_tag \\\"\\\", options_for_select(get_dropdown_options(select_tag_options_array, plan_name, dropdown_text_version, @cart, @combined_pricing_version), plan_to_highlight_id), common_select_params %\\u003e\\n  97:    \\u003c/div\\u003e\\n  98:    \\u003c%= render :partial =\\u003e 'shared/combined_parallel_test_tool_tip', :locals =\\u003e { :monthly_plan =\\u003e monthly_plan , :only_icon =\\u003e parallel_tooltip_only_icon} if !hide_parallels_tooltip %\\u003e\\n  99:   \\u003c/div\\u003e\\n \\napp/models/concerns/plan_helper.rb:1820:in `to_s'\\napp/models/concerns/plan_helper.rb:1820:in `get_formatted_user_count_test_observability'\\napp/models/concerns/plan_helper.rb:1724:in `formatted_user_count'\\napp/helpers/account_helper.rb:657:in `block in get_dropdown_options'\\napp/helpers/account_helper.rb:657:in `map'\\napp/helpers/account_helper.rb:657:in `get_dropdown_options'\\napp/views/shared/_combined_pricing_plan_details.html.erb:96\\napp/views/static/molecules/accounts/_pricing_plan_block.html.erb:404\\napp/views/static/molecules/accounts/_pricing_plan.html.erb:109\\napp/views/static/habitats/accounts/_plans_blocks_with_sidenav.html.erb:1945\\napp/views/static/molecules/_pricing_container.html.erb:27\\napp/views/static/habitats/accounts/_pricing_plan_tables.html.erb:58\\napp/helpers/application_helper.rb:2655:in `cache_if'\\napp/views/static/habitats/accounts/_pricing_plan_tables.html.erb:51\\napp/views/shared/_combined_pricing.html.erb:50\\napp/views/shared/_all_pricing.html.erb:5\\napp/views/accounts/subscriptions.html.erb:12\\napp/controllers/accounts_controller.rb:330:in `subscriptions'\\nlib/minute_based_throttle.rb:157:in `call'\\nlib/minute_based_throttle.rb:157:in `call'\\nconfig/initializers/oink_override.rb:9:in `call'\\nlib/json_parse_errors.rb:10:in `call'\\nlib/bad_multipart_form_data_handler.rb:21:in `call'\\nlib/request_timestamp.rb:14:in `_call'\\nlib/request_timestamp.rb:9:in `call'\\nlib/extract_ip_middleware.rb:31:in `call'\",\"id\":\"233-947-3-1714638124.630-devhst.bsstag.com\",\"level\":\"FATAL\"},\"meta\":{\"format\":{\"category\":\"server\",\"version\":5},\"host\":\"rails-live-864d95cd6-vv7dd\",\"timestamp\":\"2024-05-02T08:22:11.886+00:00\"}}",
+      "timestamp": "2024-05-02T08:22:11.886+00:00",
+      "analysis": {
+        "severity": "UNKNOWN",
+        "category": "Other",
+        "subcategory": "Unknown Error",
+        "description": "AI analysis failed",
+        "impact": "Unable to determine",
+        "suggestedAction": "Manual investigation required",
+        "slackThread": "https://browserstack.slack.com/archives/C02D3CWKF6Y/p1741085627615559?thread_ts=1741065769.408149&cid=C02D3CWKF6Y",
+        "relevantUrls": "https://browserstack.slack.com/archives/C02D3CWKF6Y/p1741085627615559?thread_ts=1741065769.408149&cid=C02D3CWKF6Y"
+      }
+    },
+    {
+      "lineNumber": 676,
+      "content": "{\"data\":{\"request\":{\"method\":\"GET\",\"endpoint\":\"/accounts/subscriptions\",\"ip\":\"34.233.8.51\",\"id\":\"9c3d291dbab6f9b3689532463d2c085d\",\"user_id\":73,\"params\":\"\\\"{\\\\\\\"controller\\\\\\\":\\\\\\\"accounts\\\\\\\",\\\\\\\"action\\\\\\\":\\\\\\\"subscriptions\\\\\\\"}\\\"\",\"controller\":\"AccountsController\",\"action\":\"subscriptions\"},\"response\":{\"status\":null,\"duration\":null,\"view_rendering_duration\":null,\"db_query_duration\":null}},\"log\":{\"dynamic_data\":\"  \\nActionView::Template::Error (undefined method `price' for nil:NilClass):\\n    56: \\n    57: \\u003cscript\\u003e\\n    58:   var accessibilityTestMonitorPlans = {\\n    59:     plans: \\u003c%= get_dropdown_options_for_a11y_test_and_monoitor.to_json.html_safe %\\u003e,\\n    60:     currentPlan: \\u003c%= get_current_active_plan_by_plan_name(ACCESSIBILITY_TESTING_TEST_AND_MONITOR, @combined_pricing_version).to_json.html_safe %\\u003e\\n    61:   }\\n    62: \\u003c/script\\u003e\\n  \\napp/helpers/account_helper.rb:768:in `block in get_dropdown_options_for_a11y_test_and_monoitor'\\napp/helpers/account_helper.rb:765:in `each'\\napp/helpers/account_helper.rb:765:in `get_dropdown_options_for_a11y_test_and_monoitor'\\napp/views/pricing/_all_pricing.html.erb:59\\napp/views/accounts/subscriptions.html.erb:13\\napp/controllers/accounts_controller.rb:513:in `subscriptions'\\nlib/request_proxy_middleware.rb:191:in `call'\\nlib/minute_based_throttle.rb:162:in `call'\\nlib/minute_based_throttle.rb:162:in `call'\\nconfig/initializers/oink_override.rb:9:in `call'\\nlib/too_many_redirects_middleware.rb:18:in `call'\\nlib/json_parse_errors.rb:10:in `call'\\nlib/bad_multipart_form_data_handler.rb:21:in `call'\\nlib/request_timestamp.rb:14:in `_call'\\nlib/request_timestamp.rb:9:in `call'\\nlib/extract_ip_middleware.rb:31:in `call'\",\"id\":\"451-6429-1-1753362177.149-k8s-mobile.bsstag.com\",\"level\":\"FATAL\"},\"meta\":{\"format\":{\"category\":\"server\",\"version\":5},\"host\":\"rails-live-57f4bffc85-qdb2k\",\"timestamp\":\"2025-07-24T13:02:59.350+00:00\"}}",
+      "timestamp": "2025-07-24T13:02:59.350+00:00",
+      "analysis": {
+        "severity": "UNKNOWN",
+        "category": "Other",
+        "subcategory": "Unknown Error",
+        "description": "AI analysis failed",
+        "impact": "Unable to determine",
+        "suggestedAction": "Manual investigation required",
+        "slackThread": "https://browserstack.slack.com/archives/C02D3CWKF6Y/p1741085627615559?thread_ts=1741065769.408149&cid=C02D3CWKF6Y",
+        "relevantUrls": "https://browserstack.slack.com/archives/C02D3CWKF6Y/p1741085627615559?thread_ts=1741065769.408149&cid=C02D3CWKF6Y"
+      }
+    },
+    {
+      "lineNumber": 677,
+      "content": "{\"data\":{\"request\":{\"method\":\"GET\",\"endpoint\":\"/accounts/subscriptions\",\"ip\":\"34.233.8.51\",\"id\":\"9c3d291dbab6f9b3689532463d2c085d\",\"user_id\":73,\"params\":\"\\\"{\\\\\\\"controller\\\\\\\":\\\\\\\"accounts\\\\\\\",\\\\\\\"action\\\\\\\":\\\\\\\"subscriptions\\\\\\\"}\\\"\",\"controller\":\"AccountsController\",\"action\":\"subscriptions\"},\"response\":{\"status\":null,\"duration\":null,\"view_rendering_duration\":null,\"db_query_duration\":null}},\"log\":{\"dynamic_data\":\" \\nActionView::Template::Error (wrong number of arguments (given 1, expected 0)):\\n  93:  \\u003c% if render_dropdown %\\u003e\\n  94:   \\u003cdiv class=\\\"plan-dropdown-section\\\"\\u003e\\n  95:    \\u003cdiv class=\\\"plan-dropdown\\\"\\u003e\\n  96:     \\u003c%= select_tag \\\"\\\", options_for_select(get_dropdown_options(select_tag_options_array, plan_name, dropdown_text_version, @cart, @combined_pricing_version), plan_to_highlight_id), common_select_params %\\u003e\\n  97:    \\u003c/div\\u003e\\n  98:    \\u003c%= render :partial =\\u003e 'shared/combined_parallel_test_tool_tip', :locals =\\u003e { :monthly_plan =\\u003e monthly_plan , :only_icon =\\u003e parallel_tooltip_only_icon} if !hide_parallels_tooltip %\\u003e\\n  99:   \\u003c/div\\u003e\\n \\napp/models/concerns/plan_helper.rb:1820:in `to_s'\\napp/models/concerns/plan_helper.rb:1820:in `get_formatted_user_count_test_observability'\\napp/models/concerns/plan_helper.rb:1724:in `formatted_user_count'\\napp/helpers/account_helper.rb:657:in `block in get_dropdown_options'\\napp/helpers/account_helper.rb:657:in `map'\\napp/helpers/account_helper.rb:657:in `get_dropdown_options'\\napp/views/shared/_combined_pricing_plan_details.html.erb:96\\napp/views/static/molecules/accounts/_pricing_plan_block.html.erb:404\\napp/views/static/molecules/accounts/_pricing_plan.html.erb:109\\napp/views/static/habitats/accounts/_plans_blocks_with_sidenav.html.erb:1945\\napp/views/static/molecules/_pricing_container.html.erb:27\\napp/views/static/habitats/accounts/_pricing_plan_tables.html.erb:58\\napp/helpers/application_helper.rb:2655:in `cache_if'\\napp/views/static/habitats/accounts/_pricing_plan_tables.html.erb:51\\napp/views/shared/_combined_pricing.html.erb:50\\napp/views/shared/_all_pricing.html.erb:5\\napp/views/accounts/subscriptions.html.erb:12\\napp/controllers/accounts_controller.rb:330:in `subscriptions'\\nlib/minute_based_throttle.rb:157:in `call'\\nlib/minute_based_throttle.rb:157:in `call'\\nconfig/initializers/oink_override.rb:9:in `call'\\nlib/json_parse_errors.rb:10:in `call'\\nlib/bad_multipart_form_data_handler.rb:21:in `call'\\nlib/request_timestamp.rb:14:in `_call'\\nlib/request_timestamp.rb:9:in `call'\\nlib/extract_ip_middleware.rb:31:in `call'\",\"id\":\"233-947-3-1714638124.630-devhst.bsstag.com\",\"level\":\"FATAL\"},\"meta\":{\"format\":{\"category\":\"server\",\"version\":5},\"host\":\"rails-live-864d95cd6-vv7dd\",\"timestamp\":\"2024-05-02T08:22:11.886+00:00\"}}",
+      "timestamp": "2024-05-02T08:22:11.886+00:00",
+      "analysis": {
+        "severity": "UNKNOWN",
+        "category": "Other",
+        "subcategory": "Unknown Error",
+        "description": "AI analysis failed",
+        "impact": "Unable to determine",
+        "suggestedAction": "Manual investigation required",
+        "slackThread": "https://browserstack.slack.com/archives/C02D3CWKF6Y/p1741085627615559?thread_ts=1741065769.408149&cid=C02D3CWKF6Y",
+        "relevantUrls": "https://browserstack.slack.com/archives/C02D3CWKF6Y/p1741085627615559?thread_ts=1741065769.408149&cid=C02D3CWKF6Y"
+      }
+    },
+    {
+      "lineNumber": 678,
+      "content": "{\"data\":{\"request\":{\"method\":\"GET\",\"endpoint\":\"/accounts/subscriptions\",\"ip\":\"34.233.8.51\",\"id\":\"26260ff8cbab5d13c4fd089a62953ce2\",\"user_id\":2,\"params\":\"\\\"{\\\\\\\"product\\\\\\\":\\\\\\\"live\\\\\\\",\\\\\\\"controller\\\\\\\":\\\\\\\"accounts\\\\\\\",\\\\\\\"action\\\\\\\":\\\\\\\"subscriptions\\\\\\\"}\\\"\",\"controller\":\"AccountsController\",\"action\":\"subscriptions\"},\"response\":{\"status\":null,\"duration\":null,\"view_rendering_duration\":null,\"db_query_duration\":null}},\"log\":{\"dynamic_data\":\"  \\nActionView::Template::Error (undefined method `price' for nil:NilClass):\\n    94:   \\u003c% if render_dropdown %\\u003e\\n    95:     \\u003cdiv class=\\\"plan-dropdown-section\\\"\\u003e\\n    96:       \\u003cdiv class=\\\"plan-dropdown\\\"\\u003e\\n    97:         \\u003c%= select_tag \\\"\\\", options_for_select(get_dropdown_options(select_tag_options_array, plan_name, dropdown_text_version, @cart, @combined_pricing_version), plan_to_highlight_id), common_select_params %\\u003e\\n    98:       \\u003c/div\\u003e\\n    99:       \\u003c%= render :partial =\\u003e 'shared/combined_parallel_test_tool_tip', :locals =\\u003e { :monthly_plan =\\u003e monthly_plan , :only_icon =\\u003e parallel_tooltip_only_icon} if !hide_parallels_tooltip %\\u003e\\n   100:     \\u003c/div\\u003e\\n  \\napp/helpers/account_helper.rb:597:in `user_count_dropdown_html_options'\\napp/helpers/account_helper.rb:664:in `block in get_dropdown_options'\\napp/helpers/account_helper.rb:664:in `map'\\napp/helpers/account_helper.rb:664:in `get_dropdown_options'\\napp/views/shared/_combined_pricing_plan_details.html.erb:97\\napp/views/static/molecules/accounts/_pricing_plan_block.html.erb:405\\napp/views/static/molecules/accounts/_pricing_plan.html.erb:110\\napp/views/static/habitats/accounts/_plans_blocks_with_sidenav.html.erb:2559\\napp/views/static/molecules/_pricing_container.html.erb:27\\napp/views/static/habitats/accounts/_pricing_plan_tables.html.erb:60\\napp/helpers/application_helper.rb:2819:in `cache_if'\\napp/views/static/habitats/accounts/_pricing_plan_tables.html.erb:53\\napp/views/shared/_combined_pricing.html.erb:49\\napp/views/shared/_all_pricing.html.erb:5\\napp/views/accounts/subscriptions.html.erb:12\\napp/controllers/accounts_controller.rb:477:in `subscriptions'\\nlib/minute_based_throttle.rb:157:in `call'\\nlib/minute_based_throttle.rb:157:in `call'\\nconfig/initializers/oink_override.rb:9:in `call'\\nlib/json_parse_errors.rb:10:in `call'\\nlib/bad_multipart_form_data_handler.rb:21:in `call'\\nlib/request_timestamp.rb:14:in `_call'\\nlib/request_timestamp.rb:9:in `call'\\nlib/extract_ip_middleware.rb:31:in `call'\",\"id\":\"381-709-1-1723106823.932-stagcentral.bsstag.com\",\"level\":\"FATAL\"},\"meta\":{\"format\":{\"category\":\"server\",\"version\":5},\"host\":\"rails-live-7975d6558c-77nm2\",\"timestamp\":\"2024-08-08T08:47:11.827+00:00\"}}",
+      "timestamp": "2024-08-08T08:47:11.827+00:00",
+      "analysis": {
+        "severity": "UNKNOWN",
+        "category": "Other",
+        "subcategory": "Unknown Error",
+        "description": "AI analysis failed",
+        "impact": "Unable to determine",
+        "suggestedAction": "Manual investigation required",
+        "slackThread": "https://browserstack.slack.com/archives/C02D3CWKF6Y/p1741085627615559?thread_ts=1741065769.408149&cid=C02D3CWKF6Y",
+        "relevantUrls": "https://browserstack.slack.com/archives/C02D3CWKF6Y/p1741085627615559?thread_ts=1741065769.408149&cid=C02D3CWKF6Y"
+      }
+    },
+    {
+      "lineNumber": 679,
+      "content": "{\"data\":{\"request\":{\"method\":\"GET\",\"endpoint\":\"/dashboard\",\"ip\":\"149.255.36.2\",\"id\":\"f6351d7813fc2ec35d073f19432ece65\",\"user_id\":44163,\"params\":\"\\\"{\\\\\\\"controller\\\\\\\":\\\\\\\"user\\\\\\\",\\\\\\\"action\\\\\\\":\\\\\\\"dashboard\\\\\\\"}\\\"\",\"controller\":\"UserController\",\"action\":\"dashboard\"},\"response\":{\"status\":null,\"duration\":null,\"view_rendering_duration\":null,\"db_query_duration\":null}},\"log\":{\"dynamic_data\":\"  \\nNoMethodError (undefined method `get_growth_allocation_value' for nil:NilClass):\\n  \\napp/helpers/growth_helper.rb:1966:in `testing_toolkit_adoption_enabled?'\\napp/models/user_property.rb:989:in `get_live_for_teams_setup_checklist'\\napp/helpers/application_helper.rb:3954:in `show_live_checklist_for_paid_user?'\\napp/controllers/user_controller.rb:660:in `dashboard'\\nlib/request_proxy_middleware.rb:191:in `call'\\nlib/minute_based_throttle.rb:162:in `call'\\nlib/minute_based_throttle.rb:162:in `call'\\nconfig/initializers/oink_override.rb:9:in `call'\\nlib/too_many_redirects_middleware.rb:18:in `call'\\nlib/json_parse_errors.rb:10:in `call'\\nlib/bad_multipart_form_data_handler.rb:21:in `call'\\nlib/request_timestamp.rb:14:in `_call'\\nlib/request_timestamp.rb:9:in `call'\\nlib/extract_ip_middleware.rb:31:in `call'\",\"id\":\"440-5756-1-1758026969.935-live-k8s-mobile.bsstag.com\",\"level\":\"FATAL\"},\"meta\":{\"format\":{\"category\":\"server\",\"version\":5},\"host\":\"rails-live-6d6d876d4c-bk865\",\"timestamp\":\"2025-09-16T12:49:30.180+00:00\"}}",
+      "timestamp": "2025-09-16T12:49:30.180+00:00",
+      "analysis": {
+        "severity": "UNKNOWN",
+        "category": "Other",
+        "subcategory": "Unknown Error",
+        "description": "AI analysis failed",
+        "impact": "Unable to determine",
+        "suggestedAction": "Manual investigation required",
+        "slackThread": "https://browserstack.slack.com/archives/C02D3CWKF6Y/p1741085627615559?thread_ts=1741065769.408149&cid=C02D3CWKF6Y",
+        "relevantUrls": "https://browserstack.slack.com/archives/C02D3CWKF6Y/p1741085627615559?thread_ts=1741065769.408149&cid=C02D3CWKF6Y"
+      }
+    },
+    {
+      "lineNumber": 680,
+      "content": "{\"data\":{\"request\":{\"method\":\"POST\",\"endpoint\":\"/users\",\"ip\":\"34.233.8.51\",\"id\":\"ddd003502472f0f8e780178bc1aab0ed\",\"user_id\":null,\"params\":\"\\\"{\\\\\\\"utf8\\\\\\\":\\\\\\\"✓\\\\\\\",\\\\\\\"authenticity_token\\\\\\\":\\\\\\\"[FILTERED]\\\\\\\",\\\\\\\"user\\\\\\\":{\\\\\\\"full_name\\\\\\\":\\\\\\\"Automationbs\\\\\\\",\\\\\\\"email\\\\\\\":\\\\\\\"[FILTERED]\\\\\\\",\\\\\\\"password\\\\\\\":\\\\\\\"[FILTERED]\\\\\\\",\\\\\\\"user_persona_role\\\\\\\":\\\\\\\"\\\\\\\",\\\\\\\"user_persona_source\\\\\\\":\\\\\\\"\\\\\\\",\\\\\\\"group_attributes\\\\\\\":{\\\\\\\"name\\\\\\\":\\\\\\\"\\\\\\\"}},\\\\\\\"terms_and_conditions\\\\\\\":\\\\\\\"1\\\\\\\",\\\\\\\"utm_source\\\\\\\":\\\\\\\"undefined\\\\\\\",\\\\\\\"utm_medium\\\\\\\":\\\\\\\"undefined\\\\\\\",\\\\\\\"utm_campaign\\\\\\\":\\\\\\\"undefined\\\\\\\",\\\\\\\"utm_platform\\\\\\\":\\\\\\\"undefined\\\\\\\",\\\\\\\"utm_content\\\\\\\":\\\\\\\"undefined\\\\\\\",\\\\\\\"utm_campaigncode\\\\\\\":\\\\\\\"undefined\\\\\\\",\\\\\\\"utm_term\\\\\\\":\\\\\\\"undefined\\\\\\\",\\\\\\\"product_exploration_referrer\\\\\\\":\\\\\\\"https://stagqd.bsstag.com/\\\\\\\",\\\\\\\"gaCID\\\\\\\":\\\\\\\"1914395736.1734457436\\\\\\\",\\\\\\\"gaLoaded\\\\\\\":\\\\\\\"ga_not_found\\\\\\\",\\\\\\\"v4_auth_form\\\\\\\":\\\\\\\"[FILTERED]\\\\\\\",\\\\\\\"controller\\\\\\\":\\\\\\\"users/registrations\\\\\\\",\\\\\\\"action\\\\\\\":\\\\\\\"create\\\\\\\"}\\\"\",\"controller\":\"Users::RegistrationsController\",\"action\":\"create\"},\"response\":{\"status\":null,\"duration\":null,\"view_rendering_duration\":null,\"db_query_duration\":null}},\"log\":{\"dynamic_data\":\" \\nActiveRecord::RecordNotFound (Couldn't find Plan with 'id'=1027):\\n \\napp/models/group.rb:278:in `get_bug_capture_default_group_plan'\\napp/models/group.rb:285:in `create_bug_capture_group_plan_and_assign_plan'\\napp/models/user.rb:313:in `_save'\\napp/controllers/users/registrations_controller.rb:495:in `create'\\nlib/minute_based_throttle.rb:162:in `call'\\nlib/minute_based_throttle.rb:162:in `call'\\nconfig/initializers/oink_override.rb:9:in `call'\\nlib/json_parse_errors.rb:10:in `call'\\nlib/bad_multipart_form_data_handler.rb:21:in `call'\\nlib/request_timestamp.rb:14:in `_call'\\nlib/request_timestamp.rb:9:in `call'\\nlib/extract_ip_middleware.rb:31:in `call'\",\"id\":\"110-123-1-1734457787.783-stagqd.bsstag.com\",\"level\":\"FATAL\"},\"meta\":{\"format\":{\"category\":\"server\",\"version\":5},\"host\":\"rails-live-756bc6dc7f-mrms4\",\"timestamp\":\"2024-12-17T17:49:48.802+00:00\"}}",
+      "timestamp": "2024-12-17T17:49:48.802+00:00",
+      "analysis": {
+        "severity": "UNKNOWN",
+        "category": "Other",
+        "subcategory": "Unknown Error",
+        "description": "AI analysis failed",
+        "impact": "Unable to determine",
+        "suggestedAction": "Manual investigation required",
+        "slackThread": "https://browserstack.slack.com/archives/C02D3CWKF6Y/p1741085627615559?thread_ts=1741065769.408149&cid=C02D3CWKF6Y",
+        "relevantUrls": "https://browserstack.slack.com/archives/C02D3CWKF6Y/p1741085627615559?thread_ts=1741065769.408149&cid=C02D3CWKF6Y"
+      }
+    },
+    {
+      "lineNumber": 681,
+      "content": "{\"data\":{\"request\":{\"method\":\"GET\",\"endpoint\":\"/accounts/subscriptions\",\"ip\":\"34.233.8.51\",\"id\":\"8c74169fb841515ccdfbb91971f9398d\",\"user_id\":891,\"params\":\"\\\"{\\\\\\\"product\\\\\\\":\\\\\\\"live\\\\\\\",\\\\\\\"controller\\\\\\\":\\\\\\\"accounts\\\\\\\",\\\\\\\"action\\\\\\\":\\\\\\\"subscriptions\\\\\\\"}\\\"\",\"controller\":\"AccountsController\",\"action\":\"subscriptions\"},\"response\":{\"status\":null,\"duration\":null,\"view_rendering_duration\":null,\"db_query_duration\":null}},\"log\":{\"dynamic_data\":\"  \\nActionView::Template::Error (undefined method `monthly_price' for nil:NilClass):\\n    354:                 display_price = (default_plan.monthly_price / plan.user_count).ceil if plan.user_count\\n    355:               end\\n    356:             else\\n    357:               display_price = default_plan.monthly_price\\n    358:             end\\n    359:           %\\u003e\\n    360:           \\u003cspan class=\\\"amount\\\"\\u003e\\u003c%= formatted_price_based_on_discount(display_price) %\\u003e\\u003c/span\\u003e\\n  \\napp/views/static/molecules/accounts/_pricing_plan_block.html.erb:357\\napp/views/static/molecules/accounts/_pricing_plan.html.erb:110\\napp/views/static/habitats/accounts/_plans_blocks_with_sidenav.html.erb:2561\\napp/views/static/molecules/_pricing_container.html.erb:36\\napp/views/static/habitats/accounts/_pricing_plan_tables.html.erb:60\\napp/helpers/application_helper.rb:2784:in `cache_if'\\napp/views/static/habitats/accounts/_pricing_plan_tables.html.erb:53\\napp/views/shared/_combined_pricing.html.erb:49\\napp/views/shared/_all_pricing.html.erb:5\\napp/views/accounts/subscriptions.html.erb:12\\napp/controllers/accounts_controller.rb:336:in `subscriptions'\\nlib/minute_based_throttle.rb:157:in `call'\\nlib/minute_based_throttle.rb:157:in `call'\\nconfig/initializers/oink_override.rb:9:in `call'\\nlib/json_parse_errors.rb:10:in `call'\\nlib/bad_multipart_form_data_handler.rb:21:in `call'\\nlib/request_timestamp.rb:14:in `_call'\\nlib/request_timestamp.rb:9:in `call'\\nlib/extract_ip_middleware.rb:31:in `call'\",\"id\":\"214-357-1-1721986203.270-stagcentral.bsstag.com\",\"level\":\"FATAL\"},\"meta\":{\"format\":{\"category\":\"server\",\"version\":5},\"host\":\"rails-live-74b8cbf4d9-dxpff\",\"timestamp\":\"2024-07-26T09:30:06.375+00:00\"}}",
+      "timestamp": "2024-07-26T09:30:06.375+00:00",
+      "analysis": {
+        "severity": "UNKNOWN",
+        "category": "Other",
+        "subcategory": "Unknown Error",
+        "description": "AI analysis failed",
+        "impact": "Unable to determine",
+        "suggestedAction": "Manual investigation required",
+        "slackThread": "https://browserstack.slack.com/archives/C02D3CWKF6Y/p1741085627615559?thread_ts=1741065769.408149&cid=C02D3CWKF6Y",
+        "relevantUrls": "https://browserstack.slack.com/archives/C02D3CWKF6Y/p1741085627615559?thread_ts=1741065769.408149&cid=C02D3CWKF6Y"
       }
     },
     {
@@ -214,14 +179,29 @@
       "content": "{\"data\":{\"request\":{\"method\":\"GET\",\"endpoint\":\"/accounts/subscriptions\",\"ip\":\"34.233.8.51\",\"id\":\"592a36674278a2e5b71d203644d4d82a\",\"user_id\":1549,\"params\":\"\\\"{\\\\\\\"controller\\\\\\\":\\\\\\\"accounts\\\\\\\",\\\\\\\"action\\\\\\\":\\\\\\\"subscriptions\\\\\\\"}\\\"\",\"controller\":\"AccountsController\",\"action\":\"subscriptions\"},\"response\":{\"status\":null,\"duration\":null,\"view_rendering_duration\":null,\"db_query_duration\":null}},\"log\":{\"dynamic_data\":\"Error Start Debug [\\\"app/models/concerns/plan_helper.rb:1774:in `to_s'\\\", \\\"app/models/concerns/plan_helper.rb:1774:in `get_formatted_user_count_test_observability'\\\", \\\"app/models/concerns/plan_helper.rb:1678:in `formatted_user_count'\\\", \\\"app/helpers/account_helper.rb:657:in `block in get_dropdown_options'\\\", \\\"app/helpers/account_helper.rb:657:in `map'\\\", \\\"app/helpers/account_helper.rb:657:in `get_dropdown_options'\\\", \\\"app/views/shared/_combined_pricing_plan_details.html.erb:96\\\", \\\"app/views/static/molecules/accounts/_pricing_plan_block.html.erb:398\\\", \\\"app/views/static/molecules/accounts/_pricing_plan.html.erb:109\\\", \\\"app/views/static/habitats/accounts/_plans_blocks_with_sidenav.html.erb:1894\\\", \\\"app/views/static/molecules/_pricing_container.html.erb:25\\\", \\\"app/views/static/habitats/accounts/_pricing_plan_tables.html.erb:58\\\", \\\"app/helpers/application_helper.rb:2564:in `cache_if'\\\", \\\"app/views/static/habitats/accounts/_pricing_plan_tables.html.erb:51\\\", \\\"app/views/shared/_combined_pricing.html.erb:50\\\", \\\"app/views/shared/_all_pricing.html.erb:5\\\", \\\"app/views/accounts/subscriptions.html.erb:12\\\", \\\"app/controllers/accounts_controller.rb:317:in `subscriptions'\\\", \\\"lib/minute_based_throttle.rb:157:in `call'\\\", \\\"lib/minute_based_throttle.rb:157:in `call'\\\", \\\"config/initializers/oink_override.rb:9:in `call'\\\", \\\"lib/json_parse_errors.rb:10:in `call'\\\", \\\"lib/bad_multipart_form_data_handler.rb:21:in `call'\\\", \\\"lib/request_timestamp.rb:14:in `_call'\\\", \\\"lib/request_timestamp.rb:9:in `call'\\\", \\\"lib/extract_ip_middleware.rb:31:in `call'\\\"]\",\"id\":\"344-260-3-1710832555.935-pcp.bsstag.com\",\"level\":\"ERROR\"},\"meta\":{\"format\":{\"category\":\"server\",\"version\":5},\"host\":\"rails-live-6879b4fd69-vj2qd\",\"timestamp\":\"2024-03-19T07:15:59.861+00:00\"}}",
       "timestamp": "2024-03-19T07:15:59.861+00:00",
       "analysis": {
-        "severity": "MEDIUM",
-        "category": "Templating",
-        "subcategory": "Template Rendering Error",
-        "description": "Error occurred while rendering a view, specifically within `app/models/concerns/plan_helper.rb` during a `to_s` operation while generating pricing plan details for the subscriptions page. The error originates within nested partials, including `_combined_pricing_plan_details.html.erb` and potentially others.",
-        "impact": "Users may experience incomplete or broken pricing plan information on the subscriptions page, potentially leading to confusion or inability to manage their subscriptions effectively.",
-        "suggestedAction": "Check partial and layout templates for missing variables or incorrect locals",
-        "slackThread": "N/A",
-        "relevantUrls": "N/A"
+        "severity": "UNKNOWN",
+        "category": "Other",
+        "subcategory": "Unknown Error",
+        "description": "AI analysis failed",
+        "impact": "Unable to determine",
+        "suggestedAction": "Manual investigation required",
+        "slackThread": "https://browserstack.slack.com/archives/C02D3CWKF6Y/p1741085627615559?thread_ts=1741065769.408149&cid=C02D3CWKF6Y",
+        "relevantUrls": "https://browserstack.slack.com/archives/C02D3CWKF6Y/p1741085627615559?thread_ts=1741065769.408149&cid=C02D3CWKF6Y"
+      }
+    },
+    {
+      "lineNumber": 683,
+      "content": "{\"data\":{\"request\":{\"method\":\"GET\",\"endpoint\":\"/accounts/subscriptions\",\"ip\":\"34.233.8.51\",\"id\":\"592a36674278a2e5b71d203644d4d82a\",\"user_id\":1549,\"params\":\"\\\"{\\\\\\\"controller\\\\\\\":\\\\\\\"accounts\\\\\\\",\\\\\\\"action\\\\\\\":\\\\\\\"subscriptions\\\\\\\"}\\\"\",\"controller\":\"AccountsController\",\"action\":\"subscriptions\"},\"response\":{\"status\":null,\"duration\":null,\"view_rendering_duration\":null,\"db_query_duration\":null}},\"log\":{\"dynamic_data\":\"  \\nActionView::Template::Error (wrong number of arguments (given 1, expected 0)):\\n    93:   \\u003c% if render_dropdown %\\u003e\\n    94:     \\u003cdiv class=\\\"plan-dropdown-section\\\"\\u003e\\n    95:       \\u003cdiv class=\\\"plan-dropdown\\\"\\u003e\\n    96:         \\u003c%= select_tag \\\"\\\", options_for_select(get_dropdown_options(select_tag_options_array, plan_name, dropdown_text_version, @cart, @combined_pricing_version), plan_to_highlight_id), common_select_params %\\u003e\\n    97:       \\u003c/div\\u003e\\n    98:       \\u003c%= render :partial =\\u003e 'shared/combined_parallel_test_tool_tip', :locals =\\u003e { :monthly_plan =\\u003e monthly_plan , :only_icon =\\u003e parallel_tooltip_only_icon} if !hide_parallels_tooltip %\\u003e\\n    99:     \\u003c/div\\u003e\\n  \\napp/models/concerns/plan_helper.rb:1774:in `to_s'\\napp/models/concerns/plan_helper.rb:1774:in `get_formatted_user_count_test_observability'\\napp/models/concerns/plan_helper.rb:1678:in `formatted_user_count'\\napp/helpers/account_helper.rb:657:in `block in get_dropdown_options'\\napp/helpers/account_helper.rb:657:in `map'\\napp/helpers/account_helper.rb:657:in `get_dropdown_options'\\napp/views/shared/_combined_pricing_plan_details.html.erb:96\\napp/views/static/molecules/accounts/_pricing_plan_block.html.erb:398\\napp/views/static/molecules/accounts/_pricing_plan.html.erb:109\\napp/views/static/habitats/accounts/_plans_blocks_with_sidenav.html.erb:1894\\napp/views/static/molecules/_pricing_container.html.erb:25\\napp/views/static/habitats/accounts/_pricing_plan_tables.html.erb:58\\napp/helpers/application_helper.rb:2564:in `cache_if'\\napp/views/static/habitats/accounts/_pricing_plan_tables.html.erb:51\\napp/views/shared/_combined_pricing.html.erb:50\\napp/views/shared/_all_pricing.html.erb:5\\napp/views/accounts/subscriptions.html.erb:12\\napp/controllers/accounts_controller.rb:317:in `subscriptions'\\nlib/minute_based_throttle.rb:157:in `call'\\nlib/minute_based_throttle.rb:157:in `call'\\nconfig/initializers/oink_override.rb:9:in `call'\\nlib/json_parse_errors.rb:10:in `call'\\nlib/bad_multipart_form_data_handler.rb:21:in `call'\\nlib/request_timestamp.rb:14:in `_call'\\nlib/request_timestamp.rb:9:in `call'\\nlib/extract_ip_middleware.rb:31:in `call'\",\"id\":\"344-260-3-1710832555.935-pcp.bsstag.com\",\"level\":\"FATAL\"},\"meta\":{\"format\":{\"category\":\"server\",\"version\":5},\"host\":\"rails-live-6879b4fd69-vj2qd\",\"timestamp\":\"2024-03-19T07:15:59.898+00:00\"}}",
+      "timestamp": "2024-03-19T07:15:59.898+00:00",
+      "analysis": {
+        "severity": "UNKNOWN",
+        "category": "Other",
+        "subcategory": "Unknown Error",
+        "description": "AI analysis failed",
+        "impact": "Unable to determine",
+        "suggestedAction": "Manual investigation required",
+        "slackThread": "https://browserstack.slack.com/archives/C02D3CWKF6Y/p1741085627615559?thread_ts=1741065769.408149&cid=C02D3CWKF6Y",
+        "relevantUrls": "https://browserstack.slack.com/archives/C02D3CWKF6Y/p1741085627615559?thread_ts=1741065769.408149&cid=C02D3CWKF6Y"
       }
     },
     {
@@ -229,14 +209,14 @@
       "content": "{\"data\":{\"request\":{\"method\":\"GET\",\"endpoint\":\"/500\",\"ip\":\"34.233.8.51\",\"id\":\"592a36674278a2e5b71d203644d4d82a\",\"user_id\":1549,\"params\":\"\\\"{\\\\\\\"controller\\\\\\\":\\\\\\\"accounts\\\\\\\",\\\\\\\"action\\\\\\\":\\\\\\\"subscriptions\\\\\\\"}\\\"\",\"controller\":\"ExceptionController\",\"action\":\"show\"},\"response\":{\"status\":null,\"duration\":null,\"view_rendering_duration\":null,\"db_query_duration\":null}},\"log\":{\"dynamic_data\":\"[Geolite2][get] entry not found for 34.233.8.51\",\"id\":\"344-260-3-1710832555.935-pcp.bsstag.com\",\"level\":\"INFO\"},\"meta\":{\"format\":{\"category\":\"server\",\"version\":5},\"host\":\"rails-live-6879b4fd69-vj2qd\",\"timestamp\":\"2024-03-19T07:15:59.923+00:00\"}}",
       "timestamp": "2024-03-19T07:15:59.923+00:00",
       "analysis": {
-        "severity": "MEDIUM",
-        "category": "Configuration",
-        "subcategory": "Missing Environment Variable",
-        "description": "GeoLite2 database lookup failed to find an entry for IP address 34.233.8.51.",
-        "impact": "Potentially inaccurate geolocation data for user 1549, impacting features relying on location such as targeted content, fraud detection, or localized settings. The user may see incorrect region-specific content or experience issues related to location-based authentication.",
-        "suggestedAction": "Define required env vars in the deployment configuration",
-        "slackThread": "N/A",
-        "relevantUrls": "N/A"
+        "severity": "UNKNOWN",
+        "category": "Other",
+        "subcategory": "Unknown Error",
+        "description": "AI analysis failed",
+        "impact": "Unable to determine",
+        "suggestedAction": "Manual investigation required",
+        "slackThread": "https://browserstack.slack.com/archives/C02D3CWKF6Y/p1741085627615559?thread_ts=1741065769.408149&cid=C02D3CWKF6Y",
+        "relevantUrls": "https://browserstack.slack.com/archives/C02D3CWKF6Y/p1741085627615559?thread_ts=1741065769.408149&cid=C02D3CWKF6Y"
       }
     },
     {
@@ -244,14 +224,29 @@
       "content": "{\"data\":{\"request\":{\"method\":\"GET\",\"endpoint\":\"/accounts/subscriptions\",\"ip\":\"34.233.8.51\",\"id\":\"af7f173275f3381320c59f021be49584\",\"user_id\":695,\"params\":\"\\\"{\\\\\\\"product\\\\\\\":\\\\\\\"live\\\\\\\",\\\\\\\"controller\\\\\\\":\\\\\\\"accounts\\\\\\\",\\\\\\\"action\\\\\\\":\\\\\\\"subscriptions\\\\\\\"}\\\"\",\"controller\":\"AccountsController\",\"action\":\"subscriptions\"},\"response\":{\"status\":null,\"duration\":null,\"view_rendering_duration\":null,\"db_query_duration\":null}},\"log\":{\"dynamic_data\":\"Error Start Debug [\\\"app/models/concerns/plan_helper.rb:1756:in `to_s'\\\", \\\"app/models/concerns/plan_helper.rb:1756:in `get_formatted_user_count_test_observability'\\\", \\\"app/models/concerns/plan_helper.rb:1660:in `formatted_user_count'\\\", \\\"app/helpers/account_helper.rb:657:in `block in get_dropdown_options'\\\", \\\"app/helpers/account_helper.rb:657:in `map'\\\", \\\"app/helpers/account_helper.rb:657:in `get_dropdown_options'\\\", \\\"app/views/shared/_combined_pricing_plan_details.html.erb:96\\\", \\\"app/views/static/molecules/accounts/_pricing_plan_block.html.erb:398\\\", \\\"app/views/static/molecules/accounts/_pricing_plan.html.erb:109\\\", \\\"app/views/static/habitats/accounts/_plans_blocks_with_sidenav.html.erb:1894\\\", \\\"app/views/static/molecules/_pricing_container.html.erb:25\\\", \\\"app/views/static/habitats/accounts/_pricing_plan_tables.html.erb:58\\\", \\\"app/helpers/application_helper.rb:2563:in `cache_if'\\\", \\\"app/views/static/habitats/accounts/_pricing_plan_tables.html.erb:51\\\", \\\"app/views/shared/_combined_pricing.html.erb:50\\\", \\\"app/views/shared/_all_pricing.html.erb:5\\\", \\\"app/views/accounts/subscriptions.html.erb:12\\\", \\\"app/controllers/accounts_controller.rb:310:in `subscriptions'\\\", \\\"lib/minute_based_throttle.rb:157:in `call'\\\", \\\"lib/minute_based_throttle.rb:157:in `call'\\\", \\\"config/initializers/oink_override.rb:9:in `call'\\\", \\\"lib/json_parse_errors.rb:10:in `call'\\\", \\\"lib/bad_multipart_form_data_handler.rb:21:in `call'\\\", \\\"lib/request_timestamp.rb:14:in `_call'\\\", \\\"lib/request_timestamp.rb:9:in `call'\\\", \\\"lib/extract_ip_middleware.rb:31:in `call'\\\"]\",\"id\":\"237-1911-1-1710153833.218-devaccessibility.bsstag.com\",\"level\":\"ERROR\"},\"meta\":{\"format\":{\"category\":\"server\",\"version\":5},\"host\":\"rails-live-7dd4954cf5-9jftk\",\"timestamp\":\"2024-03-11T10:43:57.247+00:00\"}}",
       "timestamp": "2024-03-11T10:43:57.247+00:00",
       "analysis": {
-        "severity": "MEDIUM",
-        "category": "Templating",
-        "subcategory": "Template Rendering Error",
-        "description": "An error occurred while rendering the `accounts/subscriptions` template, specifically in `app/models/concerns/plan_helper.rb` within the `to_s` method. The stack trace indicates the error is happening during the formatting of user counts related to the pricing plan.",
-        "impact": "The accounts/subscriptions page may not render correctly, potentially displaying incomplete or erroneous information to the user. This could lead to user confusion or prevent users from managing their subscriptions.",
-        "suggestedAction": "Check partial and layout templates for missing variables or incorrect locals",
-        "slackThread": "N/A",
-        "relevantUrls": "N/A"
+        "severity": "UNKNOWN",
+        "category": "Other",
+        "subcategory": "Unknown Error",
+        "description": "AI analysis failed",
+        "impact": "Unable to determine",
+        "suggestedAction": "Manual investigation required",
+        "slackThread": "https://browserstack.slack.com/archives/C02D3CWKF6Y/p1741085627615559?thread_ts=1741065769.408149&cid=C02D3CWKF6Y",
+        "relevantUrls": "https://browserstack.slack.com/archives/C02D3CWKF6Y/p1741085627615559?thread_ts=1741065769.408149&cid=C02D3CWKF6Y"
+      }
+    },
+    {
+      "lineNumber": 686,
+      "content": "{\"data\":{\"request\":{\"method\":\"GET\",\"endpoint\":\"/accounts/subscriptions\",\"ip\":\"34.233.8.51\",\"id\":\"af7f173275f3381320c59f021be49584\",\"user_id\":695,\"params\":\"\\\"{\\\\\\\"product\\\\\\\":\\\\\\\"live\\\\\\\",\\\\\\\"controller\\\\\\\":\\\\\\\"accounts\\\\\\\",\\\\\\\"action\\\\\\\":\\\\\\\"subscriptions\\\\\\\"}\\\"\",\"controller\":\"AccountsController\",\"action\":\"subscriptions\"},\"response\":{\"status\":null,\"duration\":null,\"view_rendering_duration\":null,\"db_query_duration\":null}},\"log\":{\"dynamic_data\":\"  \\nActionView::Template::Error (wrong number of arguments (given 1, expected 0)):\\n    93:   \\u003c% if render_dropdown %\\u003e\\n    94:     \\u003cdiv class=\\\"plan-dropdown-section\\\"\\u003e\\n    95:       \\u003cdiv class=\\\"plan-dropdown\\\"\\u003e\\n    96:         \\u003c%= select_tag \\\"\\\", options_for_select(get_dropdown_options(select_tag_options_array, plan_name, dropdown_text_version, @cart, @combined_pricing_version), plan_to_highlight_id), common_select_params %\\u003e\\n    97:       \\u003c/div\\u003e\\n    98:       \\u003c%= render :partial =\\u003e 'shared/combined_parallel_test_tool_tip', :locals =\\u003e { :monthly_plan =\\u003e monthly_plan , :only_icon =\\u003e parallel_tooltip_only_icon} if !hide_parallels_tooltip %\\u003e\\n    99:     \\u003c/div\\u003e\\n  \\napp/models/concerns/plan_helper.rb:1756:in `to_s'\\napp/models/concerns/plan_helper.rb:1756:in `get_formatted_user_count_test_observability'\\napp/models/concerns/plan_helper.rb:1660:in `formatted_user_count'\\napp/helpers/account_helper.rb:657:in `block in get_dropdown_options'\\napp/helpers/account_helper.rb:657:in `map'\\napp/helpers/account_helper.rb:657:in `get_dropdown_options'\\napp/views/shared/_combined_pricing_plan_details.html.erb:96\\napp/views/static/molecules/accounts/_pricing_plan_block.html.erb:398\\napp/views/static/molecules/accounts/_pricing_plan.html.erb:109\\napp/views/static/habitats/accounts/_plans_blocks_with_sidenav.html.erb:1894\\napp/views/static/molecules/_pricing_container.html.erb:25\\napp/views/static/habitats/accounts/_pricing_plan_tables.html.erb:58\\napp/helpers/application_helper.rb:2563:in `cache_if'\\napp/views/static/habitats/accounts/_pricing_plan_tables.html.erb:51\\napp/views/shared/_combined_pricing.html.erb:50\\napp/views/shared/_all_pricing.html.erb:5\\napp/views/accounts/subscriptions.html.erb:12\\napp/controllers/accounts_controller.rb:310:in `subscriptions'\\nlib/minute_based_throttle.rb:157:in `call'\\nlib/minute_based_throttle.rb:157:in `call'\\nconfig/initializers/oink_override.rb:9:in `call'\\nlib/json_parse_errors.rb:10:in `call'\\nlib/bad_multipart_form_data_handler.rb:21:in `call'\\nlib/request_timestamp.rb:14:in `_call'\\nlib/request_timestamp.rb:9:in `call'\\nlib/extract_ip_middleware.rb:31:in `call'\",\"id\":\"237-1911-1-1710153833.218-devaccessibility.bsstag.com\",\"level\":\"FATAL\"},\"meta\":{\"format\":{\"category\":\"server\",\"version\":5},\"host\":\"rails-live-7dd4954cf5-9jftk\",\"timestamp\":\"2024-03-11T10:43:57.264+00:00\"}}",
+      "timestamp": "2024-03-11T10:43:57.264+00:00",
+      "analysis": {
+        "severity": "UNKNOWN",
+        "category": "Other",
+        "subcategory": "Unknown Error",
+        "description": "AI analysis failed",
+        "impact": "Unable to determine",
+        "suggestedAction": "Manual investigation required",
+        "slackThread": "https://browserstack.slack.com/archives/C02D3CWKF6Y/p1741085627615559?thread_ts=1741065769.408149&cid=C02D3CWKF6Y",
+        "relevantUrls": "https://browserstack.slack.com/archives/C02D3CWKF6Y/p1741085627615559?thread_ts=1741065769.408149&cid=C02D3CWKF6Y"
       }
     }
   ]

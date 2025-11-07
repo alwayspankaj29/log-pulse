@@ -3,7 +3,7 @@ const readline = require("readline");
 
 // Gemini API configuration
 const GEMINI_API_KEY =
-  process.env.GEMINI_API_KEY || "AIzaSyAqnVwbjd7qwz1V0nocePOYKNEROeCCc6k";
+  process.env.GEMINI_API_KEY || "AIzaSyCQ2xk-qCTDceveVcao7hzBeO3GNo700ZU";
 const GEMINI_API_URL =
   "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent";
 
@@ -76,22 +76,22 @@ const ERROR_CATEGORIES = [
       {
         subcategory: "Nil Reference Error",
         suggestion: "Add nil checks or guard clauses to prevent accessing undefined objects",
-        slackthread: "https://browserstack.slack.com/archives/C01016S56ER/p1723106921992339"
+        slackthread: "https://browserstack.slack.com/archives/C04ACHC6MK4/p1742366645355799"
       },
       {
         subcategory: "Wrong Number of Arguments",
         suggestion: "Verify method signatures and update method calls accordingly",
-        slackthread: "https://browserstack.slack.com/archives/C01016S56ER/p1723106921992339"
+        slackthread: "https://browserstack.slack.com/archives/C04ACHC6MK4/p1742366645355799"
       },
       {
         subcategory: "Undefined Method",
         suggestion: "Ensure the method exists for the object’s class or module",
-        slackthread: "https://browserstack.slack.com/archives/C01016S56ER/p1723106921992339"
+        slackthread: "https://browserstack.slack.com/archives/C04ACHC6MK4/p1742366645355799"
       },
       {
         subcategory: "Unexpected Data Type",
         suggestion: "Validate and sanitize inputs before method invocation",
-        slackthread: "https://browserstack.slack.com/archives/C01016S56ER/p1723106921992339"
+        slackthread: "https://browserstack.slack.com/archives/C04ACHC6MK4/p1742366645355799"
       }
     ]
   },
@@ -101,17 +101,17 @@ const ERROR_CATEGORIES = [
       {
         subcategory: "Template Rendering Error",
         suggestion: "Check partial and layout templates for missing variables or incorrect locals",
-        slackthread: "https://browserstack.slack.com/archives/C01016S56ER/p1723106921992339"
+        slackthread: "https://browserstack.slack.com/archives/C02CX7JGR51/p1747988553615449"
       },
       {
         subcategory: "Missing Partial",
         suggestion: "Ensure the referenced partials exist and paths are correct",
-        slackthread: "https://browserstack.slack.com/archives/C01016S56ER/p1723106921992339"
+        slackthread: "https://browserstack.slack.com/archives/C02CX7JGR51/p1747988553615449"
       },
       {
         subcategory: "Helper Method Error",
         suggestion: "Fix logic in Rails helpers or ensure helpers are properly included in the view context",
-        slackthread: "https://browserstack.slack.com/archives/C01016S56ER/p1723106921992339"
+        slackthread: "https://browserstack.slack.com/archives/C02CX7JGR51/p1747988553615449"
       }
     ]
   },
@@ -121,17 +121,17 @@ const ERROR_CATEGORIES = [
       {
         subcategory: "Action Dispatch Error",
         suggestion: "Verify controller actions exist and match routes",
-        slackthread: "https://browserstack.slack.com/archives/C01016S56ER/p1723106921992339"
+        slackthread: "https://browserstack.slack.com/archives/CPQLNNSNQ/p1658124157473069?thread_ts=1658124154.037049&cid=CPQLNNSNQ"
       },
       {
         subcategory: "Invalid Parameters",
         suggestion: "Validate params and ensure required keys exist",
-        slackthread: "https://browserstack.slack.com/archives/C01016S56ER/p1723106921992339"
+        slackthread: "https://browserstack.slack.com/archives/CPQLNNSNQ/p1658124157473069?thread_ts=1658124154.037049&cid=CPQLNNSNQ"
       },
       {
         subcategory: "Routing Error",
         suggestion: "Check routes.rb and ensure proper HTTP verb and path configuration",
-        slackthread: "https://browserstack.slack.com/archives/C01016S56ER/p1723106921992339"
+        slackthread: "https://browserstack.slack.com/archives/CPQLNNSNQ/p1658124157473069?thread_ts=1658124154.037049&cid=CPQLNNSNQ"
       }
     ]
   },
@@ -141,17 +141,17 @@ const ERROR_CATEGORIES = [
       {
         subcategory: "ActiveRecord Query Error",
         suggestion: "Inspect model queries for syntax or relation issues",
-        slackthread: "https://browserstack.slack.com/archives/C01016S56ER/p1723106921992339"
+        slackthread: "https://browserstack.slack.com/archives/CPQLNNSNQ/p1760611330675929?thread_ts=1760611251.744219&cid=CPQLNNSNQ"
       },
       {
         subcategory: "Record Not Found",
         suggestion: "Add existence checks or rescue from ActiveRecord::RecordNotFound",
-        slackthread: "https://browserstack.slack.com/archives/C01016S56ER/p1723106921992339"
+        slackthread: "https://browserstack.slack.com/archives/CPQLNNSNQ/p1760611330675929?thread_ts=1760611251.744219&cid=CPQLNNSNQ"
       },
       {
         subcategory: "Transaction Failure",
         suggestion: "Investigate rollback causes or DB constraints",
-        slackthread: "https://browserstack.slack.com/archives/C01016S56ER/p1723106921992339"
+        slackthread: "https://browserstack.slack.com/archives/CPQLNNSNQ/p1760611330675929?thread_ts=1760611251.744219&cid=CPQLNNSNQ"
       }
     ]
   },
@@ -308,7 +308,7 @@ Analyze this log error and provide:
 4. Brief description of the issue
 5. Potential impact
 6. Suggested action - will be automatically matched from the subcategory
-7. Slack thread URL - if you can identify a relevant Slack discussion URL, include it; otherwise leave empty
+7. Slack thread URL - PLease include slack thread from ${ERROR_CATEGORIES.find(cat => cat.category === category)?.slackThread}
 
 Log entry:
 ${error.content}
@@ -380,8 +380,8 @@ IMPORTANT: Use ONLY the predefined categories and severity levels. The slackthre
     // Validate and normalize subcategory
     let subcategory = analysis.subcategory || "Unknown Error";
     let suggestedAction = analysis.suggestedAction || "Manual investigation required";
-    let relevantUrls = "";
-    
+    let slackThreadUrl = "https://browserstack.slack.com/archives/C02D3CWKF6Y/p1741085627615559?thread_ts=1741065769.408149&cid=C02D3CWKF6Y";
+
     if (categoryObj) {
       const subcategoryNames = categoryObj.subcategories.map(sub => sub.subcategory);
       if (!subcategoryNames.includes(subcategory)) {
@@ -394,19 +394,19 @@ IMPORTANT: Use ONLY the predefined categories and severity levels. The slackthre
         if (match) {
           subcategory = match.subcategory;
           suggestedAction = match.suggestion;
-          relevantUrls = match.relevant_urls || "";
+          slackThreadUrl = match.slackthread || "https://browserstack.slack.com/archives/C02D3CWKF6Y/p1741085627615559?thread_ts=1741065769.408149&cid=C02D3CWKF6Y";
         } else {
           // Use first subcategory as fallback
           subcategory = categoryObj.subcategories[0].subcategory;
           suggestedAction = categoryObj.subcategories[0].suggestion;
-          relevantUrls = categoryObj.subcategories[0].relevant_urls || "";
+          slackThreadUrl = categoryObj.subcategories[0].slackthread || "https://browserstack.slack.com/archives/C02D3CWKF6Y/p1741085627615559?thread_ts=1741065769.408149&cid=C02D3CWKF6Y";
         }
       } else {
         // Find the matching subcategory and use its suggestion
         const subcategoryObj = categoryObj.subcategories.find(sub => sub.subcategory === subcategory);
         if (subcategoryObj) {
           suggestedAction = subcategoryObj.suggestion;
-          relevantUrls = subcategoryObj.relevant_urls || "";
+          slackThreadUrl = subcategoryObj.slackthread || "https://browserstack.slack.com/archives/C02D3CWKF6Y/p1741085627615559?thread_ts=1741065769.408149&cid=C02D3CWKF6Y";
         }
       }
     }
@@ -420,8 +420,8 @@ IMPORTANT: Use ONLY the predefined categories and severity levels. The slackthre
         description: analysis.description || "No description available",
         impact: analysis.impact || "Unknown impact",
         suggestedAction: suggestedAction,
-        slackThread: analysis.slackthread || relevantUrls || "N/A",
-        relevantUrls: relevantUrls || "N/A",
+        slackThread: slackThreadUrl || "https://browserstack.slack.com/archives/C02D3CWKF6Y/p1741085627615559?thread_ts=1741065769.408149&cid=C02D3CWKF6Y",
+        relevantUrls: slackThreadUrl || "https://browserstack.slack.com/archives/C02D3CWKF6Y/p1741085627615559?thread_ts=1741065769.408149&cid=C02D3CWKF6Y",
       },
     };
   } catch (err) {
@@ -435,8 +435,8 @@ IMPORTANT: Use ONLY the predefined categories and severity levels. The slackthre
         description: "AI analysis failed",
         impact: "Unable to determine",
         suggestedAction: "Manual investigation required",
-        slackThread: "N/A",
-        relevantUrls: "N/A",
+        slackThread: "https://browserstack.slack.com/archives/C02D3CWKF6Y/p1741085627615559?thread_ts=1741065769.408149&cid=C02D3CWKF6Y",
+        relevantUrls: "https://browserstack.slack.com/archives/C02D3CWKF6Y/p1741085627615559?thread_ts=1741065769.408149&cid=C02D3CWKF6Y",
       },
     };
   }
